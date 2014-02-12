@@ -13,9 +13,7 @@ class User extends Eloquent {
         return $this->belongsToMany('Skill', 'staffing_app_skill_user');
     }
 
-    public function user(){
-        return $this->belongs_to('')
-    }
+    
 
     public function skillsArr(){
     	$pivot = $this->belongsToMany('Skill', 'staffing_app_skill_user')->getResults();
