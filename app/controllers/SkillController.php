@@ -24,29 +24,22 @@ class SkillController extends BaseController {
 
 
 
-	public function getSkill()
-	{
+	public function getSkill(){
+		
 		if(Input::has('id')){
 			
-			$Skills = array();
-			$Skills[] = Input::get('id');
-			foreach ($Skills as $id ){				
-				$Skills[] = Skill::findOrFail($id)->toArray();
-			}
-			return Response::json($Skills);
+			$Skill = Skill::findOrFail($id)->toArray();
+			
+			return Response::json($Skill);
 		}
 		return Response::json(Skill::all());
 	}
 
-	public function deleteSkill()
-	{
+	public function deleteSkill(){
+		
 		if(Input::has('id')){
-			
-			
-			$Skills[] = Input::get('id');
-			foreach ($Skills as $id ){				
-				Skill::findOrFail($id)->forceDelete();
-			}
+					
+			Skill::findOrFail($id)->forceDelete();		
 			return Response::json(array("deleted"));
 		}
 

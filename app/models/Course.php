@@ -3,7 +3,7 @@
 
 class Course extends Eloquent {
 
-	protected $table = 'course';
+	protected $table = 'staffing_app_course';
 	public $timestamps = false;
 	protected $fillable = array('name', 'crn', 'creditHour', 'daysInWeek', 'startDate',
 	 'endDate', 'endTime', 'startTime', 'labAide', 'instructor');

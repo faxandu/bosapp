@@ -11,13 +11,13 @@ class UserTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('user', function($table){
-			$table->increments('id');
-			$table->string('name', 30);
-
-			// $table->unsignedInteger('second_idd');
-			// $table->foreign('second_idd')->references('user_id')->on('skill_user');
-			});
+		// Schema::create('auth_user', function($table){
+		// 	$table->increments('id');
+		// 	$table->string('name', 30);
+			
+		// 	// $table->unsignedInteger('second_idd');
+		// 	// $table->foreign('second_idd')->references('user_id')->on('skill_user');
+		// 	});
 	}
 
 	/**
@@ -27,7 +27,7 @@ class UserTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('user');
+		//Schema::drop('user');
 	}
 
 }

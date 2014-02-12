@@ -11,7 +11,7 @@ class CourseTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('course', function($table){
+		Schema::create('staffing_app_course', function($table){
 			$table->increments('id');
 			$table->string('name', 30);
 			$table->string('daysInWeek', 10);
@@ -25,8 +25,8 @@ class CourseTable extends Migration {
 			$table->unsignedInteger('labAide')->nullable();
 			$table->unsignedInteger('instructor')->nullable();
 
-			$table->foreign('labAide')->references('id')->on('user');
-			$table->foreign('instructor')->references('id')->on('user');
+			$table->foreign('labAide')->references('id')->on('auth_user');
+			$table->foreign('instructor')->references('id')->on('auth_user');
 			});
 	}
 
@@ -40,7 +40,7 @@ class CourseTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('course');
+		Schema::drop('staffing_app_course');
 	}
 
 }

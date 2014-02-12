@@ -11,7 +11,7 @@ class SkillTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('skill', function($table){
+		Schema::create('staffing_app_skill', function($table){
 			$table->increments('id');
 			$table->string('name', 30)->unique();
 			

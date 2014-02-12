@@ -14,8 +14,6 @@ class CourseController extends BaseController {
 			//************************ update currently wipes old data 
 
 			$course = (Input::has('id')) ? Course::find($input['id'])->update($input) : Course::create($input);
-			//app::abort(201);
-
 
 			return Response::json(array("response" => "created"));
 		}
@@ -29,13 +27,10 @@ class CourseController extends BaseController {
 	{
 
 		if(Input::has('id')){
-			
-			$courses = array();
-			$courses[] = Input::get('id');
-			foreach ($courses as $id ){				
-				$courses[] = Course::findOrFail($id)->toArray();
-			}
-			return Response::json($courses);
+						
+			$course = Course::findOrFail($id)->toArray();
+
+			return Response::json($course);
 		}
 		return Response::json(Course::all());
 	}
@@ -43,12 +38,8 @@ class CourseController extends BaseController {
 	public function deleteCourse()
 	{
 		if(Input::has('id')){
+			Course::findOrFail($id)->forceDelete();
 			
-			
-			$courses[] = Input::get('id');
-			foreach ($courses as $id ){				
-				Course::findOrFail($id)->forceDelete();
-			}
 			return Response::json(array("deleted"));
 		}
 
