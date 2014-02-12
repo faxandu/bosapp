@@ -13,16 +13,10 @@ class SkillController extends BaseController {
 			//************************ update currently wipes old data 
 
 			$Skill = (Input::has('id')) ? Skill::find($input['id'])->update($input) : Skill::create($input);
-			//app::abort(201);
-
-			
 			return Response::json(array("response" => "created"));
 		}
-
 		app::abort(400);
 	}
-
-
 
 	public function getSkill(){
 		
@@ -42,8 +36,6 @@ class SkillController extends BaseController {
 			Skill::findOrFail($id)->forceDelete();		
 			return Response::json(array("deleted"));
 		}
-
 		app::abort(400);
 	}
-
 }

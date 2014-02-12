@@ -2,7 +2,6 @@
 
 class UserController extends BaseController {
 
-
 	public function setUser(){
 		$input = Input::all();
 
@@ -10,24 +9,18 @@ class UserController extends BaseController {
 
 			//update or create
 			//************************ update currently wipes old data 
-
 			$user = (Input::has('id')) ? User::find(Input::get('id'))->update($input) : User::create($input);
-
 
 			return Response::json(array("response" => "created"));
 		}
-
 		app::abort(400);
 	}
-
-
 
 	public function getUser(){
 
 		if(Input::has('id')){
 						
-			$iUser = Input::get('id');			
-			
+			$iUser = Input::get('id');					
 			return Response::json(User::findOrFail($id)->toArray());
 		}
 		return Response::json(User::all());
@@ -38,13 +31,9 @@ class UserController extends BaseController {
 		if(Input::has('id')){
 
 			$iUser = Input::get('id');			
-			
-					
 			User::findOrFail($iUser)->forceDelete();
-			
 			return Response::json(array("deleted"));
 		}
-
 		app::abort(400);
 	}
 
@@ -85,7 +74,7 @@ class UserController extends BaseController {
 			
 			$users = array();
 			$input = array(Input::get('id')); 
-			
+
 			foreach ($input as $id ){
 
 				$user = User::findOrFail($id);
@@ -93,7 +82,6 @@ class UserController extends BaseController {
 				'skills' => $user->skillsArr() );
 				array_push($users, $arr);
 			}
-
 			return Response::json($users);
 		}
 		app::abort(400);
