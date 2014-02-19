@@ -2,21 +2,20 @@
 <?php
 
 try{
-	$course = User::findOrFail(1);
+	$course = Staff::findOrFail(1);
 }catch(Exception $e){
-	$course = new User;
+	$course = new Staff;
 	
 }
 
 ?>
 
-<form action="setUser" method= 'POST'>
+<form action="setStaff" method= 'POST'>
 <table>
 
 
 <tr><td> id: </td><td> <input type="text" name = "id" value="<?=$course->id?>"> </td></tr>
-
-<tr><td> Name: </td><td> <input type="text" name = "name" value="<?=$course->name?>"> </td></tr>
+<tr><td> Type: </td><td> <input type="text" name = "type" value="<?=$course->type?>"> </td></tr>
 
 
 </table>

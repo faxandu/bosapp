@@ -16,10 +16,16 @@ ClassLoader::addDirectories(array(
 	app_path().'/commands',
 	app_path().'/controllers',
 	app_path().'/models',
+	app_path().'/validators',
 	app_path().'/database/seeds',
 
 ));
 
+Validator::extend('time', 'TimeValidation@validateTime');
+// Validator::resolver(function($translator, $data, $rules, $messages)
+// {
+//     return new TimeValidation($translator, $data, $rules, $messages);
+// });
 /*
 |--------------------------------------------------------------------------
 | Application Error Logger

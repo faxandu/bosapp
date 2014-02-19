@@ -13,15 +13,16 @@ class CourseTable extends Migration {
 	{
 		Schema::create('staffing_app_course', function($table){
 			$table->increments('id');
-			$table->string('name', 30);
-			$table->string('daysInWeek', 10);
-			$table->string('crn', 10)->unique();
+			
 			$table->integer('creditHour')->unsigned();
-			$table->date('startDate');
+			$table->string('crn', 10)->unique();
+			$table->string('daysInWeek', 10);
 			$table->date('endDate');
-			$table->time('startTime');
 			$table->time('endTime');
-
+			$table->string('name', 30);
+			$table->date('startDate');
+			$table->time('startTime');
+			
 			$table->unsignedInteger('labAide')->nullable();
 			$table->unsignedInteger('instructor')->nullable();
 

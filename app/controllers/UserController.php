@@ -2,11 +2,64 @@
 
 class UserController extends BaseController {
 
-	public function setUser(){
-		$input = Input::all();
+
+	public function delete(){
+
+		if(Input::has('id')){
+
+			$id = Input::get('id');		
+			User::findOrFail($id)->forceDelete();
+			return Response::json(array("deleted"));
+		}
+		app::abort(400);
+	}
+
+	public function deleteUserSkill(){
+		if(Input::has('user_id') && Input::has('skill_id')){
+			
+			$id = Input::get('user_id');
+			
+			User::findOrFail($id)->skills()->detach(Input::get('skill_id'));
+
+			return Response::json(array("deleted Skill"));
+		}
+
+		app::abort(400);
+	}
+
+
+	public function get(){
+
+		if(Input::has('id')){
+						
+			$id = Input::get('id');
+
+			return Response::json(User::findOrFail($id)->toArray());
+		}
+		return Response::json(User::all());
+	}
+
+
+	public function getUserSkill(){
+
+		if(Input::has('id')){
+
+			$id = Input::get('id'); 
+
+			$user = User::findOrFail($id);
+			$userSkills = array('user' => $user->toarray(),
+			'skills' => $user->skillsArr() );
+			
+			return Response::json($userSkills);
+		}
+		app::abort(400);
+	}
+
+	public function set(){
+		
 
 		if(Input::has('name')){
-
+			$input = Input::all();
 			//update or create
 			//************************ update currently wipes old data 
 			$user = (Input::has('id')) ? User::find(Input::get('id'))->update($input) : User::create($input);
@@ -16,34 +69,14 @@ class UserController extends BaseController {
 		app::abort(400);
 	}
 
-	public function getUser(){
-
-		if(Input::has('id')){
-						
-			$iUser = Input::get('id');					
-			return Response::json(User::findOrFail($id)->toArray());
-		}
-		return Response::json(User::all());
-	}
-
-	public function deleteUser(){
-
-		if(Input::has('id')){
-
-			$iUser = Input::get('id');			
-			User::findOrFail($iUser)->forceDelete();
-			return Response::json(array("deleted"));
-		}
-		app::abort(400);
-	}
 
 	public function setUserSkill(){
 		if(Input::has('user_id') && Input::has('skill_id')){
 
-			$iUser = Input::get('user_id');
-			$iSkill = Input::get('skill_id');
+			$userId = Input::get('user_id');
+			$skillId = Input::get('skill_id');
 						
-			User::findOrFail($iUser)->skills()->attach($iSkill);
+			User::findOrFail($userId)->skills()->attach($skillId);
 
 			return Response::json(array("set Skill"));
 		}
@@ -51,39 +84,6 @@ class UserController extends BaseController {
 		app::abort(400);
 	}
 
-	public function deleteUserSkill(){
-		if(Input::has('user_id') && Input::has('skill_id')){
-			
-			$users[] = Input::get('user_id');
-			
-			foreach ($users as $id ){				
-			
-				$user = User::findOrFail($id)->skills()->detach(Input::get('skill_id'));
 
-			}
 
-			return Response::json(array("deleted Skill"));
-		}
-
-		app::abort(400);
-	}
-
-	public function getUserSkill(){
-
-		if(Input::has('id')){
-			
-			$users = array();
-			$input = array(Input::get('id')); 
-
-			foreach ($input as $id ){
-
-				$user = User::findOrFail($id);
-				$arr = array('user' => $user->toarray(),
-				'skills' => $user->skillsArr() );
-				array_push($users, $arr);
-			}
-			return Response::json($users);
-		}
-		app::abort(400);
-	}
 }

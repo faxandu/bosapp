@@ -2,48 +2,67 @@
 
 class CourseController extends BaseController {
 
-
-	public function setCourse()
-	{
+	public function create(){
 		$input = Input::all();
+		$validatedInput = Course::validate(Input::all());
 
-		if(Input::has('name')){
-			if ( !$input['labAide'] ) 
-				$input['labAide'] = NULL;
-			//update or create
-			//************************ update currently wipes old data 
+		$messages = $validatedInput->messages();
 
-			$course = (Input::has('id')) ? Course::find($input['id'])->update($input) : Course::create($input);
+		if(!$messages->all()){
+		
+			try{
 
-			return Response::json(array("response" => "created"));
+				Course::create($input);
+				return Response::json(array('status' => 201, 'message' => 'Course created'), 201);
+				
+			}catch(Exception $e){
+				return Response::json(array('status' => 400, 
+					'message' => 'Failed to create course', 'error' => $e), 400);
+			}
 		}
 
-		app::abort(400);
+		return Response::json(array('status' => 400,
+		 'message' => 'Failed to create course', 'error' => $messages->all() ), 400);
 	}
 
-
-
-	public function getCourse()
-	{
-
+	public function delete(){
+		
 		if(Input::has('id')){
-						
-			$course = Course::findOrFail($id)->toArray();
+			$id = Input::get('id');
+			Course::findOrFail($id)->forceDelete();
+			return Response::json(array('status' => 200, 'message' => 'Course Deleted'), 200);
+		}
+		return Response::json(array('status' => 400, 'message' => 'Course Delete Failure'), 400);
+	}
 
+	public function get(){
+		if(Input::has('id')){
+			
+			$id = Input::get('id');
+
+			$course = Course::findOrFail($id)->toArray();
 			return Response::json($course);
 		}
+
 		return Response::json(Course::all());
 	}
 
-	public function deleteCourse()
-	{
-		if(Input::has('id')){
-			Course::findOrFail($id)->forceDelete();
-			
-			return Response::json(array("deleted"));
+	public function set(){
+		
+		if(Input::has('name')){
+			$input = Input::all();
+
+			if ( !$input['labAide'] ) 
+				$input['labAide'] = NULL;
+
+
+			//update or create
+			//************************ update currently wipes old data if blank
+			$course = (Input::has('id')) ? Course::find($input['id'])->update($input) : Course::create($input);
+
+			return Response::json(array('status' => 201, 'message' => 'Course Saved'), 201);
 		}
 
-		app::abort(400);
+		return Response::json(array('status' => 400, 'message' => 'Failed to Save course'), 400);
 	}
-
 }

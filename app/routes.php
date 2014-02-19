@@ -6,12 +6,8 @@
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function()
-{
-	$course = new Course;
-	$course->name = "bob";
-	return "hello";
-});
+// ---------------- Testing pages ------------- //
+
 Route::get('course', function()
 {
 	return View::make('courseForm');
@@ -22,29 +18,45 @@ Route::get('user', function()
 	return View::make('userForm');
 });
 
+Route::get('staff', function()
+{
+	return View::make('staffForm');
+});
+
 
 Route::get('userSkill', function()
 {
 	return View::make('userSkill');
 });
 
-// Route::post( 'setCourse', array('as' => 'setCourse', 'uses' => 'CourseController@setCourse'));
-// Route::get( 'getCourse', array('as' => 'getCourse', 'uses' => 'CourseController@getCourse'));
-// Route::get( 'deleteCourse', array('as' => 'deleteCourse', 'uses' => 'CourseController@getCourse'));
-//Route::get('url', 'Controller@function');
 
-Route::post('setCourse', 'CourseController@setCourse');
-Route::get('getCourse', 'CourseController@getCourse');
-Route::get('deleteCourse', 'CourseController@deleteCourse');
+Route::get('userStaff', function()
+{
+	return View::make('userStaff');
+});
 
-Route::post('setUser', 'UserController@setUser');
-Route::get('getUser', 'UserController@getUser');
-Route::get('deleteUser', 'UserController@deleteUser');
+// ----------------------------------------------------------
+
+
+
+Route::match(array('POST', 'GET'), 'createCourse', 'CourseController@create');
+Route::match(array('POST', 'GET'), 'setCourse', 'CourseController@set');
+Route::match(array('POST', 'GET'),'getCourse', 'CourseController@get');
+Route::get('deleteCourse', 'CourseController@delete');
+
+
+Route::post('setUser', 'UserController@set');
+Route::get('getUser', 'UserController@get');
+Route::get('deleteUser', 'UserController@delete');
+
+
 Route::get('getUserSkill', 'UserController@getUserSkill');
 Route::post('setUserSkill', 'UserController@setUserSkill');
 Route::get('deleteUserSkill', 'UserController@deleteUserSkill');
 
 
-Route::get('getSkill', 'SkillController@getSkill');
+Route::get('getSkill', 'SkillController@get');
 
-//Route::resource('course', 'CourseController', array('names' => array('create' => 'course.build')));
+Route::post('setStaff', 'StaffController@set');
+Route::post('setUserStaff', 'StaffController@setUserStaff');
+Route::get('getUserStaff', 'StaffController@getUserStaff');

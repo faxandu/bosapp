@@ -9,6 +9,26 @@ class Course extends Eloquent {
 	 'endDate', 'endTime', 'startTime', 'labAide', 'instructor');
 	protected $guarded = array('id');
 
+
+	private static $rules = array(
+			'creditHour' => 'required|numeric',
+			'crn' => 'required|alpha_num',
+			'daysInWeek' => 'alpha',
+			
+			//note can check format date
+			'endDate' => 'date',
+			'endTime' => 'time',
+			'name' => 'required|alpha_num',
+			'startDate' => 'date',
+			'startTime' => 'time',
+			'labAide' => 'numeric',
+			'instructor' => 'numeric'
+		);
+
+	public static function validate($data){
+		return Validator::make($data, static::$rules);
+	}
+
 	public static function boot(){
         parent::boot();
 

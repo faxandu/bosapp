@@ -1,8 +1,9 @@
 <?php
 
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class SkillTable extends Migration {
+class StaffType extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -11,9 +12,9 @@ class SkillTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('staffing_app_skill', function($table){
+		Schema::create('staffing_app_staffType', function($table){
 			$table->increments('id');
-			$table->string('name', 30)->unique();
+			$table->string('type', 30)->unique();
 			});
 	}
 
@@ -24,7 +25,7 @@ class SkillTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('staffing_app_skill');
+		Schema::drop('staffing_app_staffType');
 	}
 
 }
