@@ -4,26 +4,33 @@ class SkillController extends BaseController {
 
 	public function delete(){
 		
-		if(Input::has('id')){
+		try{
 			$id = Input::get('id');
+			Skill::findOrFail($id)->forceDelete();
 
-			Skill::findOrFail($id)->forceDelete();		
-			return Response::json(array('status' => 200, 'message' => 'Skill Deleted'), 200);
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 	
+			'message' => 'Failed to delete Skill.', 'error' => $e->getMessage()), 400);
 		}
-		return Response::json(array('status' => 400, 'message' => 'Failed to delete skill'), 400);
+		return Response::json(array('status' => 200, 'message' => 'Skill Deleted'), 200);
 	}
-	
 
 	public function get(){
 		
-		if(Input::has('id')){
+		try{	
+
+			if(!Input::has('id'))
+				return Response::json(Skill::all());
+
 			$id = Input::get('id');
 
-			$Skill = Skill::findOrFail($id)->toArray();
-			
-			return Response::json($Skill);
-		}
-		return Response::json(Skill::all());
+			$skill = Skill::findOrFail($id)->toArray();
+			return Response::json($skill);
+
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 	
+			'message' => 'Failed to get skill.', 'error' => $e->getMessage()), 400);
+		}		
 	}
 
 	public function set(){

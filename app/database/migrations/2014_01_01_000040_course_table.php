@@ -23,12 +23,12 @@ class CourseTable extends Migration {
 			$table->date('startDate');
 			$table->time('startTime');
 			
-			$table->unsignedInteger('labAide')->nullable();
-			$table->unsignedInteger('instructor')->nullable();
+			// $table->unsignedInteger('labAide')->nullable();
+			// $table->unsignedInteger('instructor')->nullable();
 
-			$table->foreign('labAide')->references('id')->on('auth_user');
-			$table->foreign('instructor')->references('id')->on('auth_user');
-			});
+			// $table->foreign('labAide')->references('id')->on('auth_user');
+			// $table->foreign('instructor')->references('id')->on('auth_user');
+		});
 	}
 
 

@@ -8,6 +8,13 @@ class User extends Eloquent {
 	protected $guarded = array('id');
     protected $hidden = array('password', 'is_superuser', 'is_staff', 'is_active', 'date_joined');
 	
+    private static $rules = array(
+        'id' => 'numeric|exists:auth_user,id'
+    );
+
+    public static function validate($data){
+        return Validator::make($data, static::$rules);
+    }
 
     public function skills(){
         return $this->belongsToMany('Skill', 'staffing_app_skill_user');
@@ -24,14 +31,28 @@ class User extends Eloquent {
     	return $skills;
     }
 
+    public function labAide(){
+        return $this->belongsToMany('Course', 'staffing_app_course_labAide');
+    }
+
+     public function labAideArr(){
+        $pivot = $this->belongsToMany('Course', 'staffing_app_course_labAide')->getResults();
+        $courses = array();
+        foreach($pivot as $course){
+            array_push($courses, $course->attributes);
+        }
+        return $courses;
+    }
 
     public function staffType(){
-        return $this->belongsToMany('Staff', 'staffing_app_staffType');
+        return $this->belongsToMany('StaffType', 'staffing_app_user_staff', 'user_id', 'staff_id');
     }
 
      public function staffTypeArr(){
-        $pivot = $this->belongsToMany('Staff', 'staffing_app_staffType')->getResults();
+
+        $pivot = $this->belongsToMany('StaffType', 'staffing_app_user_staff', 'user_id', 'staff_id')->getResults();
         $types = array();
+
         foreach($pivot as $staff){
             array_push($types, $staff->attributes);
         }

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class StaffType extends Migration {
+class StaffTypedb extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -15,7 +15,7 @@ class StaffType extends Migration {
 		Schema::create('staffing_app_staffType', function($table){
 			$table->increments('id');
 			$table->string('type', 30)->unique();
-			});
+		});
 	}
 
 	/**

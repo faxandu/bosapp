@@ -40,23 +40,24 @@ Route::get('userStaff', function()
 
 
 Route::match(array('POST', 'GET'), 'createCourse', 'CourseController@create');
-Route::match(array('POST', 'GET'), 'setCourse', 'CourseController@set');
-Route::match(array('POST', 'GET'),'getCourse', 'CourseController@get');
-Route::get('deleteCourse', 'CourseController@delete');
+Route::match(array('POST', 'GET'), 'deleteCourse', 'CourseController@delete');
+Route::match(array('POST', 'GET'), 'getCourse', 'CourseController@get'); // Also grabs the labaides
+Route::match(array('POST', 'GET'), 'setLabAide', 'CourseController@setLabAide');
+
+
+Route::match(array('POST', 'GET'), 'getSkill', 'SkillController@get');
+
+Route::match(array('POST', 'GET'), 'createStaffType', 'StaffTypeController@create');
+Route::match(array('POST', 'GET'), 'deleteStaffType', 'StaffTypeController@delete');
+Route::match(array('POST', 'GET'), 'getUserStaffType', 'StaffTypeController@getUserStaffType');
+Route::match(array('POST', 'GET'), 'setUserStaff', 'StaffTypeController@setUserStaffType');
+
+Route::match(array('POST', 'GET'), 'deleteUser', 'UserController@delete');
+Route::match(array('POST', 'GET'), 'deleteUserSkill', 'UserController@deleteUserSkill');
+Route::match(array('POST', 'GET'), 'getUser', 'UserController@get');
+Route::match(array('POST', 'GET'), 'getUserSkill', 'UserController@getUserSkill');
+Route::match(array('POST', 'GET'), 'setUserSkill', 'UserController@setUserSkill');
 
 
 Route::post('setUser', 'UserController@set');
-Route::get('getUser', 'UserController@get');
-Route::get('deleteUser', 'UserController@delete');
 
-
-Route::get('getUserSkill', 'UserController@getUserSkill');
-Route::post('setUserSkill', 'UserController@setUserSkill');
-Route::get('deleteUserSkill', 'UserController@deleteUserSkill');
-
-
-Route::get('getSkill', 'SkillController@get');
-
-Route::post('setStaff', 'StaffController@set');
-Route::post('setUserStaff', 'StaffController@setUserStaff');
-Route::get('getUserStaff', 'StaffController@getUserStaff');

@@ -2,9 +2,11 @@
 <?php
 
 try{
-	$course = Staff::findOrFail(1);
+	$course = StaffType::findorFail(1);
+
+
 }catch(Exception $e){
-	$course = new Staff;
+	$course = new StaffType;
 	
 }
 
@@ -15,7 +17,7 @@ try{
 
 
 <tr><td> id: </td><td> <input type="text" name = "id" value="<?=$course->id?>"> </td></tr>
-<tr><td> Type: </td><td> <input type="text" name = "type" value="<?=$course->type?>"> </td></tr>
+<tr><td> Type: </td><td> <input type="text" name = "staffType" value="<?=$course->type?>"> </td></tr>
 
 
 </table>

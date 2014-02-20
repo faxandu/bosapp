@@ -2,7 +2,7 @@
 
 <?php 
 try{
-	$course = Course::findOrFail(1);
+	$course = Course::findOrFail(4);
 }catch(Exception $e){
 	$course = new Course;
 	$course->labAide = NULL;
@@ -11,10 +11,10 @@ try{
 ?>
 
 
-<form action="setCourse" method= 'POST'>
+<form action="createCourse" method= 'POST'>
 <table>
-<tr><td> id: </td><td> <input type="text" name = "id" value="<?=$course->id?>"> </td></tr>
-<tr><td> labAide: </td><td> <input type="text" name = "labAide" value="<?=$course->labAide ?>"> </td></tr>
+<!--<tr><td> id: </td><td> <input type="text" name = "id" value="<?=$course->id?>"> </td></tr> -->
+<!--<tr><td> labAide: </td><td> <input type="text" name = "labAide" value="<?=$course->labAide ?>"> </td></tr> -->
 <tr><td> Name: </td><td> <input type="text" name = "name" value="<?=$course->name?>"> </td></tr>
 <tr><td> crn: </td><td> <input type="text" name = "crn" value="<?=$course->crn?>"> </td></tr>
 <tr><td> creditHour: </td><td> <input type="text" name = "creditHour" value="<?=$course->creditHour?>"> </td></tr>

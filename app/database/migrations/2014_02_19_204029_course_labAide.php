@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UserStaff extends Migration {
+class CourseLabAide extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,11 @@ class UserStaff extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('staffing_app_user_staff', function($table){
+		Schema::create('staffing_app_course_labAide', function($table){
 			$table->unsignedInteger('user_id');
-			$table->unsignedInteger('staff_id');
+			$table->unsignedInteger('course_id');
 			$table->foreign('user_id')->references('id')->on('auth_user');
-			$table->foreign('staff_id')->references('id')->on('staffing_app_staffType');
+			$table->foreign('course_id')->references('id')->on('staffing_app_course');
 		});
 	}
 
@@ -27,7 +27,7 @@ class UserStaff extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('staffing_app_user_staff');
+		Schema::drop('staffing_app_course_labAide');
 	}
 
 }
