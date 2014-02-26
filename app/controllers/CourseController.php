@@ -59,23 +59,38 @@ class CourseController extends BaseController {
 		}		
 	}
 
-	public function set(){
-		
-		if(Input::has('name')){
-			$input = Input::all();
 
-			if ( !$input['labAide'] ) 
-				$input['labAide'] = NULL;
+	public function update(){
 
+		$validatedInput = Course::updateValidate(Input::all());
 
-			//update or create
-			//************************ update currently wipes old data if blank
-			$course = (Input::has('id')) ? Course::find($input['id'])->update($input) : Course::create($input);
+		$messages = $validatedInput->messages();
 
-			return Response::json(array('status' => 201, 'message' => 'Course Saved'), 201);
+		// if any error messages, don't update and return errors.
+		if(!$messages->all()){
+
+			try{	
+				
+				$id = Input::get('id');
+				
+				$course = Course::find($id);
+				$course->update(Input::all());
+				
+				$courseArr = $course->toarray();
+
+				return Response::json($courseArr);
+
+			}catch(exception $e){
+				return Response::json(array('status' => 400, 	
+				'message' => 'Failed to update course.', 'error' => $e->getMessage()), 400);
+			}	
+		} else{
+			return Response::json(array('status' => 400,
+		 'message' => 'Failed to update course', 'error' => $messages->all() ), 400);
 		}
 
-		return Response::json(array('status' => 400, 'message' => 'Failed to Save course'), 400);
+		return Response::json(array('status' => 200, 'message' => 'Course Updated'), 200);
+
 	}
 
 	public function setLabAide(){

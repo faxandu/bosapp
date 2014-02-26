@@ -11,23 +11,42 @@ class Course extends Eloquent {
 
 
 	private static $rules = array(
-			'creditHour' => 'required|numeric',
-			'crn' => 'required|alpha_num',
-			'daysInWeek' => 'alpha',
-			
-			//note can check format date
-			'endDate' => 'date',
-			//'endTime' => 'time',
-			//'name' => 'required|alpha_num',
-			'startDate' => 'date',
-			'startTime' => 'time',
-			//'labAide' => 'numeric|exists:auth_user,id',
-			//'instructor' => 'numeric|exists:auth_user,id'
-		);
+		'creditHour' => 'required|numeric',
+		'crn' => 'required|alpha_num',
+		'daysInWeek' => 'alpha',
+		
+		//note can check format date
+		'endDate' => 'date',
+		//'endTime' => 'time',
+		//'name' => 'required|alpha_num',
+		'startDate' => 'date',
+		'startTime' => 'time',
+		//'labAide' => 'numeric|exists:auth_user,id',
+		//'instructor' => 'numeric|exists:auth_user,id'
+	);
+
+    private static $updateRules = array(
+        'id' => 'required|numeric|exists:staffing_app_course,id',
+        'creditHour' => 'numeric',
+        'crn' => 'alpha_num',
+        'daysInWeek' => 'alpha',
+        
+        //note can check format date
+        'endDate' => 'date',
+        //'endTime' => 'time',
+        //'name' => 'required|alpha_num',
+        'startDate' => 'date',
+        'startTime' => 'time',
+        'labAide' => 'numeric|exists:auth_user,id'
+    );
 
 	public static function validate($data){
 		return Validator::make($data, static::$rules);
 	}
+
+    public static function updateValidate($data){
+        return Validator::make($data, static::$updateRules);
+    }
 
 	public static function boot(){
         parent::boot();
