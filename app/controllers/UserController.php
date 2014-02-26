@@ -38,12 +38,20 @@ class UserController extends BaseController {
 		
 		try{	
 
-			if(!Input::has('id'))
-				return Response::json(User::all());
+			if(!Input::has('id')){
+
+				$users = array();
+				foreach ( User::all() as $user){
+
+					array_push($users, array('user' => $user->toarray(), 'staffType' => $user->staffTypeArr()  ) );
+				}
+				return Response::json($users);
+			}
 
 			$id = Input::get('id');
 
 			$user = User::findOrFail($id)->toArray();
+			array_push($user, array('staffType' => User::findOrFail($id)->staffTypeArr()));
 			return Response::json($user);
 
 		}catch(exception $e){
