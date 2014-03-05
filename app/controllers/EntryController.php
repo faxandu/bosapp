@@ -29,7 +29,7 @@ class EntryController extends Controller {
 
 	public function delete(){
 		
-		try{
+		try{ 
 			$id = Input::get('id');
 
 			$entry = Entry::findOrFail($id);
