@@ -49,8 +49,9 @@ Route::match(array('POST', 'GET'), '/lotto/getSkill', 'SkillController@get');
 
 Route::match(array('POST', 'GET'), '/lotto/createStaffType', 'StaffTypeController@create');
 Route::match(array('POST', 'GET'), '/lotto/deleteStaffType', 'StaffTypeController@delete');
+Route::match(array('POST', 'GET'), '/lotto/getStaffType', 'StaffTypeController@get');
 Route::match(array('POST', 'GET'), '/lotto/getUserStaffType', 'StaffTypeController@getUserStaffType');
-Route::match(array('POST', 'GET'), '/lotto/setUserStaff', 'StaffTypeController@setUserStaffType');
+Route::match(array('POST', 'GET'), '/lotto/setUserStaffType', 'StaffTypeController@setUserStaffType');
 
 Route::match(array('POST', 'GET'), '/lotto/deleteUser', 'UserController@delete');
 Route::match(array('POST', 'GET'), '/lotto/deleteUserSkill', 'UserController@deleteUserSkill');

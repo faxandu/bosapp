@@ -43,7 +43,7 @@ class UserController extends BaseController {
 				$users = array();
 				foreach ( User::all() as $user){
 
-					array_push($users, array('user' => $user->toarray(), 'staffType' => $user->staffTypeArr()  ) );
+					array_push($users, array('user' => $user->toarray(), 'staffType' => $user->staffTypes->toArray()  ) );
 				}
 				return Response::json($users);
 			}

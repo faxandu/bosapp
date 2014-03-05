@@ -6,6 +6,7 @@ class SkillController extends BaseController {
 		
 		try{
 			$id = Input::get('id');
+
 			Skill::findOrFail($id)->forceDelete();
 
 		}catch(exception $e){
@@ -33,17 +34,4 @@ class SkillController extends BaseController {
 		}		
 	}
 
-	public function set(){
-
-		if(Input::has('name')){
-			$input = Input::all();
-			
-			//update or create
-			//************************ update currently wipes old data 
-			$Skill = (Input::has('id')) ? Skill::find($input['id'])->update($input) : Skill::create($input);
-
-			return Response::json(array('status' => 201, 'message' => 'Skill Saved'), 201);
-		}
-		return Response::json(array('status' => 400, 'message' => 'Failed to Save skill'), 400);
-	}
 }

@@ -30,7 +30,10 @@ class StaffTypeController extends BaseController {
 		
 		try{
 			$id = Input::get('id');
-			StaffType::findOrFail($id)->forceDelete();
+
+			$staffType = StaffType::findOrFail($id);
+			$staffType->users()->detach();
+			$staffType->forceDelete();
 			
 		}catch(exception $e){
 			return Response::json(array('status' => 400, 	
@@ -40,7 +43,7 @@ class StaffTypeController extends BaseController {
 	}
 
 	
-public function get(){
+	public function get(){
 		
 		try{	
 
@@ -49,7 +52,7 @@ public function get(){
 
 			$id = Input::get('id');
 
-			$staffType = StaffType::findOrFail($id)->toArray();
+			$staffType = StaffType::findOrFail($id)->toarray();
 			return Response::json($staffType);
 
 		}catch(exception $e){
@@ -60,36 +63,17 @@ public function get(){
 
 	public function getUserStaffType(){
 
-
 		try{	
 			$id = Input::get('id');
-			$user = User::findOrFail($id);
+			
+			$user = User::findOrFail($id)->staffTypes->toarray();
 
-			$users = array();
-			array_push($users, array('user' => $user->toarray(),
-			'StaffType' => $user->staffTypeArr()));
-
-			return Response::json($users);
+			return Response::json($user);
 
 		}catch(exception $e){
 			return Response::json(array('status' => 400, 	
 			'message' => 'Failed to get staffType.', 'error' => $e->getMessage()), 400);
 		}
-	}
-
-	public function set(){
-
-		if(Input::has('type')){
-			$input = Input::all();
-
-			//update or create
-			//************************ update currently wipes old data 
-
-			$StaffType = (Input::has('id')) ? StaffType::find($input['id'])->update($input) : StaffType::create($input);
-			
-			return Response::json(array("response" => "created"));
-		}
-		app::abort(400);
 	}
 
 
@@ -99,7 +83,8 @@ public function get(){
 		$staffType = Input::get('staffType');
 		try{
 
-			User::findOrFail($userId)->staffType()->attach($staffType);
+			User::findOrFail($userId)->staffTypes()->attach($staffType);
+
 		}catch(exception $e){
 			return Response::json(array('status' => 400, 
 				'message' => 'Failed to assign staffType', 'error' => $e->getMessage()), 400);

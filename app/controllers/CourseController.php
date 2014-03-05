@@ -30,7 +30,10 @@ class CourseController extends BaseController {
 		
 		try{
 			$id = Input::get('id');
-			Course::findOrFail($id)->forceDelete();
+
+			$course = Course::findOrFail($id);
+			$course->labAides()->detach();
+			$course->forceDelete();
 
 		}catch(exception $e){
 			return Response::json(array('status' => 400, 	
@@ -49,8 +52,10 @@ class CourseController extends BaseController {
 			$id = Input::get('id');
 
 			$course = Course::findOrFail($id);
-			$courseArr = $course->toarray();
-			array_push($courseArr, $course->labAideArr());
+			$courseArr = $course->toArray();
+
+			array_push($courseArr, array('labAide' => $course->labAides->toArray()));
+			
 			return Response::json($courseArr);
 
 		}catch(exception $e){
@@ -58,7 +63,6 @@ class CourseController extends BaseController {
 			'message' => 'Failed to get course.', 'error' => $e->getMessage()), 400);
 		}		
 	}
-
 
 	public function update(){
 
@@ -76,9 +80,6 @@ class CourseController extends BaseController {
 				$course = Course::find($id);
 				$course->update(Input::all());
 				
-				$courseArr = $course->toarray();
-
-				return Response::json($courseArr);
 
 			}catch(exception $e){
 				return Response::json(array('status' => 400, 	
@@ -103,7 +104,7 @@ class CourseController extends BaseController {
 			$course = Course::findorFail($courseId);
 			
 			if(Course::checkUser($user, $course)){
-				$course->labAide()->attach($user);
+				$course->labAides()->attach($user);
 			}
 
 		}catch(exception $e){

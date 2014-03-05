@@ -11,7 +11,7 @@ try{
 ?>
 
 
-<form action="createCourse" method= 'POST'>
+<form action="lotto/createCourse" method= 'POST'>
 <table>
 <!--<tr><td> id: </td><td> <input type="text" name = "id" value="<?=$course->id?>"> </td></tr> -->
 <!--<tr><td> labAide: </td><td> <input type="text" name = "labAide" value="<?=$course->labAide ?>"> </td></tr> -->

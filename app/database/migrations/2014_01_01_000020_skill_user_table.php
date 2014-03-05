@@ -17,7 +17,7 @@ class SkillUserTable extends Migration {
 
 			$table->foreign('user_id')->references('id')->on('auth_user');
 			$table->foreign('skill_id')->references('id')->on('staffing_app_skill');
-			});
+		});
 	}
 
 	/**

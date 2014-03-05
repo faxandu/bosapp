@@ -7,6 +7,8 @@ class StaffType extends Eloquent {
 	public $timestamps = false;
 	protected $fillable = array('type');
 	protected $guarded = array('id');
+    protected $hidden = array('pivot');
+    
 
     private static $rules = array(
         'type' => 'required|alpha',
@@ -17,16 +19,7 @@ class StaffType extends Eloquent {
     }
 
 
-	public function user(){
-        return $this->belongsToMany('User', 'staffing_app_user_staff');
-    }
-
-     public function userArr(){
-    	$pivot = $this->belongsToMany('User', 'staffing_app_user_staff')->getResults();
-    	$users = array();
-    	foreach($pivot as $user){
-    		array_push($users, $user->attributes);
-    	}
-    	return $users;
+	public function users(){
+        return $this->belongsToMany('User', 'staffing_app_user_staff', 'staff_id');
     }
 }

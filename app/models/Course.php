@@ -8,14 +8,12 @@ class Course extends Eloquent {
 	protected $fillable = array('name', 'crn', 'creditHour', 'daysInWeek', 'startDate',
 	 'endDate', 'endTime', 'startTime', 'labAide', 'instructor');
 	protected $guarded = array('id');
-
+    protected $hidden = array('pivot');
 
 	private static $rules = array(
 		'creditHour' => 'required|numeric',
 		'crn' => 'required|alpha_num',
 		'daysInWeek' => 'alpha',
-		
-		//note can check format date
 		'endDate' => 'date',
 		//'endTime' => 'time',
 		//'name' => 'required|alpha_num',
@@ -30,8 +28,6 @@ class Course extends Eloquent {
         'creditHour' => 'numeric',
         'crn' => 'alpha_num',
         'daysInWeek' => 'alpha',
-        
-        //note can check format date
         'endDate' => 'date',
         //'endTime' => 'time',
         //'name' => 'required|alpha_num',
@@ -57,38 +53,18 @@ class Course extends Eloquent {
         	}catch (Exception $e){
         		Skill::create(array('name' => $course->name));
         	}
-        	//Skill::create(array('name' => $course->name));
         });
 
     }
 
-	// public function labAide(){
-	// 	return $this->hasOne('labAide');
-	// }
-
-	// public function instructor(){
-	// 	return $this->hasOne('instructor');
-	// }
-
-	public function labAide(){
+	public function labAides(){
         return $this->belongsToMany('User', 'staffing_app_course_labAide');
     }
 
-     public function labAideArr(){
-    	$pivot = $this->belongsToMany('User', 'staffing_app_course_labAide')->getResults();
-    	$users = array();
-    	foreach($pivot as $user){
-    		array_push($users, $user->attributes);
-    	}
-    	return $users;
-    }
-    
-
     protected static function checkSkills($user, $course){
-    	foreach ($user->skillsArr() as $skill){
-    		if ($skill['name'] == $course->name)
-    			return true;
-    	}
+       
+        if(in_array($course->name, $user->skills->fetch('name')->toarray()))
+            return true;
 
     	throw new Exception("Missing required skill");
     }
@@ -100,13 +76,13 @@ class Course extends Eloquent {
     	
         $time = $course->creditHour;
 
-    	foreach ($user->labAideArr() as $anotherCourse){
+    	foreach ($user->courses as $anotherCourse){
     		$time += $anotherCourse['creditHour'];
     	}
 
 
     	
-    	foreach ($user->staffTypeArr() as $type){
+    	foreach ($user->staffTypes as $type){
            
     		switch($type['type']){
 
@@ -119,13 +95,13 @@ class Course extends Eloquent {
     }
 
 	public static function checkUser($user, $course){
+
+        if(! in_array( 'labAide', $user->staffTypes->fetch('type')->toarray() ) )
+            throw new Exception("Invalid employee type");
 		course::checkSkills($user, $course);		
 		course::checkTime($user, $course);
 		
 		return true;
 	}
-
-
-
 
 }
