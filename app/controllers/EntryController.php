@@ -2,57 +2,67 @@
 
 class EntryController extends Controller {
 
-	public function __construct() {
-	   //$this->beforeFilter('csrf', ['on' => 'post', 'delete']);
-	}
 
-	public function get() {
-		if (Input::has('month')) {
-			$month = Input::get('month');
-			$events = Entry::whereraw('MONTH(date) = '.$month)->get();
-		} else {
-			$events = Entry::all();
+	public function create(){
+		$input = Input::all();
+		
+		//$validatedInput = Course::validate(Input::all());
+
+		//$messages = $validatedInput->messages();
+
+		// if any error messages, don't create and return errors.
+		//if(!$messages->all()){
+			try{
+
+				$entry = Entry::create($input);
+
+				return Response::json(array('status' => 201, 'message' => 'Entry created'), 201);
+
+			}catch(Exception $e){
+				return Response::json(array('status' => 400, 
+					'message' => 'Failed to create entry', 'error' => $e), 400);
+			}
+		//}
+		// return Response::json(array('status' => 400,
+		 // 'message' => 'Failed to create entry', 'error' => $messages->all() ), 400);
+	}	
+
+	public function delete(){
+		
+		try{
+			$id = Input::get('id');
+
+			$entry = Entry::findOrFail($id);
+			$entry->forceDelete();
+
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 	
+			'message' => 'Failed to delete entry.', 'error' => $e->getMessage()), 400);
 		}
-		return Response::json($events->toArray(), 200);
-
+		return Response::json(array('status' => 200, 'message' => 'Course Deleted'), 200);
 	}
 
-	public function add() {
+	public function get(){
+		
+		try{	
 
-		$entry = new Entry;
-		$entry->title = Input::get('title');
-		$entry->date = Input::get('date');
-		$entry->time = Input::get('time');
-		$entry->description = Input::get('description');
+			if(!Input::has('id'))
+				return Response::json(Entry::all());
 
-		try {
-			$entry->save();
-			return Response::json(array('status' => 201, 'message' => 'Entry Saved Successfully'), 201);
-		} catch(exception $e) {
-			return Response::json(array('status' => 401, 'message' => 'Entry Save Failed', 'error' => $e), 400);
-		}
+			$id = Input::get('id');
+
+			$entry = Entry::findOrFail($id);
+			$entryArr = $entry->toArray();
+
+			
+			return Response::json($entryArr);
+
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 	
+			'message' => 'Failed to get entry.', 'error' => $e->getMessage()), 400);
+		}		
 	}
 
-	public function update() {
-		$post = Input::all();
-		$entry = Entry::find($post['id']);
-		$entry->date = $post['date'];
 
-		try {
-			$entry->save();
-			return Response::json(array('status' => 201, 'message' => 'Entry Saved Successfully'), 201);
-		} catch(exception $e) {
-			return Response::json(array('status' => 401, 'message' => 'Entry Save Failed', 'error' => $e), 400);
-		}
-	}
-
-	public function destroy() {
-		try {
-			Entry::delete(Input::get('id'));
-			return Response::json(array('status' => 200, 'message' => 'Entry Deleted'), 201);
-		} catch(exception $e) {
-			return Response::json(array('status' => 400, 'message' => 'Entry Deletion Failure', 'error' => $e), 400);
-		}
-	}
 
 }

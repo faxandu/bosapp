@@ -55,6 +55,14 @@ class Course extends Eloquent {
         	}
         });
 
+        Course::creating(function($course){
+            
+        });
+
+        course::deleting(function($course){
+           
+        });
+
     }
 
 	public function labAides(){

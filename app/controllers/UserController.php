@@ -18,21 +18,7 @@ class UserController extends BaseController {
 		return Response::json(array('status' => 200, 'message' => 'User Deleted'), 200);
 	}
 
-	public function deleteUserSkill(){
-		
-		try{
-			$userId = Input::get('user');
-			$skillId = Input::get('skill');
 
-			User::findorFail($userId)->skills()->detatch($skillId);
-
-		}catch(exception $e){
-			return Response::json(array('status' => 400, 	
-			'message' => 'Failed to delete userSkill.', 'error' => $e->getMessage()), 400);
-		}
-
-		return Response::json(array('status' => 200, 'message' => 'userSkill Deleted'), 200);
-	}
 
 	public function get(){
 		
@@ -60,23 +46,6 @@ class UserController extends BaseController {
 		}		
 	}
 
-	public function getUserSkill(){
-
-		try{	
-			$id = Input::get('id');
-			$user = User::findOrFail($id);
-
-			$users = array();
-			array_push($users, array('user' => $user->toarray(),
-			'skills' => $user->skillsArr()));
-
-			return Response::json($users);
-
-		}catch(exception $e){
-			return Response::json(array('status' => 400, 	
-			'message' => 'Failed to get skills.', 'error' => $e->getMessage()), 400);
-		}
-	}
 
 	public function set(){
 		
@@ -93,18 +62,6 @@ class UserController extends BaseController {
 	}
 
 
-	public function setUserSkill(){
-		$userId = Input::get('user');
-		$skill = Input::get('skill');
-		try{
-
-			User::findOrFail($userId)->skills()->attach($skill);
-		}catch(exception $e){
-			return Response::json(array('status' => 400, 
-				'message' => 'Failed to assign skill', 'error' => $e->getMessage()), 400);
-		}
-		return Response::json(array('status' => 201, 'message' => 'skill assigned'), 201);
-	}
 
 
 

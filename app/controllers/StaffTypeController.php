@@ -76,6 +76,21 @@ class StaffTypeController extends BaseController {
 		}
 	}
 
+	public function removeUserStaffType(){
+		
+		try{
+			$userId = Input::get('user');
+			$staffTypeId = Input::get('staffType');
+
+			User::findorFail($userId)->staffTypes()->detatch($staffTypeId);
+
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 	
+			'message' => 'Failed to remove staffType.', 'error' => $e->getMessage()), 400);
+		}
+
+		return Response::json(array('status' => 200, 'message' => 'staffType removed'), 200);
+	}
 
 	public function setUserStaffType(){
 			

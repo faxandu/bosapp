@@ -64,7 +64,44 @@ class CourseController extends BaseController {
 		}		
 	}
 
-	public function update(){
+	public function removeLabAide(){
+		
+		try{
+			$userId = Input::get('user');
+			$courseId = Input::get('course');
+
+			Course::findorFail($courseId)->labAides()->detatch($userId);
+
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 	
+			'message' => 'Failed to remove labAide.', 'error' => $e->getMessage()), 400);
+		}
+
+		return Response::json(array('status' => 200, 'message' => 'labAide removed'), 200);
+	}
+
+	public function setLabAide(){
+		$courseId = Input::get('course');
+		$userId = Input::get('user');
+		
+		try{
+
+			$user = User::findorFail($userId);
+			$course = Course::findorFail($courseId);
+			
+			if(Course::checkUser($user, $course)){
+				$course->labAides()->attach($user);
+			}
+
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 
+				'message' => 'Failed to assign labAide', 'error' => $e->getMessage()), 400);
+		}
+		
+		return Response::json(array('status' => 201, 'message' => 'LabAide assigned'), 201);
+	 }
+
+	 	public function update(){
 
 		$validatedInput = Course::updateValidate(Input::all());
 
@@ -93,25 +130,4 @@ class CourseController extends BaseController {
 		return Response::json(array('status' => 200, 'message' => 'Course Updated'), 200);
 
 	}
-
-	public function setLabAide(){
-		$courseId = Input::get('course');
-		$userId = Input::get('user');
-		
-		try{
-
-			$user = User::findorFail($userId);
-			$course = Course::findorFail($courseId);
-			
-			if(Course::checkUser($user, $course)){
-				$course->labAides()->attach($user);
-			}
-
-		}catch(exception $e){
-			return Response::json(array('status' => 400, 
-				'message' => 'Failed to assign labAide', 'error' => $e->getMessage()), 400);
-		}
-		
-		return Response::json(array('status' => 201, 'message' => 'LabAide assigned'), 201);
-	 }
 }
