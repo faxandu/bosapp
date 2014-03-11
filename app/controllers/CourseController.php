@@ -52,11 +52,9 @@ class CourseController extends BaseController {
 			$id = Input::get('id');
 
 			$course = Course::findOrFail($id);
-			$courseArr = $course->toArray();
-
-			array_push($courseArr, array('labAide' => $course->labAides->toArray()));
+			$course->labAides->toArray();
 			
-			return Response::json($courseArr);
+			return Response::json($course->toArray());
 
 		}catch(exception $e){
 			return Response::json(array('status' => 400, 	

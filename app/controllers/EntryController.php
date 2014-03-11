@@ -52,10 +52,8 @@ class EntryController extends Controller {
 			$id = Input::get('id');
 
 			$entry = Entry::findOrFail($id);
-			$entryArr = $entry->toArray();
-
 			
-			return Response::json($entryArr);
+			return Response::json($entry->toarray());
 
 		}catch(exception $e){
 			return Response::json(array('status' => 400, 	
@@ -63,6 +61,39 @@ class EntryController extends Controller {
 		}		
 	}
 
+	public function removeEntryFromUser(){
+		
+		try{
+			$userId = Input::get('user');
+			$entryId = Input::get('entry');
 
+			User::findorFail($userId)->entries()->detatch($entryId);
+
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 	
+			'message' => 'Failed to remove entry.', 'error' => $e->getMessage()), 400);
+		}
+
+		return Response::json(array('status' => 200, 'message' => 'entry removed'), 200);
+	}
+
+	public function setEntryToUser(){
+		$entryId = Input::get('entry');
+		$userId = Input::get('user');
+		
+		try{
+
+			$user = User::findorFail($userId);
+			$entry = Entry::findorFail($entryId);
+
+			$user->entries()->attach($entry);
+
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 
+				'message' => 'Failed to assign entry', 'error' => $e->getMessage()), 400);
+		}
+		
+		return Response::json(array('status' => 201, 'message' => 'entry assigned'), 201);
+	 }	
 
 }

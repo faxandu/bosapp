@@ -20,6 +20,7 @@ class EntryTable extends Migration {
 			$table->time('endTime')->nullable();
 			$table->string('title', 40);
 			$table->text('description')->nullable();
+			$table->enum('type', array('availability','preference','other'))->default('other');
 			
 			$table->timestamps();
 		});

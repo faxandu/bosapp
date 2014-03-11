@@ -7,6 +7,6 @@ class Entry extends Eloquent {
 	// protected $fillable = array('name', 'crn', 'creditHour', 'daysInWeek', 'startDate',
 	//  'endDate', 'endTime', 'startTime', 'labAide', 'instructor');
 	protected $guarded = array('id');
-    protected $hidden = array('pivot');
+    protected $hidden = array('pivot','created_at', 'updated_at');
 
 }

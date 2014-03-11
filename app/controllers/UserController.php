@@ -25,20 +25,36 @@ class UserController extends BaseController {
 		try{	
 
 			if(!Input::has('id')){
-
 				$users = array();
 				foreach ( User::all() as $user){
-
-					array_push($users, array('user' => $user->toarray(), 'staffType' => $user->staffTypes->toArray()  ) );
+					//array_push($users, array('user' => $user->toarray(), 'staffType' => $user->staffTypes()->toArray()  ) );
+					$user->staffTypes->toarray();
+					$user->entries->toarray();
+					array_push($users, $user->toarray());
 				}
 				return Response::json($users);
 			}
 
 			$id = Input::get('id');
-
-			$user = User::findOrFail($id)->toArray();
-			array_push($user, array('staffType' => User::findOrFail($id)->staffTypeArr()));
+			$user =  User::findOrFail($id);
+			$user->staffTypes->toarray();
+			$user->entries->toarray();
 			return Response::json($user);
+
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 	
+			'message' => 'Failed to get user.', 'error' => $e->getMessage()), 400);
+		}		
+	}
+
+	public function getEntry(){
+		
+		try{	
+
+			$id = Input::get('id');
+			$user =  User::findOrFail($id);
+			$userArr['entries'] = $user->entries->toarray();
+			return Response::json($userArr);
 
 		}catch(exception $e){
 			return Response::json(array('status' => 400, 	

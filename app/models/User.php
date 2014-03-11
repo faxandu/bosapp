@@ -27,4 +27,8 @@ class User extends Eloquent {
     public function staffTypes(){
         return $this->belongsToMany('StaffType', 'staffing_app_user_staff', 'user_id', 'staff_id');
     }
+
+    public function entries(){
+        return $this->belongsToMany('Entry', 'staffing_app_user_entries', 'user_id', 'entry_id');
+    }
 }

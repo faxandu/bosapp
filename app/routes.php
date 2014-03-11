@@ -70,6 +70,8 @@ Route::match(array('POST', 'GET'), '/lotto/getUser', 'UserController@get');
 Route::match(array('POST', 'GET'), '/lotto/createEntry', 'EntryController@create');
 Route::match(array('POST', 'GET'), '/lotto/getEntry', 'EntryController@get');
 Route::match(array('POST', 'GET'), '/lotto/deleteEntry', 'EntryController@delete');
+Route::match(array('POST', 'GET'), '/lotto/removeEntryFromUser', 'EntryController@removeEntryFromUser');
+Route::match(array('POST', 'GET'), '/lotto/setEntryToUser', 'EntryController@setEntryToUser');
 
 Route::post('setUser', 'UserController@set');
 

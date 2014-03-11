@@ -25,8 +25,10 @@ class SkillController extends BaseController {
 
 			$id = Input::get('id');
 
-			$skill = Skill::findOrFail($id)->toArray();
-			return Response::json($skill);
+			$skill = Skill::findOrFail($id);
+			
+
+			return Response::json($skill->toArray());
 
 		}catch(exception $e){
 			return Response::json(array('status' => 400, 	
