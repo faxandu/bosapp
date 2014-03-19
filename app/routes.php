@@ -96,7 +96,6 @@ Route::group(array('prefix' => 'group_study/'), function(){
 
 	Route::match(array('POST', 'GET'), '/group_study/add_student', 'EntryController@add_student');
 
-<<<<<<< HEAD
 	Route::match(array('POST', 'GET'), '/group_study/student_exists', 'EntryController@student_exists');
 
 	Route::match(array('POST', 'GET'), '/group_study/get_report', 'ReportController@get_report');
@@ -106,5 +105,4 @@ Route::group(array('prefix' => 'group_study/'), function(){
 	Route::match(array('POST', 'GET'), '/group_study/modify_student', 'EntryController@modify_student');
 	
 });
-=======
->>>>>>> upstream/master
+
