@@ -1,8 +1,12 @@
 <?php
 
-class User extends Eloquent {
+use Illuminate\Auth\UserInterface;
+use Illuminate\Auth\Reminders\RemindableInterface;
 
-	protected $table = 'auth_user';
+
+class User extends Eloquent  implements UserInterface, RemindableInterface {
+
+	protected $table = 'user';
 	public $timestamps = false;
 	protected $fillable = array('name');
 	protected $guarded = array('id');
@@ -30,5 +34,37 @@ class User extends Eloquent {
 
     public function entries(){
         return $this->belongsToMany('Entry', 'staffing_app_user_entries', 'user_id', 'entry_id');
+    }
+
+
+
+        /**
+     * Get the unique identifier for the user.
+     *
+     * @return mixed
+     */
+    public function getAuthIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Get the password for the user.
+     *
+     * @return string
+     */
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Get the e-mail address where password reminders are sent.
+     *
+     * @return string
+     */
+    public function getReminderEmail()
+    {
+        return $this->email;
     }
 }

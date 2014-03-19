@@ -61,24 +61,4 @@ class UserController extends BaseController {
 			'message' => 'Failed to get user.', 'error' => $e->getMessage()), 400);
 		}		
 	}
-
-
-	public function set(){
-		
-
-		if(Input::has('name')){
-			$input = Input::all();
-			//update or create
-			//************************ update currently wipes old data 
-			$user = (Input::has('id')) ? User::find(Input::get('id'))->update($input) : User::create($input);
-
-			return Response::json(array("response" => "created"));
-		}
-		app::abort(400);
-	}
-
-
-
-
-
 }
