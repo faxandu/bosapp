@@ -15,7 +15,7 @@ class SkillUserTable extends Migration {
 			$table->unsignedInteger('user_id');
 			$table->unsignedInteger('skill_id');
 
-			$table->foreign('user_id')->references('id')->on('auth_user');
+			$table->foreign('user_id')->references('id')->on('user');
 			$table->foreign('skill_id')->references('id')->on('staffing_app_skill');
 		});
 	}
