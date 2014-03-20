@@ -6,6 +6,7 @@
 |--------------------------------------------------------------------------
 */
 
+
 Route::group(array('prefix' => 'global/'), function(){
 	Route::match(array('POST', 'GET'), 'createUser', 'UserController@create');
 	Route::match(array('POST', 'GET'), 'deleteUser', 'UserController@delete');
