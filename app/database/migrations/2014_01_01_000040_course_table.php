@@ -11,7 +11,7 @@ class CourseTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('staffing_app_course', function($table){
+		Schema::create('lotto_course', function($table){
 			$table->increments('id');
 			
 			$table->integer('creditHour')->unsigned();
@@ -22,12 +22,6 @@ class CourseTable extends Migration {
 			$table->string('name', 30);
 			$table->date('startDate');
 			$table->time('startTime');
-			
-			// $table->unsignedInteger('labAide')->nullable();
-			// $table->unsignedInteger('instructor')->nullable();
-
-			// $table->foreign('labAide')->references('id')->on('auth_user');
-			// $table->foreign('instructor')->references('id')->on('auth_user');
 		});
 	}
 
@@ -41,7 +35,7 @@ class CourseTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('staffing_app_course');
+		Schema::drop('lotto_course');
 	}
 
 }

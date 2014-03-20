@@ -11,12 +11,12 @@ class SkillUserTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('staffing_app_skill_user', function($table){
+		Schema::create('lotto_skill_user', function($table){
 			$table->unsignedInteger('user_id');
 			$table->unsignedInteger('skill_id');
 
-			$table->foreign('user_id')->references('id')->on('user');
-			$table->foreign('skill_id')->references('id')->on('staffing_app_skill');
+			$table->foreign('user_id')->references('id')->on('global_user');
+			$table->foreign('skill_id')->references('id')->on('lotto_skill');
 		});
 	}
 
@@ -27,7 +27,7 @@ class SkillUserTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('staffing_app_skill_user');
+		Schema::drop('lotto_skill_user');
 	}
 
 }

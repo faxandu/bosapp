@@ -28,7 +28,7 @@ class CreateStudentEntry extends Migration {
 	 */
 	public function down()
 	{
-		
+		Schema::drop('entry');
 	}
 
 }

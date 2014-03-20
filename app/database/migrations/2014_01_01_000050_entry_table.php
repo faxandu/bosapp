@@ -12,7 +12,7 @@ class EntryTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('staffing_app_entries', function($table) {
+		Schema::create('lotto_entries', function($table) {
 			$table->increments('id');
 			$table->date('startDate')->nullable();
 			$table->date('endDate')->nullable();
@@ -35,7 +35,7 @@ class EntryTable extends Migration {
 	public function down()
 	{
 		//
-		Schema::drop('staffing_app_entries');
+		Schema::drop('lotto_entries');
 	}
 
 }

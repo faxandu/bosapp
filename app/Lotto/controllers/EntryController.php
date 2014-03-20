@@ -1,4 +1,6 @@
-<?php
+ <?php 
+ namespace Lotto\controllers;
+ use BaseController, Lotto\models\Entry;
 
 class EntryController extends Controller {
 
