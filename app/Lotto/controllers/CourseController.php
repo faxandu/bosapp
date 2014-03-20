@@ -1,4 +1,9 @@
-<?php
+<?php 
+
+namespace Lotto\controllers;
+
+
+use BaseController, Input, Lotto\models\Course, Response;
 
 class CourseController extends BaseController {
 

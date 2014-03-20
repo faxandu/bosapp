@@ -12,12 +12,12 @@ class UserStaffTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('staffing_app_user_staff', function($table){
-			$table->unsignedInteger('user_id');
-			$table->unsignedInteger('staff_id');
-			$table->foreign('user_id')->references('id')->on('auth_user');
-			$table->foreign('staff_id')->references('id')->on('staffing_app_staffType');
-		});
+		// Schema::create('staffing_app_user_staff', function($table){
+		// 	$table->unsignedInteger('user_id');
+		// 	$table->unsignedInteger('staff_id');
+		// 	$table->foreign('user_id')->references('id')->on('user');
+		// 	$table->foreign('staff_id')->references('id')->on('staffing_app_staffType');
+		// });
 	}
 
 	/**
@@ -27,7 +27,7 @@ class UserStaffTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('staffing_app_user_staff');
+		// Schema::drop('staffing_app_user_staff');
 	}
 
 }

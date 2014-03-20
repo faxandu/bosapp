@@ -11,7 +11,7 @@ class SkillTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('staffing_app_skill', function($table){
+		Schema::create('lotto_skill', function($table){
 			$table->increments('id');
 			$table->string('name', 30)->unique();
 			});
@@ -24,7 +24,7 @@ class SkillTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('staffing_app_skill');
+		Schema::drop('lotto_skill');
 	}
 
 }

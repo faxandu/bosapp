@@ -12,11 +12,11 @@ class UserEntryTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('staffing_app_user_entries', function($table){
+		Schema::create('lotto_user_entries', function($table){
 			$table->unsignedInteger('user_id');
 			$table->unsignedInteger('entry_id');
-			$table->foreign('user_id')->references('id')->on('auth_user');
-			$table->foreign('entry_id')->references('id')->on('staffing_app_entries');
+			$table->foreign('user_id')->references('id')->on('global_user');
+			$table->foreign('entry_id')->references('id')->on('lotto_entries');
 		});
 	}
 
@@ -27,7 +27,7 @@ class UserEntryTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('staffing_app_user_entries');
+		Schema::drop('lotto_user_entries');
 	}
 
 }

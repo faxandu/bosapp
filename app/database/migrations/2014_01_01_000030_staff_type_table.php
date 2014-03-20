@@ -12,10 +12,10 @@ class StaffTypeTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('staffing_app_staffType', function($table){
-			$table->increments('id');
-			$table->string('type', 30)->unique();
-		});
+		// Schema::create('staffing_app_staffType', function($table){
+		// 	$table->increments('id');
+		// 	$table->string('type', 30)->unique();
+		// });
 	}
 
 	/**
@@ -25,7 +25,7 @@ class StaffTypeTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('staffing_app_staffType');
+		// Schema::drop('staffing_app_staffType');
 	}
 
 }

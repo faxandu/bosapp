@@ -2,6 +2,31 @@
 
 class UserController extends BaseController {
 
+	public function create(){
+		$input = Input::all();
+		
+		//$validatedInput = Course::validate(Input::all());
+
+		//$messages = $validatedInput->messages();
+
+		// if any error messages, don't create and return errors.
+		//if(!$messages->all()){
+			try{
+
+				$user = User::create($input);
+
+				return Response::json(array('status' => 201, 'message' => 'User created'), 201);
+
+			}catch(Exception $e){
+				return Response::json(array('status' => 400, 
+					'message' => 'Failed to create user', 'error' => $e), 400);
+			}
+		//}
+		return Response::json(array('status' => 400,
+		 'message' => 'Failed to create User', 'error' => $messages->all() ), 400);
+	}
+
+
 	public function delete(){
 		
 		try{
@@ -61,24 +86,4 @@ class UserController extends BaseController {
 			'message' => 'Failed to get user.', 'error' => $e->getMessage()), 400);
 		}		
 	}
-
-
-	public function set(){
-		
-
-		if(Input::has('name')){
-			$input = Input::all();
-			//update or create
-			//************************ update currently wipes old data 
-			$user = (Input::has('id')) ? User::find(Input::get('id'))->update($input) : User::create($input);
-
-			return Response::json(array("response" => "created"));
-		}
-		app::abort(400);
-	}
-
-
-
-
-
 }
