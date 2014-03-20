@@ -12,11 +12,11 @@ class CourseLabAideTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('staffing_app_course_labAide', function($table){
+		Schema::create('lotto_course_labAide', function($table){
 			$table->unsignedInteger('user_id');
 			$table->unsignedInteger('course_id');
-			$table->foreign('user_id')->references('id')->on('user');
-			$table->foreign('course_id')->references('id')->on('staffing_app_course');
+			$table->foreign('user_id')->references('id')->on('global_user');
+			$table->foreign('course_id')->references('id')->on('lotto_course');
 		});
 	}
 
@@ -27,7 +27,7 @@ class CourseLabAideTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('staffing_app_course_labAide');
+		Schema::drop('lotto_course_labAide');
 	}
 
 }

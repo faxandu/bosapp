@@ -1,9 +1,13 @@
-<?php
+<?php 
+
+namespace Lotto\models;
+use BaseController, Validator;
 
 
-class Course extends Eloquent {
 
-	protected $table = 'staffing_app_course';
+class Course extends BaseController {
+
+	protected $table = 'lotto_course';
 	public $timestamps = false;
 	protected $fillable = array('name', 'crn', 'creditHour', 'daysInWeek', 'startDate',
 	 'endDate', 'endTime', 'startTime', 'labAide', 'instructor');
@@ -24,7 +28,7 @@ class Course extends Eloquent {
 	);
 
     private static $updateRules = array(
-        'id' => 'required|numeric|exists:staffing_app_course,id',
+        'id' => 'required|numeric|exists:lotto_course,id',
         'creditHour' => 'numeric',
         'crn' => 'alpha_num',
         'daysInWeek' => 'alpha',
@@ -33,7 +37,7 @@ class Course extends Eloquent {
         //'name' => 'required|alpha_num',
         'startDate' => 'date',
         'startTime' => 'time',
-        'labAide' => 'numeric|exists:auth_user,id'
+        'labAide' => 'numeric|exists:global_user,id'
     );
 
 	public static function validate($data){
@@ -59,14 +63,14 @@ class Course extends Eloquent {
             
         });
 
-        course::deleting(function($course){
+        Course::deleting(function($course){
            
         });
 
     }
 
 	public function labAides(){
-        return $this->belongsToMany('User', 'staffing_app_course_labAide');
+        return $this->belongsToMany('User', 'lotto_course_labAide');
     }
 
     protected static function checkSkills($user, $course){

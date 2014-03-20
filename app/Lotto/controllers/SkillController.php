@@ -1,4 +1,6 @@
-<?php
+<?php 
+namespace Lotto\controllers;
+use BaseController, Lotto\models\Skill;
 
 class SkillController extends BaseController {
 

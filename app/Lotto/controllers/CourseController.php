@@ -1,131 +1,136 @@
- <?php //namespace Lotto\controllers;
-// 	use BaseController, Input, Course, Response;
-// class CourseController extends BaseController {
+<?php 
 
-// 	public function create(){
-// 		$input = Input::all();
+namespace Lotto\controllers;
+
+
+use BaseController, Input, Lotto\models\Course, Response;
+
+class CourseController extends BaseController {
+
+	public function create(){
+		$input = Input::all();
 		
-// 		$validatedInput = Course::validate(Input::all());
+		$validatedInput = Course::validate(Input::all());
 
-// 		$messages = $validatedInput->messages();
+		$messages = $validatedInput->messages();
 
-// 		// if any error messages, don't create and return errors.
-// 		if(!$messages->all()){
-// 			try{
+		// if any error messages, don't create and return errors.
+		if(!$messages->all()){
+			try{
 
-// 				$course = Course::create($input);
+				$course = Course::create($input);
 
-// 				return Response::json(array('status' => 201, 'message' => 'Course created'), 201);
+				return Response::json(array('status' => 201, 'message' => 'Course created'), 201);
 
-// 			}catch(Exception $e){
-// 				return Response::json(array('status' => 400, 
-// 					'message' => 'Failed to create course', 'error' => $e), 400);
-// 			}
-// 		}
-// 		return Response::json(array('status' => 400,
-// 		 'message' => 'Failed to create course', 'error' => $messages->all() ), 400);
-// 	}
+			}catch(Exception $e){
+				return Response::json(array('status' => 400, 
+					'message' => 'Failed to create course', 'error' => $e), 400);
+			}
+		}
+		return Response::json(array('status' => 400,
+		 'message' => 'Failed to create course', 'error' => $messages->all() ), 400);
+	}
 
-// 	public function delete(){
+	public function delete(){
 		
-// 		try{
-// 			$id = Input::get('id');
+		try{
+			$id = Input::get('id');
 
-// 			$course = Course::findOrFail($id);
-// 			$course->labAides()->detach();
-// 			$course->forceDelete();
+			$course = Course::findOrFail($id);
+			$course->labAides()->detach();
+			$course->forceDelete();
 
-// 		}catch(exception $e){
-// 			return Response::json(array('status' => 400, 	
-// 			'message' => 'Failed to delete course.', 'error' => $e->getMessage()), 400);
-// 		}
-// 		return Response::json(array('status' => 200, 'message' => 'Course Deleted'), 200);
-// 	}
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 	
+			'message' => 'Failed to delete course.', 'error' => $e->getMessage()), 400);
+		}
+		return Response::json(array('status' => 200, 'message' => 'Course Deleted'), 200);
+	}
 
-// 	public function get(){
+	public function get(){
 		
-// 		try{	
+		try{	
 
-// 			if(!Input::has('id'))
-// 				return Response::json(Course::all());
+			if(!Input::has('id'))
+				return Response::json(Course::all());
 
-// 			$id = Input::get('id');
+			$id = Input::get('id');
 
-// 			$course = Course::findOrFail($id);
-// 			$course->labAides->toArray();
+			$course = Course::findOrFail($id);
+			$course->labAides->toArray();
 			
-// 			return Response::json($course->toArray());
+			return Response::json($course->toArray());
 
-// 		}catch(exception $e){
-// 			return Response::json(array('status' => 400, 	
-// 			'message' => 'Failed to get course.', 'error' => $e->getMessage()), 400);
-// 		}		
-// 	}
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 	
+			'message' => 'Failed to get course.', 'error' => $e->getMessage()), 400);
+		}		
+	}
 
-// 	public function removeLabAide(){
+	public function removeLabAide(){
 		
-// 		try{
-// 			$userId = Input::get('user');
-// 			$courseId = Input::get('course');
+		try{
+			$userId = Input::get('user');
+			$courseId = Input::get('course');
 
-// 			Course::findorFail($courseId)->labAides()->detatch($userId);
+			Course::findorFail($courseId)->labAides()->detatch($userId);
 
-// 		}catch(exception $e){
-// 			return Response::json(array('status' => 400, 	
-// 			'message' => 'Failed to remove labAide.', 'error' => $e->getMessage()), 400);
-// 		}
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 	
+			'message' => 'Failed to remove labAide.', 'error' => $e->getMessage()), 400);
+		}
 
-// 		return Response::json(array('status' => 200, 'message' => 'labAide removed'), 200);
-// 	}
+		return Response::json(array('status' => 200, 'message' => 'labAide removed'), 200);
+	}
 
-// 	public function setLabAide(){
-// 		$courseId = Input::get('course');
-// 		$userId = Input::get('user');
+	public function setLabAide(){
+		$courseId = Input::get('course');
+		$userId = Input::get('user');
 		
-// 		try{
+		try{
 
-// 			$user = User::findorFail($userId);
-// 			$course = Course::findorFail($courseId);
+			$user = User::findorFail($userId);
+			$course = Course::findorFail($courseId);
 			
-// 			if(Course::checkUser($user, $course)){
-// 				$course->labAides()->attach($user);
-// 			}
+			if(Course::checkUser($user, $course)){
+				$course->labAides()->attach($user);
+			}
 
-// 		}catch(exception $e){
-// 			return Response::json(array('status' => 400, 
-// 				'message' => 'Failed to assign labAide', 'error' => $e->getMessage()), 400);
-// 		}
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 
+				'message' => 'Failed to assign labAide', 'error' => $e->getMessage()), 400);
+		}
 		
-// 		return Response::json(array('status' => 201, 'message' => 'LabAide assigned'), 201);
-// 	 }
+		return Response::json(array('status' => 201, 'message' => 'LabAide assigned'), 201);
+	 }
 
-// 	 	public function update(){
+	 	public function update(){
 
-// 		$validatedInput = Course::updateValidate(Input::all());
+		$validatedInput = Course::updateValidate(Input::all());
 
-// 		$messages = $validatedInput->messages();
+		$messages = $validatedInput->messages();
 
-// 		// if any error messages, don't update and return errors.
-// 		if(!$messages->all()){
+		// if any error messages, don't update and return errors.
+		if(!$messages->all()){
 
-// 			try{	
+			try{	
 				
-// 				$id = Input::get('id');
+				$id = Input::get('id');
 				
-// 				$course = Course::find($id);
-// 				$course->update(Input::all());
+				$course = Course::find($id);
+				$course->update(Input::all());
 				
 
-// 			}catch(exception $e){
-// 				return Response::json(array('status' => 400, 	
-// 				'message' => 'Failed to update course.', 'error' => $e->getMessage()), 400);
-// 			}	
-// 		} else{
-// 			return Response::json(array('status' => 400,
-// 		 'message' => 'Failed to update course', 'error' => $messages->all() ), 400);
-// 		}
+			}catch(exception $e){
+				return Response::json(array('status' => 400, 	
+				'message' => 'Failed to update course.', 'error' => $e->getMessage()), 400);
+			}	
+		} else{
+			return Response::json(array('status' => 400,
+		 'message' => 'Failed to update course', 'error' => $messages->all() ), 400);
+		}
 
-// 		return Response::json(array('status' => 200, 'message' => 'Course Updated'), 200);
+		return Response::json(array('status' => 200, 'message' => 'Course Updated'), 200);
 
-// 	}
-// }
+	}
+}
