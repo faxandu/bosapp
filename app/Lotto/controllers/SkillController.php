@@ -1,10 +1,10 @@
 <?php 
 namespace Lotto\controllers;
-use BaseController, Lotto\models\Skill;
+use BaseController, Lotto\models\Skill, Response, Input;
 
 class SkillController extends BaseController {
 
-	public function delete(){
+	public function postDelete(){
 		
 		try{
 			$id = Input::get('id');
@@ -18,12 +18,13 @@ class SkillController extends BaseController {
 		return Response::json(array('status' => 200, 'message' => 'Skill Deleted'), 200);
 	}
 
-	public function get(){
+	public function getGet(){
+		return Response::json(Skill::all());	
+	}
+
+	public function postGet(){
 		
 		try{	
-
-			if(!Input::has('id'))
-				return Response::json(Skill::all());
 
 			$id = Input::get('id');
 
@@ -37,8 +38,7 @@ class SkillController extends BaseController {
 			'message' => 'Failed to get skill.', 'error' => $e->getMessage()), 400);
 		}		
 	}
-
-		public function getUserSkill(){
+		public function postGetUserSkill(){
 
 		try{	
 			$id = Input::get('id');
@@ -56,7 +56,7 @@ class SkillController extends BaseController {
 		}
 	}
 
-	public function removeUserSkill(){
+	public function postRemoveUserSkill(){
 		
 		try{
 			$userId = Input::get('user');
@@ -72,7 +72,7 @@ class SkillController extends BaseController {
 		return Response::json(array('status' => 200, 'message' => 'userSkill removed'), 200);
 	}
 
-	public function setUserSkill(){
+	public function postSetUserSkill(){
 		$userId = Input::get('user');
 		$skill = Input::get('skill');
 		try{
@@ -86,4 +86,10 @@ class SkillController extends BaseController {
 	}
 
 
+	public function missingMethod($parameters = array())
+	{
+	    
+		return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
+	}
 }
+

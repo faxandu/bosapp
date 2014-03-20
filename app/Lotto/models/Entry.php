@@ -13,3 +13,4 @@ class Entry extends BaseController {
     protected $hidden = array('pivot','created_at', 'updated_at');
 
 }
+

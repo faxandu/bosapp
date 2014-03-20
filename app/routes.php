@@ -16,18 +16,22 @@ Route::group(array('prefix' => 'global/'), function(){
 
 Route::group(array('prefix' => 'lotto/'), function(){
 
-	Route::match(array('POST', 'GET'), 'createCourse', 'Lotto\controllers\Lotto\controllers\CourseController@create'); 
-	Route::match(array('POST', 'GET'), 'createCourse', 'Lotto\controllers\CourseController@create'); 
-	Route::match(array('POST', 'GET'), 'deleteCourse', 'Lotto\controllers\CourseController@delete'); // (id)
-	Route::match(array('POST', 'GET'), 'getCourse', 'Lotto\controllers\CourseController@get'); // (id) or () Also grabs the labaides
-	Route::match(array('POST', 'GET'), 'removeLabAide', 'Lotto\controllers\CourseController@removeLabAide'); // (user, course)
-	Route::match(array('POST', 'GET'), 'setLabAide', 'Lotto\controllers\CourseController@setLabAide'); // (user, course)
-	Route::match(array('POST', 'GET'), 'updateCourse', 'Lotto\controllers\CourseController@update');
+	Route::controller('course', 'Lotto\controllers\CourseController');
+	// Route::controller('skill', 'Lotto\controllers\SkillController');
+	// Route::controller('course', 'Lotto\controllers\CourseController');
+	// Route::controller('course', 'Lotto\controllers\CourseController'); 
+	// Route::match(array('POST', 'GET'), 'createCourse', 'Lotto\controllers\CourseController@create'); 
+	// Route::match(array('POST', 'GET'), 'createCourse', 'Lotto\controllers\CourseController@create'); 
+	// Route::match(array('POST', 'GET'), 'deleteCourse', 'Lotto\controllers\CourseController@delete'); // (id)
+	// Route::match(array('POST', 'GET'), 'getCourse', 'Lotto\controllers\CourseController@get'); // (id) or () Also grabs the labaides
+	// Route::match(array('POST', 'GET'), 'removeLabAide', 'Lotto\controllers\CourseController@removeLabAide'); // (user, course)
+	// Route::match(array('POST', 'GET'), 'setLabAide', 'Lotto\controllers\CourseController@setLabAide'); // (user, course)
+	// Route::match(array('POST', 'GET'), 'updateCourse', 'Lotto\controllers\CourseController@update');
 
-	Route::match(array('POST', 'GET'), 'getSkill', 'Lotto\controllers\SkillController@get');
-	Route::match(array('POST', 'GET'), 'getUserSkill', 'Lotto\controllers\SkillController@getUserSkill');
-	Route::match(array('POST', 'GET'), 'removeUserSkill', 'Lotto\controllers\SkillController@deleteUserSkill');
-	Route::match(array('POST', 'GET'), 'setUserSkill', 'Lotto\controllers\SkillController@setUserSkill');
+	// Route::match(array('POST', 'GET'), 'getSkill', 'Lotto\controllers\SkillController@get');
+	// Route::match(array('POST', 'GET'), 'getUserSkill', 'Lotto\controllers\SkillController@getUserSkill');
+	// Route::match(array('POST', 'GET'), 'removeUserSkill', 'Lotto\controllers\SkillController@deleteUserSkill');
+	// Route::match(array('POST', 'GET'), 'setUserSkill', 'Lotto\controllers\SkillController@setUserSkill');
 
 
 	// Route::match(array('POST', 'GET'), 'createStaffType', 'StaffTypeController@create');
