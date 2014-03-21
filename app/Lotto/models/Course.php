@@ -1,11 +1,11 @@
 <?php 
 
 namespace Lotto\models;
-use BaseController, Validator;
+use Eloquent, Validator;
 
 
 
-class Course extends BaseController {
+class Course extends Eloquent {
 
 	protected $table = 'lotto_course';
 	public $timestamps = false;
@@ -117,3 +117,4 @@ class Course extends BaseController {
 	}
 
 }
+
