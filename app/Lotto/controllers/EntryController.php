@@ -35,6 +35,7 @@ class EntryController extends Controller {
 			$id = Input::get('id');
 
 			$entry = Entry::findOrFail($id);
+			
 			$entry->forceDelete();
 
 		}catch(exception $e){
@@ -99,3 +100,4 @@ class EntryController extends Controller {
 	 }	
 
 }
+

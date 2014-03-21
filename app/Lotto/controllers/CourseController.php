@@ -7,7 +7,21 @@ use BaseController, Input, Lotto\models\Course, Response;
 
 class CourseController extends BaseController {
 
-	public function create(){
+	public function postCreate(){
+
+
+		$var = array();
+		$var[0];
+		$var['bob'];
+
+
+
+
+
+
+
+
+
 		$input = Input::all();
 		
 		$validatedInput = Course::validate(Input::all());
@@ -31,11 +45,12 @@ class CourseController extends BaseController {
 		 'message' => 'Failed to create course', 'error' => $messages->all() ), 400);
 	}
 
-	public function delete(){
+	public function postDelete(){
+		
+		$id = Input::get('id');
 		
 		try{
-			$id = Input::get('id');
-
+			
 			$course = Course::findOrFail($id);
 			$course->labAides()->detach();
 			$course->forceDelete();
@@ -47,13 +62,13 @@ class CourseController extends BaseController {
 		return Response::json(array('status' => 200, 'message' => 'Course Deleted'), 200);
 	}
 
-	public function get(){
+	public function getGet(){
+		return Response::json(Course::all());		
+	}
+
+	public function postGet(){
 		
 		try{	
-
-			if(!Input::has('id'))
-				return Response::json(Course::all());
-
 			$id = Input::get('id');
 
 			$course = Course::findOrFail($id);
@@ -67,7 +82,7 @@ class CourseController extends BaseController {
 		}		
 	}
 
-	public function removeLabAide(){
+	public function postRemoveLabAide(){
 		
 		try{
 			$userId = Input::get('user');
@@ -83,7 +98,7 @@ class CourseController extends BaseController {
 		return Response::json(array('status' => 200, 'message' => 'labAide removed'), 200);
 	}
 
-	public function setLabAide(){
+	public function postSetLabAide(){
 		$courseId = Input::get('course');
 		$userId = Input::get('user');
 		
@@ -104,7 +119,7 @@ class CourseController extends BaseController {
 		return Response::json(array('status' => 201, 'message' => 'LabAide assigned'), 201);
 	 }
 
-	 	public function update(){
+	 	public function postUpdate(){
 
 		$validatedInput = Course::updateValidate(Input::all());
 
@@ -132,5 +147,13 @@ class CourseController extends BaseController {
 
 		return Response::json(array('status' => 200, 'message' => 'Course Updated'), 200);
 
+	}
+
+
+
+	public function missingMethod($parameters = array())
+	{
+	    
+		return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
 	}
 }

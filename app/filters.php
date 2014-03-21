@@ -11,9 +11,17 @@
 |
 */
 
-App::before(function($request)
-{
-	//
+
+
+App::before(function($request){
+	// User::create(array(
+	// 	'username' => 'bob',
+	// 	'email' => 'asdd',
+	// 	'first_name' => 'fred',
+	// 	'last_name' => 'vvasd',
+	// 	'type' => 'labAide',
+	// 	'password' => '1234'
+	// 	));
 });
 
 
@@ -35,7 +43,23 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::guest('login');
+	$validatedInput = User::validateLogin(Input::all());
+	
+
+	$messages = $validatedInput->messages();
+
+	if(!$messages->all()){
+		
+		if (Auth::attempt(array('username' =>Input::get('username'), 'password'=>Input::get('password'))) ){
+			return Redirect::intended('dashboard');
+		}
+		else
+			App::abort(401);
+	}
+
+	return Response::json(array('status' => 401,
+		 'message' => 'Failed auth', 'error' => $messages->all() ), 401);
+	//if (Auth::guest()) return Redirect::guest('login');
 });
 
 

@@ -1,8 +1,8 @@
 <?php
 namespace Lotto\models;
-use BaseController;
+use Eloquent;
 
-class Skill extends BaseController {
+class Skill extends Eloquent {
 
 	protected $table = 'lotto_skill';
 	public $timestamps = false;
@@ -15,3 +15,4 @@ class Skill extends BaseController {
     }
 
 }
+

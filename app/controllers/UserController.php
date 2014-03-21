@@ -2,7 +2,7 @@
 
 class UserController extends BaseController {
 
-	public function create(){
+	public function postCreate(){
 		$input = Input::all();
 		
 		//$validatedInput = Course::validate(Input::all());
@@ -27,7 +27,7 @@ class UserController extends BaseController {
 	}
 
 
-	public function delete(){
+	public function postDelete(){
 		
 		try{
 			$id = Input::get('id');
@@ -72,18 +72,29 @@ class UserController extends BaseController {
 		}		
 	}
 
-	public function getEntry(){
-		
-		try{	
 
-			$id = Input::get('id');
-			$user =  User::findOrFail($id);
-			$userArr['entries'] = $user->entries->toarray();
-			return Response::json($userArr);
-
-		}catch(exception $e){
-			return Response::json(array('status' => 400, 	
-			'message' => 'Failed to get user.', 'error' => $e->getMessage()), 400);
-		}		
+	public function getLogin() {
+		if (Auth::attempt(array('username'=>Input::get('username'), 'password'=>Input::get('password')))) {
+		    return Redirect::to('users/dashboard')->with('message', 'You are now logged in!');
+		} else {
+		    return Redirect::to('/')
+		        ->with('message', 'Your username/password combination was incorrect')->with('alert', 'warning')
+		        ->withInput();
+		}
 	}
+
+	// public function getEntry(){
+		
+	// 	try{	
+
+	// 		$id = Input::get('id');
+	// 		$user =  User::findOrFail($id);
+	// 		$userArr['entries'] = $user->entries->toarray();
+	// 		return Response::json($userArr);
+
+	// 	}catch(exception $e){
+	// 		return Response::json(array('status' => 400, 	
+	// 		'message' => 'Failed to get user.', 'error' => $e->getMessage()), 400);
+	// 	}		
+	// }
 }

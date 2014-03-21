@@ -1,6 +1,6 @@
 <?php
 namespace Calendar\controllers;
-use BaseController, Input, Response, Calendar\models\Entries;
+use BaseController, Input, Response, Entry;
 
 class EntriesController extends BaseController {
 
@@ -9,16 +9,16 @@ class EntriesController extends BaseController {
 	}
 
 	public function getIndex() {
-		$events = Entries::all();
+		$events = Entry::all();
 		return Response::json($events->toArray(), 200);
 	}
 
 	public function postCreate() {
 
-		$entry = new Entries;
+		$entry = new Entry;
 		$entry->title = Input::get('title');
-		$entry->start = Input::get('start');
-		$entry->end = Input::get('end');
+		$entry->start_date = Input::get('start_date');
+		$entry->end_date = Input::get('end_date');
 		$entry->description = Input::get('description');
 
 		try {
@@ -31,9 +31,9 @@ class EntriesController extends BaseController {
 
 	public function postUpdate() {
 		$post = Input::all();
-		$entry = Entries::find($post['id']);
-		$entry->start = $post['start'];
-		$entry->end = $post['end'];
+		$entry = Entry::find($post['id']);
+		$entry->start_date = $post['start_date'];
+		$entry->end_date = $post['end_date'];
 
 		try {
 			$entry->save();
@@ -45,7 +45,7 @@ class EntriesController extends BaseController {
 
 	public function postDestroy() {
 		try {
-			Entries::delete(Input::get('id'));
+			Entry::delete(Input::get('id'));
 			return Response::json(array('status' => 200, 'message' => 'Entry Deleted'), 201);
 		} catch(exception $e) {
 			return Response::json(array('status' => 400, 'message' => 'Entry Deletion Failure', 'error' => $e), 400);
