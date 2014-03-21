@@ -5,7 +5,12 @@
 | Application Routes
 |--------------------------------------------------------------------------
 */
+View::name('layouts.layout', 'layout');
+$layout = View::of('layout');
 
+Route::get('/', function() use($layout) {
+	return $layout->nest('content', 'home');
+});
 
 Route::group(array('before' => 'auth'), function()
 {
@@ -37,5 +42,11 @@ Route::group(array('before' => 'auth'), function()
 
 });
 
+
 Route::resource('user', 'UserController',
                 array('only' => array('getLogin')));
+
+Route::group(array('prefix' => 'calendar/'), function() {
+
+	Route::controller('entries', 'Calendar\controllers\EntriesController');
+});

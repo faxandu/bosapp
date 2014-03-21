@@ -19,17 +19,7 @@ class Entry extends Eloquent {
 	public static function boot(){
         parent::boot();
 
-        Course::created(function($course){
-         
-        });
-
-        Course::creating(function($course){
-            
-        });
-
-        Course::deleting(function($course){
-           
-        });
+        
 
     }
 
