@@ -52,16 +52,7 @@ return array(
 			'prefix'   => '',
 		),
 
-		'mysql' => 'mysql' => array(
-			'driver'    => 'mysql',
-			'host'      => '127.0.0.1',
-			'database'  => 'laravel',
-			'username'  => 'root',
-			'password'  => 'Chicken11',
-			'charset'   => 'utf8',
-			'collation' => 'utf8_unicode_ci',
-			'prefix'    => '',
-		),
+		'mysql' => $_ENV['database'],
 
 		'pgsql' => array(
 			'driver'   => 'pgsql',
