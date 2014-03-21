@@ -8,6 +8,20 @@ use BaseController, Input, Lotto\models\Course, Response;
 class CourseController extends BaseController {
 
 	public function postCreate(){
+
+
+		$var = array();
+		$var[0];
+		$var['bob'];
+
+
+
+
+
+
+
+
+
 		$input = Input::all();
 		
 		$validatedInput = Course::validate(Input::all());
@@ -33,9 +47,10 @@ class CourseController extends BaseController {
 
 	public function postDelete(){
 		
+		$id = Input::get('id');
+		
 		try{
-			$id = Input::get('id');
-
+			
 			$course = Course::findOrFail($id);
 			$course->labAides()->detach();
 			$course->forceDelete();
