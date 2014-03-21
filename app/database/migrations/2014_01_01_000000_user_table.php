@@ -18,6 +18,8 @@ class UserTable extends Migration {
 			$table->string('first_name', 30);
 			$table->string('last_name', 30);
 			$table->string('password', 128);
+			$table->enum('department', array('bos', 'none'))->default('none');
+			$table->enum('admin', array('bos', 'none'))->default('none');
 			$table->enum('type', array('labAide','fullTime','partTime', 'adjunct', 'labTech', 'other'))->default('other');
 			$table->string('username', 30);
 			
@@ -29,6 +31,10 @@ class UserTable extends Migration {
 
 			
 		});
+		// Schema::table('global_user',  function($table){
+		// 			$table->enum('department', array('bos', 'none'))->default('none');
+		// 	$table->enum('admin', array('bos', 'none'))->default('none');
+		// 	});
 	}
 
 	/**
