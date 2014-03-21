@@ -5,7 +5,12 @@
 | Application Routes
 |--------------------------------------------------------------------------
 */
+View::name('layouts.layout', 'layout');
+$layout = View::of('layout');
 
+Route::get('/', function() use($layout) {
+	return $layout->nest('content', 'home');
+});
 
 Route::group(array('before' => 'auth'), function()
 {

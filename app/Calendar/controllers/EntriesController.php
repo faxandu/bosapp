@@ -1,14 +1,20 @@
 <?php
 namespace Calendar\controllers;
-use BaseController, Input, Response, Entry;
+use BaseController, Input, Response, Entry, View, Redirect;
 
 class EntriesController extends BaseController {
+
+	
 
 	public function __construct() {
 	   $this->beforeFilter('csrf', ['on' => 'post', 'delete']);
 	}
 
 	public function getIndex() {
+		$this->layout->content = View::make('calendar.home');
+	}
+
+	public function getEvents() {
 		$events = Entry::all();
 		return Response::json($events->toArray(), 200);
 	}
@@ -23,7 +29,7 @@ class EntriesController extends BaseController {
 
 		try {
 			$entry->save();
-			return Response::json(array('status' => 201, 'message' => 'Entry Saved Successfully'), 201);
+			return Redirect::to('calendar/entries');
 		} catch(exception $e) {
 			return Response::json(array('status' => 401, 'message' => 'Entry Save Failed', 'error' => $e), 400);
 		}
@@ -45,7 +51,7 @@ class EntriesController extends BaseController {
 
 	public function postDestroy() {
 		try {
-			Entry::delete(Input::get('id'));
+			Entry::destroy(Input::get('id'));
 			return Response::json(array('status' => 200, 'message' => 'Entry Deleted'), 201);
 		} catch(exception $e) {
 			return Response::json(array('status' => 400, 'message' => 'Entry Deletion Failure', 'error' => $e), 400);
