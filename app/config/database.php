@@ -54,10 +54,10 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => 'localhost',
-			'database'  => 'staffing_app',
-			'username'  => 'test',
-			'password'  => '',
+			'host'      => '127.0.0.1',
+			'database'  => 'laravel',
+			'username'  => 'root',
+			'password'  => 'Chicken11',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',

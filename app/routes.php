@@ -64,3 +64,8 @@ Route::group(array('prefix' => 'group_study/'), function(){
 	
 });
 
+Route::group(array('prefix' => 'calendar/'), function() {
+
+	Route::controller('entries', 'Calendar\controllers\EntriesController');
+});
+
