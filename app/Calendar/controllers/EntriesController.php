@@ -4,12 +4,6 @@ use BaseController, Input, Response, Entry, View, Redirect;
 
 class EntriesController extends BaseController {
 
-	
-
-	public function __construct() {
-	   $this->beforeFilter('csrf', ['on' => 'post', 'delete']);
-	}
-
 	public function getIndex() {
 		$this->layout->content = View::make('calendar.home');
 	}
