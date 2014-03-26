@@ -10,7 +10,7 @@ class EntryController extends BaseController{
 	 * @param  none
 	 * @return returns json response
 	 */
-	 public function student_exists(){
+	 public function postStudentExists(){
 	 	$student_num = substr(Input::get('student_num'), 2, 8);   //used to grab only the student number from the id card.
 	 	$class = Input::get('class');
 	 	$date = date('Y-m-d');
@@ -32,9 +32,8 @@ class EntryController extends BaseController{
 	 * @param  none
 	 * @return returns json response if user is created or not
 	 */
-	 public function add_student($student_num){
+	 public function postAddStudent($student_num, $class){
 	 	$input = Input::all();
-	 	//$class = Input::get('class');
 	 	$date = date('Y-m-d');
 	 	$student_arr = array('first_name' => $input['first_name'], 'last_name' => $input['last_name'], 
 	 					'student_num' => $student_num);
@@ -51,7 +50,7 @@ class EntryController extends BaseController{
 	 * @param (int)$student_id: pk for student db, (string)$class, (date) $date: current date
 	 * @return json response to add_student that returns the entry created or not created.
 	 */
-	public function start_entry($student, $class, $date){
+	public function postStartEntry($student, $class, $date){
 		$entry_arr = array(
 				'student_id' => $student['id'],
 				'class' => $class,
@@ -62,16 +61,16 @@ class EntryController extends BaseController{
 			return Response::json(array('error' => 'entry_not_created'));
 		else
 			return Response::json(array('success' => 'created_in_time'));
-		}
+	}
 
-	public function end_entry($entry_id, $date){
+	public function postEndEntry($entry_id, $date){
 		if(empty($entry_id))
 			return Response::json(array('error' => 'entry_not_found'));
 		else{
 			Entry::where('id', $entry_id) -> update(array('end_time' => date('H:m:s')));  
 			return Response::json(array('success' => 'created_out_time'));
 			}
-		}
+	}
 
 	/**
 	 * delete_entry
@@ -79,7 +78,7 @@ class EntryController extends BaseController{
 	 * @param (int) ($id) PK for entry.
 	 * @return (PK) (id) returns json response for error or success
 	 */
-	public function delete_entry($id){
+	public function postDeleteEntry($id){
 		$entry = Entry::find($id);
 		if(empty($entry)) 
 			return Response::json(array('error' => 'entry_not_found'));
@@ -95,7 +94,7 @@ class EntryController extends BaseController{
 	 * @param (int) ($id) PK for entry.
 	 * @return (PK) (id) returns json response for error or success
 	 */
-	public function update_entry($id){
+	public function postUpdateEntry($id){
 		$input = Input::all();
 		$entry = Entry::find($id);
 		if(empty($entry))
@@ -103,5 +102,10 @@ class EntryController extends BaseController{
 		else{
 
 		}
+	}
+
+	public function missingMethod($parameters = array())
+	{
+		return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
 	}
 }

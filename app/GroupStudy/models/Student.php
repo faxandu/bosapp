@@ -20,12 +20,6 @@ class Student extends Eloquent{
 	 */
 
 	public function entry(){
-		return $this -> belongsTo('Group_Study_Entry');
+		return $this -> belongsTo('Entry', 'group_study_student_entry');
 	}
-
-	public function getAuthIdentifier()
-	{
-		return $this->getKey();
-	}
-
 }
