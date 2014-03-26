@@ -46,4 +46,10 @@ class ReportController extends BaseController
 		//$report = DB::table('entry') -> where('student_id', $student_id) -> get();
 		return $report;
 	}
+
+	public function missingMethod($parameters = array())
+	{
+	    
+		return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
+	}
 }
