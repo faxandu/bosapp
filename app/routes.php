@@ -12,11 +12,15 @@ Route::get('/', function() use($layout) {
 	return $layout->nest('content', 'home');
 });
 
+
+
+
+
 Route::group(array('before' => 'auth'), function()
 {
 
 	Route::group(array('prefix' => 'global/'), function(){
-		Route::controller('course', 'UserController');
+		Route::controller('user', 'UserController');
 	});
 
 	Route::group(array('prefix' => 'lotto/'), function(){
@@ -50,3 +54,4 @@ Route::group(array('prefix' => 'calendar/'), function() {
 
 	Route::controller('entries', 'Calendar\controllers\EntriesController');
 });
+
