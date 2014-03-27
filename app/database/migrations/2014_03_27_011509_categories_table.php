@@ -27,7 +27,7 @@ class CategoriesTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('time_categories_table');
 	}
 
 }
