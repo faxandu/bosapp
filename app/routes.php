@@ -48,3 +48,8 @@ Route::group(array('prefix' => 'calendar/'), function() {
 	Route::controller('entries', 'Calendar\controllers\EntriesController');
 });
 
+Route::match(array('GET', 'POST'), '/bob', 'GroupStudy\controllers\EntryController@bob');
+Route::match(array('GET', 'POST'), '/bob2', 'GroupStudy\controllers\EntryController@bob2');
+Route::match(array('GET', 'POST'), '/checkPunchedIn', 'GroupStudy\controllers\EntryController@checkPunchedIn');
+Route::match(array('GET', 'POST'), '/StartEntry', 'GroupStudy\controllers\EntryController@StartEntry');
+

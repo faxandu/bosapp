@@ -22,10 +22,10 @@ class GlobalEntryTable extends Migration {
 
 
 			$table->string('title', 30)->nullable();
-			$table->text('description')->nullable();
-			$table->boolean('clocked_in')->nullable();
+			//$table->text('description')->nullable();
+			//$table->boolean('clocked_in')->nullable();
 			
-			$table->timestamps();			
+			//$table->timestamps();			
 		});
 	}
 
