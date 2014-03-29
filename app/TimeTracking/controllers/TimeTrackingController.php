@@ -12,19 +12,26 @@ use BaseController, Input, User,  Entry ,Response;
 class TimeTrackingController extends  BaseController{
 
 
-    public function postUpdateTime(){
+    public function postCreateTime(){
 
-        $userInfo = Input::get('all');
-        $user = User::where('student_num', $userInfo['username'])->pluck('id');
+        $userEntry = Input::get('username');
+        $timeEntry = new Entry;
+        $timeEntry->startTime = Input::get('start_time');
+        $timeEntry->startDate = Input::get('start_date');
+        $timeEntry->endDate = Input::get('end_date');
+        $timeEntry->endTime   = Input::get('end_time');
+        $timeEntry->description = Input::get('description');
 
-        if($this->validateTime($userInfo['time'])){
+        if($this->validateTime($timeEntry->startTime) && $this->validateTime($timeEntry->end_time)){
 
 
         }
 
     }
 
-    public function postDeleteTime(){
+    public function postUpdateTime(){
+
+
 
     }
 
@@ -34,7 +41,7 @@ class TimeTrackingController extends  BaseController{
      * @param $time
      * @return bool
      */
-    public function  validateTime($time){
+    private function  validateTime($time){
 
         $timeExplode = explode(':',$time);
         $hours = $timeExplode[0];
@@ -42,7 +49,7 @@ class TimeTrackingController extends  BaseController{
         $seconds = $timeExplode[2];
 
         if($hours < 24 && $minutes < 60 &&$seconds < 60)
-            return (($hours > 0 &&  $minutes > 0 && $seconds > 0));
+            return (($hours > 0 &&  $minutes >= 0 && $seconds >= 0));
         else
             return false;
 
