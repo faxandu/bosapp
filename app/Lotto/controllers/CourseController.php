@@ -5,6 +5,7 @@ use BaseController, Input, Lotto\models\Course, Response;
 
 class CourseController extends BaseController {
 
+
 	public function postCreate(){
 
 		$input = Input::all();

@@ -73,13 +73,17 @@ class UserController extends BaseController {
 	}
 
 
-	public function getLogin() {
-		if (Auth::attempt(array('username'=>Input::get('username'), 'password'=>Input::get('password')))) {
-		    return Redirect::to('users/dashboard')->with('message', 'You are now logged in!');
-		} else {
-		    return Redirect::to('/')
-		        ->with('message', 'Your username/password combination was incorrect')->with('alert', 'warning')
-		        ->withInput();
+	public function postLogin() {
+
+	$user = array(
+			'username' => Input::get('username'),
+			'password' => Input::get('password')
+		);
+
+		if(Auth::attempt($user)){
+			return Redirect::to('/');
+		}else{
+			return "Failed";
 		}
 	}
 

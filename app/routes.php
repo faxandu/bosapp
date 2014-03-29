@@ -16,6 +16,9 @@ Route::get('/', function() use($layout) {
 
 
 
+
+
+
 Route::group(array('before' => 'auth'), function()
 {
 
@@ -39,9 +42,9 @@ Route::group(array('before' => 'auth'), function()
 
 });
 
-
-Route::resource('user', 'UserController',
-                array('only' => array('getLogin')));
+Route::match(array('POST', 'GET'), 'login', 'UserController@postLogin');
+// Route::resource('user', 'UserController',
+//                 array('only' => array('Login')));
 
 Route::group(array('prefix' => 'calendar/'), function() {
 

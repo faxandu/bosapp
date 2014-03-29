@@ -52,7 +52,7 @@
 		        </li>
 		      </ul>
 		      	<?php if(!Auth::check()) { ?>
-			      <?php echo Form::open(array('url'=>'users/login', 'class'=>'navbar-form pull-right')); ?>
+			      <?php echo Form::open(array('url'=>'login', 'class'=>'navbar-form pull-right')); ?>
 			        <div class="form-group">
 			          <input type="text" name="username" class="span2" placeholder="Username">
 			          <input type="password" name="password" class="span2" placeholder="Password">
@@ -71,7 +71,7 @@
 			   	  			<li><a href="<?php echo URL::to('users/logout'); ?>">Log Out</a></li>
 			   	  		</ul>
 			   	  	</li>
-			   	  	<?php if (Auth::user()->hasRole('admin')) { ?>
+			   	  	<?php if (false) {   /////////////////// need to look into this - getting an error for now   //// Auth::user()->hasRole('admin') ?>
 						<li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="<?php echo URL::to('admin/useradmin'); ?>">User Management</a></li>
