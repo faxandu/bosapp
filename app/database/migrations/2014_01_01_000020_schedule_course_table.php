@@ -1,8 +1,10 @@
 <?php
 
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CourseTable extends Migration {
+class ScheduleCourseTable extends Migration {
+
 
 	/**
 	 * Run the migrations.
@@ -11,7 +13,7 @@ class CourseTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('lotto_course', function($table){
+		Schema::create('schedule_course', function($table){
 			$table->increments('id');
 			
 			$table->integer('creditHour')->unsigned();
@@ -25,9 +27,6 @@ class CourseTable extends Migration {
 		});
 	}
 
-
-	
-
 	/**
 	 * Reverse the migrations.
 	 *
@@ -35,7 +34,7 @@ class CourseTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('lotto_course');
+		Schema::drop('schedule_course');
 	}
 
 }

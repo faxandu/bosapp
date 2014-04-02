@@ -7,7 +7,7 @@ use Eloquent, Validator;
 
 class Course extends Eloquent {
 
-	protected $table = 'lotto_course';
+	protected $table = 'schedule_course';
 	public $timestamps = false;
 	protected $fillable = array('name', 'crn', 'creditHour', 'daysInWeek', 'startDate',
 	 'endDate', 'endTime', 'startTime', 'labAide', 'instructor');
