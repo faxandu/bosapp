@@ -14,7 +14,7 @@ class ScheduleSkillTable extends Migration {
 		Schema::create('schedule_skill', function($table){
 			$table->increments('id');
 
-			$table->string('name', 30)->unique();
+			$table->string('name', 100)->unique();
 
 		});
 	}

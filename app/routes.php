@@ -9,7 +9,7 @@
 
 Route::match(array('POST', 'GET'), 'login', 'UserController@postLogin');
 Route::match(array('POST', 'GET'), 'logout', 'UserController@postLogout');
-
+Route::match(array('POST', 'GET'), 'asd', 'Lotto\controllers\CourseController@getImport');
 
 View::name('layouts.layout', 'layout');
 $layout = View::of('layout');

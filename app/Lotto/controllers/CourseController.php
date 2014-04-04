@@ -29,6 +29,40 @@ class CourseController extends BaseController {
 		 'message' => 'Failed to create course', 'error' => $messages->all() ), 400);
 	}
 
+	public function getImport(){
+		
+		$file = file_get_contents($_ENV['courseLink']);
+
+		$data = json_decode($file, true);
+	
+		foreach($data as  $value){
+			Course::create(
+					array(
+
+						'end_time' => $value['END_TIME'],
+						'building' => $value['BUILDING'],
+						'term_code' => $value['TERM_CODE'],
+						'crn' => $value['CRN'],
+						'days_of_week' => $value['DAYS'],
+						'instructor' => $value['INSTRUCTOR'],
+						'start_time' => $value['BEGIN_TIME'],
+						'start_date' => $value['START_DATE'],
+						'section' => $value['SECTION'],
+						'course_number' => $value['COURSE_NUMBER'],
+						'room_number' => $value['ROOM_NUMBER'],
+						'subject_code' => $value['SUBJECT_CODE'],
+						'course_title' => $value['COURSE_TITLE'],
+						'part_of_term' => $value['PART_OF_TERM'],
+						'end_date' => strtotime($value['END_DATE'])
+						)
+				);
+		}
+
+		return Course::all();
+
+		exit;
+	}
+
 	public function postDelete(){
 		
 		$id = Input::get('id');
