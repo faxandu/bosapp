@@ -14,9 +14,7 @@ class CategoriesTable extends Migration {
 	{
         Schema::create('time_categories_table', function($table){
             $table->increments('id');
-            $table->enum('choices',array('LAB_AIDE','OTHER','FACILITATOR','MEETING',
-                'GRANT' ,'GROUP_STUDY', 'COURSE_LOTTO', 'PROJECT_MANAGEMENT','INVENTORY_MANAGEMENT',
-                'TIME_KEEPING' ) );
+            $table->string('category',30);
         });
 	}
 

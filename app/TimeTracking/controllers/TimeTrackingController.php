@@ -15,6 +15,7 @@ class TimeTrackingController extends  BaseController{
     public function postCreateTime(){
 
         $userEntry = Input::get('username');
+
         $timeEntry = new Entry;
         $timeEntry->startTime = Input::get('start_time');
         $timeEntry->startDate = Input::get('start_date');
@@ -25,6 +26,7 @@ class TimeTrackingController extends  BaseController{
         if($this->validateTime($timeEntry->startTime) && $this->validateTime($timeEntry->end_time)){
 
 
+
         }
 
     }
@@ -33,13 +35,15 @@ class TimeTrackingController extends  BaseController{
 
 
 
+
+
     }
 
     /**
      * This is a simple time validation to make sure the time is
      * okay before storing it in the database
-     * @param $time
-     * @return bool
+     * @param $time that's being passed in to validate
+     * @return bool true if the time is valid.
      */
     private function  validateTime($time){
 
@@ -48,10 +52,9 @@ class TimeTrackingController extends  BaseController{
         $minutes = $timeExplode[1];
         $seconds = $timeExplode[2];
 
-        if($hours < 24 && $minutes < 60 &&$seconds < 60)
+        if($hours <= 12 && $minutes < 60 &&$seconds < 60)
             return (($hours > 0 &&  $minutes >= 0 && $seconds >= 0));
         else
             return false;
-
     }
 }
