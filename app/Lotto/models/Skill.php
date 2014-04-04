@@ -4,7 +4,7 @@ use Eloquent;
 
 class Skill extends Eloquent {
 
-	protected $table = 'lotto_skill';
+	protected $table = 'schedule_skill';
 	public $timestamps = false;
 	protected $fillable = array('name');
 	protected $guarded = array('id');
