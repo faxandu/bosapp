@@ -1,17 +1,23 @@
 <?php 
 
 namespace Lotto\models;
-use Eloquent, Validator;
+
+use Eloquent, Validaton, Exception;
 
 
 
 class Course extends Eloquent {
 
-	protected $table = 'lotto_course';
-	public $timestamps = false;
-	protected $fillable = array('name', 'crn', 'creditHour', 'daysInWeek', 'startDate',
-	 'endDate', 'endTime', 'startTime', 'labAide', 'instructor');
-	protected $guarded = array('id');
+	protected $table = 'schedule_course';
+	public $timestamps = true;
+    protected $softDelete = true;
+
+	protected $fillable = array('building', 'course_number', 'course_title', 'creditHour', 'crn',
+	 'days_of_week', 'end_date', 'end_time', 'instructor', 'part_of_term','room_number',
+      'section', 'start_date', 'start_time', 'subject_code', 'term_code');
+	
+
+    protected $guarded = array('id');
     protected $hidden = array('pivot');
 
 	private static $rules = array(
@@ -53,10 +59,12 @@ class Course extends Eloquent {
 
         Course::created(function($course){
            	try{
-        		$skill = Skill::where('name' ,'=' , $course->name)->firstOrFail();
+                // Skill::create(array('name' => 'bob'));
+        		Skill::where('name' ,'=' , $course->course_title)->firstOrFail();
         	}catch (Exception $e){
-        		Skill::create(array('name' => $course->name));
+        		Skill::create(array('name' => $course->course_title));
         	}
+
         });
 
         Course::creating(function($course){

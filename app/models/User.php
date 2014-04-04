@@ -5,24 +5,22 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 
 class User extends Eloquent  implements UserInterface, RemindableInterface {
 
-	protected $table = 'global_user';
+	protected $table = 'user';
 	public $timestamps = false;
 	protected $fillable = array('username','email','first_name','last_name','type','password');
 	protected $guarded = array('id');
     protected $hidden = array('password', 'is_superuser', 'is_staff', 'is_active', 'date_joined', 'pivot');
 	
     private static $rules = array(
-        'id' => 'numeric|exists:global_user,id',
+        'id' => 'numeric|exists:user,id',
         'username' => 'required|alpha|min:4',
         'email' => 'required|email|unique:users',
     );
 
     private static $rulesForLogin = array(
-        'username' => 'alpha_num|exists:global_user,username',
+        'username' => 'alpha_num|exists:user,username',
         //'password'=>'required|alpha_num|between:6,12|confirmed',
     );
-
-    
 
     public static function validate($data){
         return Validator::make($data, static::$rules);
@@ -33,20 +31,16 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
     }
 
     public function skills(){
-        return $this->belongsToMany('Skill', 'lotto_skill_user');
+        return $this->belongsToMany('Skill', 'schedule_user_skill');
     }
 
     public function courses(){
-        return $this->belongsToMany('Course', 'lotto_course_labAide');
+        return $this->belongsToMany('Course', 'schedule_course_labaide');
     }
 
-    // public function staffTypes(){
-    //     return $this->belongsToMany('StaffType', 'lotto_user_staff', 'user_id', 'staff_id');
+    // public function entries(){
+    //     return $this->belongsToMany('Entry', 'lotto_user_entries', 'user_id', 'entry_id');
     // }
-
-    public function entries(){
-        return $this->belongsToMany('Entry', 'lotto_user_entries', 'user_id', 'entry_id');
-    }
 
 
 

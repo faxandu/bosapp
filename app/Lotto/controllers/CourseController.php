@@ -1,31 +1,15 @@
 <?php 
 
 namespace Lotto\controllers;
-
-
 use BaseController, Input, Lotto\models\Course, Response;
 
 class CourseController extends BaseController {
 
+
 	public function postCreate(){
 
-
-		$var = array();
-		$var[0];
-		$var['bob'];
-
-
-
-
-
-
-
-
-
 		$input = Input::all();
-		
 		$validatedInput = Course::validate(Input::all());
-
 		$messages = $validatedInput->messages();
 
 		// if any error messages, don't create and return errors.
@@ -43,6 +27,40 @@ class CourseController extends BaseController {
 		}
 		return Response::json(array('status' => 400,
 		 'message' => 'Failed to create course', 'error' => $messages->all() ), 400);
+	}
+
+	public function getImport(){
+		
+		$file = file_get_contents($_ENV['courseLink']);
+
+		$data = json_decode($file, true);
+	
+		foreach($data as  $value){
+			Course::create(
+					array(
+
+						'end_time' => $value['END_TIME'],
+						'building' => $value['BUILDING'],
+						'term_code' => $value['TERM_CODE'],
+						'crn' => $value['CRN'],
+						'days_of_week' => $value['DAYS'],
+						'instructor' => $value['INSTRUCTOR'],
+						'start_time' => $value['BEGIN_TIME'],
+						'start_date' => $value['START_DATE'],
+						'section' => $value['SECTION'],
+						'course_number' => $value['COURSE_NUMBER'],
+						'room_number' => $value['ROOM_NUMBER'],
+						'subject_code' => $value['SUBJECT_CODE'],
+						'course_title' => $value['COURSE_TITLE'],
+						'part_of_term' => $value['PART_OF_TERM'],
+						'end_date' => strtotime($value['END_DATE'])
+						)
+				);
+		}
+
+		return Course::all();
+
+		exit;
 	}
 
 	public function postDelete(){
@@ -68,9 +86,10 @@ class CourseController extends BaseController {
 
 	public function postGet(){
 		
-		try{	
-			$id = Input::get('id');
+		$id = Input::get('id');
 
+		try{	
+			
 			$course = Course::findOrFail($id);
 			$course->labAides->toArray();
 			
@@ -84,10 +103,10 @@ class CourseController extends BaseController {
 
 	public function postRemoveLabAide(){
 		
-		try{
-			$userId = Input::get('user');
-			$courseId = Input::get('course');
+		$userId = Input::get('user');
+		$courseId = Input::get('course');
 
+		try{		
 			Course::findorFail($courseId)->labAides()->detatch($userId);
 
 		}catch(exception $e){
@@ -122,20 +141,16 @@ class CourseController extends BaseController {
 	 	public function postUpdate(){
 
 		$validatedInput = Course::updateValidate(Input::all());
-
 		$messages = $validatedInput->messages();
-
+		$id = Input::get('id');
 		// if any error messages, don't update and return errors.
 		if(!$messages->all()){
 
 			try{	
-				
-				$id = Input::get('id');
-				
+
 				$course = Course::find($id);
 				$course->update(Input::all());
 				
-
 			}catch(exception $e){
 				return Response::json(array('status' => 400, 	
 				'message' => 'Failed to update course.', 'error' => $e->getMessage()), 400);
@@ -149,11 +164,7 @@ class CourseController extends BaseController {
 
 	}
 
-
-
-	public function missingMethod($parameters = array())
-	{
-	    
+	public function missingMethod($parameters = array()){
 		return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
 	}
 }

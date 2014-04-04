@@ -26,7 +26,7 @@ class Entry extends Eloquent {
 	// public function labAides(){
  //        return $this->belongsToMany('User', 'lotto_course_labAide');
  //    }
-
+ 
    
 }
 

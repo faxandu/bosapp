@@ -6,9 +6,10 @@ class SkillController extends BaseController {
 
 	public function postDelete(){
 		
-		try{
-			$id = Input::get('id');
+		$id = Input::get('id');
 
+		try{
+			
 			Skill::findOrFail($id)->forceDelete();
 
 		}catch(exception $e){
@@ -24,12 +25,11 @@ class SkillController extends BaseController {
 
 	public function postGet(){
 		
+		$id = Input::get('id');
+
 		try{	
 
-			$id = Input::get('id');
-
-			$skill = Skill::findOrFail($id);
-			
+			$skill = Skill::findOrFail($id);			
 
 			return Response::json($skill->toArray());
 
@@ -40,13 +40,15 @@ class SkillController extends BaseController {
 	}
 		public function postGetUserSkill(){
 
-		try{	
 			$id = Input::get('id');
+
+		try{	
+			
 			$user = User::findOrFail($id);
 
 			$users = array();
 			array_push($users, array('user' => $user->toarray(),
-			'skills' => $user->skillsArr()));
+				'skills' => $user->skillsArr()));
 
 			return Response::json($users);
 
@@ -58,10 +60,11 @@ class SkillController extends BaseController {
 
 	public function postRemoveUserSkill(){
 		
-		try{
 			$userId = Input::get('user');
 			$skillId = Input::get('skill');
 
+		try{
+			
 			User::findorFail($userId)->skills()->detatch($skillId);
 
 		}catch(exception $e){
@@ -75,6 +78,7 @@ class SkillController extends BaseController {
 	public function postSetUserSkill(){
 		$userId = Input::get('user');
 		$skill = Input::get('skill');
+		
 		try{
 
 			User::findOrFail($userId)->skills()->attach($skill);
@@ -88,7 +92,6 @@ class SkillController extends BaseController {
 
 	public function missingMethod($parameters = array())
 	{
-	    
 		return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
 	}
 }
