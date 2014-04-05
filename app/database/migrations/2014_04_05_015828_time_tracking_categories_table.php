@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CategoriesTable extends Migration {
+class TimeTrackingCategoriesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,8 @@ class CategoriesTable extends Migration {
 	 */
 	public function up()
 	{
-        Schema::create('time_categories_table', function($table){
+        Schema::create('time_tracking_categories',function($table){
+
             $table->increments('id');
             $table->string('category',30);
         });
@@ -25,7 +26,7 @@ class CategoriesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('time_categories_table');
+		Schema::drop('time_tracking_categories');
 	}
 
 }
