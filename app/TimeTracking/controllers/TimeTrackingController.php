@@ -8,27 +8,30 @@
 namespace TimeTracking\controllers;
 
 use BaseController, Input, User,  Entry ,Response;
+use Illuminate\Support\Facades\Auth;
 
 class TimeTrackingController extends  BaseController{
 
-
     public function postCreateTime(){
 
-        $userEntry = Input::get('username');
-
         $timeEntry = new Entry;
-        $timeEntry->startTime = Input::get('start_time');
-        $timeEntry->startDate = Input::get('start_date');
-        $timeEntry->endDate = Input::get('end_date');
-        $timeEntry->endTime   = Input::get('end_time');
-        $timeEntry->description = Input::get('description');
+        $timeEntry->user = Auth::user()->id;
 
-        if($this->validateTime($timeEntry->startTime) && $this->validateTime($timeEntry->end_time)){
+        if($this->validateTime(Input::get('start_time')) && $this->validateTime(Input::get('end_time')) ){
 
+            $timeEntry->startTime = Input::get('start_time');
+            $timeEntry->startDate = Input::get('start_date');
+            $timeEntry->endDate = Input::get('end_date');
+            $timeEntry->endTime   = Input::get('end_time');
+            $timeEntry->description = Input::get('description');
 
-
+            try{
+                $timeEntry->save();
+                Response::json('Message','Time saved');
+            }catch (exception $error){
+                Response::json('Message',$error);
+            }
         }
-
     }
 
     public function postUpdateTime(){
@@ -54,7 +57,7 @@ class TimeTrackingController extends  BaseController{
 
         if($hours <= 12 && $minutes < 60 &&$seconds < 60)
             return (($hours > 0 &&  $minutes >= 0 && $seconds >= 0));
-        else
-            return false;
+
+    return false; // something failed in the if statement.
     }
 }

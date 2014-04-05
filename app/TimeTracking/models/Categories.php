@@ -11,14 +11,13 @@ namespace TimeTracking\models;
 use User;
 class Categories extends Eloquent {
 
-    private $table = 'categories_table';
-    private $fillable = 'choices';
+    private $table = 'time_tracking_categories_table';
+    private $fillable = 'category';
     private $guarded  = array('id');
     private $timestamps = false;
 
-
     public function entry(){
-        return $this->belongsToMany('Entry','entry_category');
+        return $this->belongsTo('user');
     }
 
 } 

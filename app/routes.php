@@ -47,6 +47,10 @@ Route::group(array('before' => 'auth'), function()
 		Route::controller('entries', 'Calendar\controllers\EntriesController');
 	});
 
+    Route::group(array('prefix' => 'time/'), function() {
+        Route::controller('entries', 'TimeTracking\controllers\TimeTrackingController');
+    });
+
 });
 
 
