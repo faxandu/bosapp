@@ -9,6 +9,3 @@ composer.lock
 .DS_Store
 Thumbs.db
 sftp-config.json
-test.php
-test2.php
-test3.php
