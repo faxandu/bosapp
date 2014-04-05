@@ -25,3 +25,16 @@ class UserTableSeeder extends Seeder{
 
 
 }
+
+
+class AvailabilityTableSeeder extends Seeder{
+
+	public function run(){
+		DB::table('user')->delete();
+		User::create(array('username' => 'bob', 'password' => Hash::make('1')));
+	}
+
+
+}
+
+

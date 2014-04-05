@@ -3,6 +3,8 @@
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
+use Lotto\models\Course, Lotto\models\Skill, Lotto\models\Availability;
+
 class User extends Eloquent  implements UserInterface, RemindableInterface {
 
 	protected $table = 'user';
@@ -38,9 +40,9 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
         return $this->belongsToMany('Course', 'schedule_course_labaide');
     }
 
-    // public function entries(){
-    //     return $this->belongsToMany('Entry', 'lotto_user_entries', 'user_id', 'entry_id');
-    // }
+    public function entries(){
+        return $this->belongsToMany('Availability', 'schedule_user_availability', 'user_id', 'availability_id');
+    }
 
 
 

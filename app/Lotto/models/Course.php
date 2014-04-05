@@ -12,7 +12,7 @@ class Course extends Eloquent {
 	public $timestamps = true;
     protected $softDelete = true;
 
-	protected $fillable = array('building', 'course_number', 'course_title', 'creditHour', 'crn',
+	protected $fillable = array('building', 'course_number', 'course_title', 'credit_hours', 'crn',
 	 'days_of_week', 'end_date', 'end_time', 'instructor', 'part_of_term','room_number',
       'section', 'start_date', 'start_time', 'subject_code', 'term_code');
 	
@@ -59,7 +59,6 @@ class Course extends Eloquent {
 
         Course::created(function($course){
            	try{
-                // Skill::create(array('name' => 'bob'));
         		Skill::where('name' ,'=' , $course->course_title)->firstOrFail();
         	}catch (Exception $e){
         		Skill::create(array('name' => $course->course_title));
@@ -71,8 +70,11 @@ class Course extends Eloquent {
             
         });
 
+        Course::updating(function($course){
+            ////// UPDATING COURSE - NOTIFY USER?
+        });
         Course::deleting(function($course){
-           
+           ///// DELETING COURSE - NOTIFY USER?
         });
 
     }
