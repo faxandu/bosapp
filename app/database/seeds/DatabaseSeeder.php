@@ -15,3 +15,13 @@ class DatabaseSeeder extends Seeder {
 	}
 
 }
+
+class UserTableSeeder extends Seeder{
+
+	public function run(){
+		DB::table('user')->delete();
+		User::create(array('username' => 'bob', 'password' => Hash::make('1')));
+	}
+
+
+}

@@ -11,7 +11,7 @@ class UserTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('global_user', function($table){
+		Schema::create('user', function($table){
 			$table->increments('id');
 
 			$table->string('email', 50);
@@ -25,10 +25,6 @@ class UserTable extends Migration {
 			
 			
 			$table->timestamps();
-			//$table->enum('department', array('labAide','fullTime','partTime', 'adjunct', 'labTech', 'other'))->default('other');
-			
-			
-
 			
 		});
 		// Schema::table('global_user',  function($table){
@@ -44,7 +40,7 @@ class UserTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('global_user');
+		Schema::drop('user');
 	}
 
 }

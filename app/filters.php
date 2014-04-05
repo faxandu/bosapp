@@ -43,23 +43,13 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	$validatedInput = User::validateLogin(Input::all());
-	
 
-	$messages = $validatedInput->messages();
-
-	if(!$messages->all()){
-		
-		if (Auth::attempt(array('username' =>Input::get('username'), 'password'=>Input::get('password'))) ){
-			return Redirect::intended('dashboard');
-		}
-		else
-			App::abort(401);
+	if(Auth::check()){
+		echo "logged in";
+		// exit;
 	}
+	App::abort(401);
 
-	return Response::json(array('status' => 401,
-		 'message' => 'Failed auth', 'error' => $messages->all() ), 401);
-	//if (Auth::guest()) return Redirect::guest('login');
 });
 
 

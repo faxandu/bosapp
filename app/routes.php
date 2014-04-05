@@ -5,6 +5,12 @@
 | Application Routes
 |--------------------------------------------------------------------------
 */
+
+
+Route::match(array('POST', 'GET'), 'login', 'UserController@postLogin');
+Route::match(array('POST', 'GET'), 'logout', 'UserController@postLogout');
+Route::match(array('POST', 'GET'), 'asd', 'Lotto\controllers\CourseController@getImport');
+
 View::name('layouts.layout', 'layout');
 $layout = View::of('layout');
 
@@ -14,14 +20,13 @@ Route::get('/', function() use($layout) {
 
 
 
-
-
 Route::group(array('before' => 'auth'), function()
 {
 
 	Route::group(array('prefix' => 'global/'), function(){
 		Route::controller('user', 'UserController');
 	});
+
 
 	Route::group(array('prefix' => 'lotto/'), function(){
 
@@ -37,16 +42,14 @@ Route::group(array('before' => 'auth'), function()
 
 	});
 
+	Route::group(array('prefix' => 'calendar/'), function() {
+
+		Route::controller('entries', 'Calendar\controllers\EntriesController');
+	});
+
 });
 
 
-Route::resource('user', 'UserController',
-                array('only' => array('getLogin')));
-
-Route::group(array('prefix' => 'calendar/'), function() {
-
-	Route::controller('entries', 'Calendar\controllers\EntriesController');
-});
 
 Route::match(array('GET', 'POST'), '/checkPunchedIn', 'GroupStudy\controllers\EntryController@checkPunchedIn');
 Route::match(array('GET', 'POST'), '/StartEntry', 'GroupStudy\controllers\EntryController@StartEntry');
