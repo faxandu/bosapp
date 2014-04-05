@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CourseLabAideTable extends Migration {
+class ScheduleCourseLabaideTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,11 @@ class CourseLabAideTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('lotto_course_labAide', function($table){
+		Schema::create('schedule_course_labaide', function($table){
 			$table->unsignedInteger('user_id');
 			$table->unsignedInteger('course_id');
-			$table->foreign('user_id')->references('id')->on('global_user');
-			$table->foreign('course_id')->references('id')->on('lotto_course');
+			$table->foreign('user_id')->references('id')->on('user');
+			$table->foreign('course_id')->references('id')->on('schedule_course');
 		});
 	}
 
@@ -27,7 +27,8 @@ class CourseLabAideTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('lotto_course_labAide');
+		Schema::drop('schedule_course_labaide');
 	}
 
 }
+

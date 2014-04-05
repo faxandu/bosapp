@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class SkillTable extends Migration {
+class ScheduleSkillTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -11,10 +11,12 @@ class SkillTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('lotto_skill', function($table){
+		Schema::create('schedule_skill', function($table){
 			$table->increments('id');
-			$table->string('name', 30)->unique();
-			});
+
+			$table->string('name', 100)->unique();
+
+		});
 	}
 
 	/**
@@ -24,7 +26,9 @@ class SkillTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('lotto_skill');
+		Schema::drop('schedule_skill');
 	}
 
 }
+
+

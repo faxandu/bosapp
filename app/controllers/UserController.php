@@ -26,44 +26,39 @@ class UserController extends BaseController {
 		 'message' => 'Failed to create User', 'error' => $messages->all() ), 400);
 	}
 
-
 	public function postDelete(){
-		
+		$id = Input::get('id');
+
 		try{
-			$id = Input::get('id');
+
 			$user = User::findOrFail($id);
-			$user->skills()->detach();
-			$user->labAide()->detach();
-			$user->staffType()->detach();
-			$user->forceDelete();
+			
 		}catch(exception $e){
 			return Response::json(array('status' => 400, 	
 			'message' => 'Failed to delete user.', 'error' => $e->getMessage()), 400);
 		}
+
+		$user->skills()->detach();
+		$user->labAide()->detach();
+		$user->staffType()->detach();
+		$user->forceDelete();
+
+
 		return Response::json(array('status' => 200, 'message' => 'User Deleted'), 200);
 	}
 
+	public function getGet(){
+		return Response::json(User::all());
+	}
 
-
-	public function get(){
+	public function postGet(){
 		
+		$id = Input::get('id');
+
 		try{	
 
-			if(!Input::has('id')){
-				$users = array();
-				foreach ( User::all() as $user){
-					//array_push($users, array('user' => $user->toarray(), 'staffType' => $user->staffTypes()->toArray()  ) );
-					$user->staffTypes->toarray();
-					$user->entries->toarray();
-					array_push($users, $user->toarray());
-				}
-				return Response::json($users);
-			}
-
-			$id = Input::get('id');
 			$user =  User::findOrFail($id);
-			$user->staffTypes->toarray();
-			$user->entries->toarray();
+
 			return Response::json($user);
 
 		}catch(exception $e){
@@ -72,29 +67,33 @@ class UserController extends BaseController {
 		}		
 	}
 
-
-	public function getLogin() {
-		if (Auth::attempt(array('username'=>Input::get('username'), 'password'=>Input::get('password')))) {
-		    return Redirect::to('users/dashboard')->with('message', 'You are now logged in!');
-		} else {
-		    return Redirect::to('/')
-		        ->with('message', 'Your username/password combination was incorrect')->with('alert', 'warning')
-		        ->withInput();
+	public function postLogin() {
+		//return Input::all();
+		
+		$user = array(
+			'username' => Input::get('username'),
+			'password' => Input::get('password')
+		);
+		
+		try{
+			if(Auth::attempt($user)){
+				return Redirect::to('/');
+			}else{
+				return Response::json(array('error' => 'invalid username or password'), 400);
+			}
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 'error' => $e->getMessage()), 400);
 		}
+
 	}
 
-	// public function getEntry(){
-		
-	// 	try{	
+	public function postLogout() {
 
-	// 		$id = Input::get('id');
-	// 		$user =  User::findOrFail($id);
-	// 		$userArr['entries'] = $user->entries->toarray();
-	// 		return Response::json($userArr);
+		Auth::logout();
+		return Response::json(array('logged out'));
+	}
 
-	// 	}catch(exception $e){
-	// 		return Response::json(array('status' => 400, 	
-	// 		'message' => 'Failed to get user.', 'error' => $e->getMessage()), 400);
-	// 	}		
-	// }
+	public function missingMethod($parameters = array()){
+		return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
+	}
 }

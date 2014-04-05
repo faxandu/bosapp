@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class StaffTypeTable extends Migration {
+class TimeTrackingCategoriesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,10 +12,11 @@ class StaffTypeTable extends Migration {
 	 */
 	public function up()
 	{
-		// Schema::create('staffing_app_staffType', function($table){
-		// 	$table->increments('id');
-		// 	$table->string('type', 30)->unique();
-		// });
+        Schema::create('time_tracking_categories',function($table){
+
+            $table->increments('id');
+            $table->string('category',30);
+        });
 	}
 
 	/**
@@ -25,7 +26,7 @@ class StaffTypeTable extends Migration {
 	 */
 	public function down()
 	{
-		// Schema::drop('staffing_app_staffType');
+		Schema::drop('time_tracking_categories');
 	}
 
 }
