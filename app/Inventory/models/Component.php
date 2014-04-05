@@ -1,15 +1,15 @@
 <?php
 
-namespace GroupStudy\models;
+namespace Inventory\models;
 use Input, User, Response, Eloquent;
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
-class Student extends Eloquent{
+class Component extends Eloquent{
 
-	protected $table = 'group_study_student';
-	protected $fillable = array('first_name', 'last_name', 'student_num');
+	protected $table = 'inventory_component';
+	protected $fillable = array('equipment_id', 'model', 'type', 'storage', 'memory');
 	protected $guarded = array('id');
 	public $timestamps = false;
 
@@ -20,7 +20,7 @@ class Student extends Eloquent{
 	 */
 
 	public function entry(){
-		return $this -> belongsToMany('Entry', 'group_study_student_entry');
+		return $this -> belongsTo('Equipment');
 	}
 
 
