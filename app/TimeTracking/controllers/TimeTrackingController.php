@@ -28,15 +28,21 @@ class TimeTrackingController extends  BaseController{
             try{
                 $timeEntry->save();
                 Response::json('Message','Time saved');
-            }catch (exception $error){
-                Response::json('Message',$error);
+            }catch (exception $e){
+                Response::json('Message',$e);
             }
         }
     }
 
-    public function postUpdateTime(){
+    public function postDeleteTime(){
 
 
+        try{
+            Entry::delete(Input::get('id'));
+            Response::json('Message', 'deleted');
+        }catch (exception $e){
+            return Response::json('Message' , $e);
+        }
 
 
 
