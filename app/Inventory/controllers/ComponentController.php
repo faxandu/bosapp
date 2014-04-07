@@ -5,9 +5,10 @@ use BaseController, Input, User, Entry, Inventory\models\Component, Inventory\mo
 
 class ComponentController extends BaseController{
 		
-	public function addComponent(){
+	public function postAdd(){
 		$input = Input::all();
-
+		$equipment_id = Equipment::where('serial_number', $input['serial_number']) -> pluck('id');
+		$input[] = 'equipment_id' => $equipment_id;
 		foreach($input as $key => $value){
 			if(!$value) $input[$key] = NULL;
 		}		

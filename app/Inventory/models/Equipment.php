@@ -9,7 +9,8 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 class Equipment extends Eloquent{
 
 	protected $table = 'inventory_equipment';
-	protected $fillable = array('id', 'manufacturer', 'model', 'location', 'obtained', 'warranty');
+	protected $fillable = array('serial_number', 'manufacturer', 'model', 'location', 'obtained', 'warranty');
+	protected $guarded = array('id');
 	public $timestamps = false;
 	public $incrementing = false;
 	/**

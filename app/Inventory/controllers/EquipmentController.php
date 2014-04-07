@@ -5,7 +5,7 @@ use BaseController, Input, User, Entry, Inventory\models\Equipment, Response;
 
 class EquipmentController extends BaseController{
 	
-	public function addEquipment(){
+	public function postAdd(){
 		$input = Input::all();
 		foreach($input as $key => $value){
 			if(!$value) $input[$key] = NULL;
