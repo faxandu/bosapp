@@ -12,12 +12,12 @@ class GroupStudyStudentEntryTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('group_study_student_entry', function($table){
-			$table->unsignedInteger('student_id');
-			$table->unsignedInteger('entry_id');
-			$table->foreign('student_id')->references('id')->on('group_study_student');
-			$table->foreign('entry_id')->references('id')->on('global_entry');
-		});
+		// Schema::create('group_study_student_entry', function($table){
+		// 	$table->unsignedInteger('student_id');
+		// 	$table->unsignedInteger('entry_id');
+		// 	$table->foreign('student_id')->references('id')->on('group_study_student');
+		// 	$table->foreign('entry_id')->references('id')->on('global_entry');
+		// });
 	}
 
 	/**
@@ -27,7 +27,7 @@ class GroupStudyStudentEntryTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('group_study_student_entry');
+		// Schema::drop('group_study_student_entry');
 	}
 
 

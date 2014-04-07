@@ -9,7 +9,7 @@
 
 Route::match(array('POST', 'GET'), 'login', 'UserController@postLogin');
 Route::match(array('POST', 'GET'), 'logout', 'UserController@postLogout');
-Route::match(array('POST', 'GET'), 'asd', 'Lotto\controllers\CourseController@getImport');
+// Route::match(array('POST', 'GET'), 'asd', 'Lotto\controllers\CourseController@getImport');
 
 View::name('layouts.layout', 'layout');
 $layout = View::of('layout');
@@ -23,16 +23,14 @@ Route::get('/', function() use($layout) {
 Route::group(array('before' => 'auth'), function()
 {
 
-	Route::group(array('prefix' => 'global/'), function(){
-		Route::controller('user', 'UserController');
-	});
-
-
+	
+	Route::controller('user', 'UserController');
+	
 	Route::group(array('prefix' => 'lotto/'), function(){
 
 		Route::controller('course', 'Lotto\controllers\CourseController');
 		Route::controller('skill', 'Lotto\controllers\SkillController');
-
+		Route::controller('availability', 'Lotto\controllers\AvailabilityController');
 	});
 
 	Route::group(array('prefix' => 'group_study/'), function(){
