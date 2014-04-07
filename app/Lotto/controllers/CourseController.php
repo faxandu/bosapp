@@ -1,7 +1,8 @@
 <?php 
 
 namespace Lotto\controllers;
-use BaseController, Input, Lotto\models\Course, Response, Exception;
+use BaseController, Lotto\models\Course, Lotto\models\Skill, User;
+use Input, Response, Exception;
 
 class CourseController extends BaseController {
 
@@ -39,7 +40,7 @@ class CourseController extends BaseController {
 
 
 
-	public function getImport(){
+	public function postImport(){
 
 		$file = file_get_contents($_ENV['courseLinkTest']);
 		$data = json_decode($file, true);
@@ -93,6 +94,30 @@ class CourseController extends BaseController {
 		// return Course::all();
 	}
 
+
+	public function getAssignLabaides(){
+
+		// Staff all courses that are possible
+		foreach(Course::all() as $course){
+			// per course - grab the labaides that can staff it.
+			$eligibleLabaides = User::where('type','=','labAide')->with('skills')
+			->whereHas('skills', function($query) use ($course){
+				$query->where('name', '=', $course->course_title);
+			})->get();
+
+			echo "<pre>";
+			foreach($eligibleLabaides as $user){
+				echo $user->username." can staff ".$course->course_title;
+				echo "<br>";
+			}
+			echo "<br>";
+			echo "</pre>";
+
+			
+		}
+		return "failed";
+	}
+
 	public function postDelete(){
 		
 		$id = Input::get('id');
@@ -100,8 +125,7 @@ class CourseController extends BaseController {
 		try{
 			
 			$course = Course::findOrFail($id);
-			$course->labAides()->detach();
-			$course->forceDelete();
+			$course->delete();
 
 		}catch(exception $e){
 			return Response::json(array('status' => 400, 	
@@ -121,7 +145,7 @@ class CourseController extends BaseController {
 		try{	
 			
 			$course = Course::findOrFail($id);
-			$course->labAides->toArray();
+			$course->labaides->toArray();
 			
 			return Response::json($course->toArray());
 
@@ -137,7 +161,7 @@ class CourseController extends BaseController {
 		$courseId = Input::get('course');
 
 		try{		
-			Course::findorFail($courseId)->labAides()->detatch($userId);
+			Course::findorFail($courseId)->labaides()->detatch($userId);
 
 		}catch(exception $e){
 			return Response::json(array('status' => 400, 	
@@ -147,7 +171,7 @@ class CourseController extends BaseController {
 		return Response::json(array('status' => 200, 'message' => 'labAide removed'), 200);
 	}
 
-	public function postSetLabAide(){
+	public function postSetLabaide(){
 		$courseId = Input::get('course');
 		$userId = Input::get('user');
 		
@@ -157,7 +181,7 @@ class CourseController extends BaseController {
 			$course = Course::findorFail($courseId);
 			
 			if(Course::checkUser($user, $course)){
-				$course->labAides()->attach($user);
+				$course->labaides()->attach($user);
 			}
 
 		}catch(exception $e){

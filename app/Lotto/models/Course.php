@@ -74,18 +74,19 @@ class Course extends Eloquent {
             ////// UPDATING COURSE - NOTIFY USER?
         });
         Course::deleting(function($course){
+            $course->labaides()->detach();
            ///// DELETING COURSE - NOTIFY USER?
         });
 
     }
 
-	public function labAides(){
-        return $this->belongsToMany('User', 'lotto_course_labAide');
+	public function labaides(){
+        return $this->belongsToMany('User', 'schedule_course_labaide');
     }
 
     protected static function checkSkills($user, $course){
        
-        if(in_array($course->name, $user->skills->fetch('name')->toarray()))
+        if(in_array($course->course_title, $user->skills->fetch('name')->toarray()))
             return true;
 
     	throw new Exception("Missing required skill");
@@ -98,27 +99,31 @@ class Course extends Eloquent {
     	
         $time = $course->creditHour;
 
-    	foreach ($user->courses as $anotherCourse){
-    		$time += $anotherCourse['creditHour'];
-    	}
-
+        // print_r( $user->courses->toarray() );
+        // exit;
+        if(!empty($user->courses->toarray())){
+        	foreach ($user->courses as $anotherCourse){
+        		$time += $anotherCourse['creditHour'];
+        	}
+        }
 
     	
-    	foreach ($user->staffTypes as $type){
+    
            
-    		switch($type['type']){
+		switch($user->type){
 
-    			case 'labAide': if($time < Course::$labAide) return true;
-    		}
+			case 'labAide': if($time < Course::$labAide) return true;
+		}
 
-    	}
+    	
 
 		throw new Exception("Insufficient time.");
     }
 
 	public static function checkUser($user, $course){
+        
 
-        if(! in_array( 'labAide', $user->staffTypes->fetch('type')->toarray() ) )
+        if(!('labAide' == $user->type))
             throw new Exception("Invalid employee type");
 		course::checkSkills($user, $course);		
 		course::checkTime($user, $course);

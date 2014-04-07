@@ -37,11 +37,8 @@ class UserController extends BaseController {
 			return Response::json(array('status' => 400, 	
 			'message' => 'Failed to delete user.', 'error' => $e->getMessage()), 400);
 		}
-
-		$user->skills()->detach();
-		$user->labAide()->detach();
-		$user->staffType()->detach();
-		$user->forceDelete();
+		
+		$user->delete();
 
 
 		return Response::json(array('status' => 200, 'message' => 'User Deleted'), 200);
@@ -60,6 +57,40 @@ class UserController extends BaseController {
 			$user =  User::findOrFail($id);
 
 			return Response::json($user);
+
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 	
+			'message' => 'Failed to get user.', 'error' => $e->getMessage()), 400);
+		}		
+	}
+
+	public function postGetUserAvailability(){
+		
+		$id = Input::get('id');
+
+		try{	
+
+			$user =  User::findOrFail($id);
+			$user->availability->toarray();
+
+			return Response::json($user->toArray());
+
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 	
+			'message' => 'Failed to get user.', 'error' => $e->getMessage()), 400);
+		}		
+	}
+
+	public function postGetUserSkills(){
+		
+		$id = Input::get('id');
+
+		try{	
+
+			$user =  User::findOrFail($id);
+			$user->skills->toarray();
+
+			return Response::json($user->toArray());
 
 		}catch(exception $e){
 			return Response::json(array('status' => 400, 	

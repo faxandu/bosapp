@@ -1,5 +1,6 @@
 <?php
 namespace Lotto\models;
+
 use Eloquent;
 
 class Skill extends Eloquent {
