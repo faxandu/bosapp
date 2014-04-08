@@ -46,7 +46,7 @@ Route::filter('auth', function()
 
 	if(!Auth::check()){
 		//return Redirect::intended();
-		App::abort(401);
+		App::abort(401, "Not authorized");
 	}
 	
 
