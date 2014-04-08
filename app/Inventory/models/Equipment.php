@@ -26,4 +26,17 @@ class Equipment extends Eloquent{
 	public function component(){
 		return $this -> hasMany('Component');
 	}
+
+	private static $rules = array(
+		'serial_number' => 'required|numeric'
+		'manufacturer' =>	'required|alpha_num'
+		'model' =>	'alpha_num'
+		'location' =>	'required|alpha'
+		'obtained' =>	'date'
+		'warranty' =>    'date'
+		);
+
+	public static function validate($data){
+		return Validator::make($data, static::$rules);
+	}
 }

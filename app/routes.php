@@ -48,12 +48,14 @@ Route::group(array('before' => 'auth'), function()
 	Route::match(array('GET', 'POST'), '/checkPunchedIn', 'GroupStudy\controllers\EntryController@checkPunchedIn');
 	Route::match(array('GET', 'POST'), '/StartEntry', 'GroupStudy\controllers\EntryController@StartEntry');
 
+	Route::match(array('GET', 'POST'), '/add_equipment', 'Inventory\controllers\EquipmentController@postAdd');
+	Route::match(array('GET', 'POST'), '/add_component', 'Inventory\controllers\ComponentController@postAdd');
+	Route::match(array('GET', 'POST'), '/add_contract', 'Inventory\controllers\ContractController@postAdd');
+
 });
 
 
 
-	Route::match(array('GET', 'POST'), '/add_equipment', 'Inventory\controllers\EquipmentController@postAdd');
-	Route::match(array('GET', 'POST'), '/add_component', 'Inventory\controllers\ComponentController@postAdd');
-	Route::match(array('GET', 'POST'), '/add_contract', 'Inventory\controllers\ContractController@postAdd');
+
 
 
