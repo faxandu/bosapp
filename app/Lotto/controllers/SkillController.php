@@ -12,7 +12,7 @@ class SkillController extends BaseController {
 
 		try{
 			
-			Skill::findOrFail($id)->forceDelete();
+			Skill::findOrFail($id)->delete();
 
 		}catch(exception $e){
 			return Response::json(array('status' => 400, 	
