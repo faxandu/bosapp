@@ -27,6 +27,7 @@ class ComponentController extends BaseController{
 		try{
 			$component = Component::findOrFail($id);
 			$component -> delete();
+		}
 		catch(Exception $e){
 			return Response::json(array('status' => 400, 'message' => 'component_not_found', 'error' => $e), 400);
 		}
@@ -51,6 +52,10 @@ class ComponentController extends BaseController{
 			return Response::json(array('status' => 400, 'messages' => 'input validation failed', 'error' => $messages), 400);
 		}
 		return Response::json(array('status' => 201, 'messages' => 'component updated successfully'), 201);
+	}
+
+	public function getData(){
+		return Response::json(Component::all());
 	}
 
 	public function missingMethod($parameters = array())

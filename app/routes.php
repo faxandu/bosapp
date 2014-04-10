@@ -38,6 +38,9 @@ Route::group(array('before' => 'auth'), function()
 		Route::controller('entry', 'GroupStudy\controllers\EntryController');
 		Route::controller('report', 'GroupStudy\controllers\ReportController');
 
+		Route::match(array('GET', 'POST'), '/checkPunchedIn', 'GroupStudy\controllers\EntryController@checkPunchedIn');
+		Route::match(array('GET', 'POST'), '/StartEntry', 'GroupStudy\controllers\EntryController@StartEntry');
+
 	});
 
 	Route::group(array('prefix' => 'calendar/'), function() {
@@ -45,17 +48,17 @@ Route::group(array('before' => 'auth'), function()
 		Route::controller('entries', 'Calendar\controllers\EntriesController');
 	});
 
-	Route::match(array('GET', 'POST'), '/checkPunchedIn', 'GroupStudy\controllers\EntryController@checkPunchedIn');
-	Route::match(array('GET', 'POST'), '/StartEntry', 'GroupStudy\controllers\EntryController@StartEntry');
-
-	Route::match(array('GET', 'POST'), '/add_equipment', 'Inventory\controllers\EquipmentController@postAdd');
-	Route::match(array('GET', 'POST'), '/add_component', 'Inventory\controllers\ComponentController@postAdd');
-	Route::match(array('GET', 'POST'), '/add_contract', 'Inventory\controllers\ContractController@postAdd');
+	Route::group(array('prefix' => 'inventory/'), function() {
+		Route::controller('equipment', 'Inventory\controllers\EquipmentController');
+		Route::controller('component', 'Inventory\controllers\ComponentController');
+		Route::controller('contract', 'Inventory\controllers\ContractController');
+	});
 
 });
 
 
 
 
+//Route::match(array('GET', 'POST'), '/data', 'Inventory\controllers\EquipmentController@getData');
 
 

@@ -5,37 +5,44 @@ use BaseController, Input, User, Entry, Inventory\models\Equipment, Response;
 
 class EquipmentController extends BaseController{
 	
-	public function postAdd(){
+	public function postCreate(){
 		$input = Input::all();
-		$validatedInput = Equipment::validate($input);
-		foreach($input as $key => $value){
-			if(!$value) $input[$key] = NULL;
+		$validate = Equipment::validate($input);
+		if($validate -> fails()){
+			return Response::json(array('status' => 400, 'messages' => 'input validation failed', 'error' => $validate -> messages()), 400);
 		}
-		try{
-			$equipment = Equipment::create($input);
-			return Response::json(array('status' => 201, 'message' => 'created equipment'), 201);
-		}
-		catch(Exception $e){
-			return Response::json(array('status' => 400, 'message' => 'failed to create equipment', 'error' => $e), 400);
+		else{
+			try{
+				$equipment = Equipment::create($input);
+				return Response::json(array('status' => 201, 'message' => 'created equipment'), 201);
+			}
+			catch(Exception $e){
+				return Response::json(array('status' => 400, 'message' => 'failed to create equipment', 'error' => $e), 400);
+			}
 		}
 	}
 
-	public function postDelete($id){
+	public function postDelete(){
+		$id = Input::get('id');
 		try{
 			$equipment = Equipment::findOrFail($id);
 			$equipment -> delete();
-		catch{
-			return Response::json(array('status' => 400, 'message' => 'equipment not found'), 400);
+		}
+		catch(Exception $e){
+			return Response::json(array('status' => 400, 'message' => 'equipment not found', 'error' => $e), 400);
 		}
 
 		return Response::json(array('status' => 201, 'message' => 'equipment deleted'), 201);
 	}
 
-	public function postUpdate($id){
+	public function postUpdate(){
 		$input = Input::all();
-		$validatedInput = Equipment::validate($input);
-		$messages = $validateInput -> messages();
-		if(!$messages -> all()){
+		$id = $input::get('id');
+		$validate = Equipment::validate($input);
+		if($validate -> fails()){
+			return Response::json(array('status' => 400, 'messages' => 'input validation failed', 'error' => $validate -> messages()), 400);
+		}
+		else{
 			try{
 				$equipment = Equipment::findOrFail($id);
 				$equipment -> update($validatedInput);
@@ -44,10 +51,15 @@ class EquipmentController extends BaseController{
 				return Response::json(array('status' => 400, 'messages' => 'equipment not updated', 'error' => $e), 400);
 			}
 		}
-		else{
-			return Response::json(array('status' => 400, 'messages' => 'input validation failed', 'error' => $messages), 400);
-		}
 		return Response::json(array('status' => 201, 'messages' => 'equipment updated successfully'), 201);
+	}
+
+	public function getData(){
+		$response = Equipment::all();
+		$count = count($response);
+		print_r($count);
+		exit(0);
+		return Response::json(Equipment::all());
 	}
 
 	public function missingMethod($parameters = array())

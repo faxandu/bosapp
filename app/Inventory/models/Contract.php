@@ -1,7 +1,7 @@
 <?php
 
 namespace Inventory\models;
-use Input, User, Response, Eloquent;
+use Input, User, Response, Eloquent, Validator;
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
@@ -32,6 +32,6 @@ class Contract extends Eloquent{
 		);
 
 	public static function validate($data){
-		return Validate::make($data, static::$rules);
+		return Validator::make($data, static::$rules);
 	}
 }

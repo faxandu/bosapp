@@ -49,6 +49,10 @@ class ContractController extends BaseController{
 		return Response::json(array('status' => 201, 'messages' => 'contract updated successfully'), 201);
 	}
 
+	public function getData(){
+		return Response::json(Contract::all());
+	}
+
 	public function missingMethod($parameters = array())
 	{
 		return Response::json(array('status' => 404, 'message' => 'Not found'), 404);

@@ -15,6 +15,7 @@ class CreateInventoryEquipmentTable extends Migration {
 		Schema::create('inventory_equipment', function($table){
 			$table->increments('id');
 			$table->string('serial_number');
+			$table->string('type');
 			$table->string('manufacturer');
 			$table->string('model') -> nullable();
 			$table->string('location');
