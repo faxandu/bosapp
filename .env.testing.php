@@ -1,7 +1,7 @@
 <?php
 
 return array(
-	'database' => 'work',
+	'database' => 'test',
 	'username' => 'root',
 	'password' => 'fameasser23',
 

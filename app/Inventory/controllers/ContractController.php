@@ -46,7 +46,7 @@ class ContractController extends BaseController{
 		else{
 			try{
 				$contract = Contract::findOrFail($id);
-				$contract -> update($validatedInput);
+				$contract -> update($input);
 			}
 			catch(Exception $e){
 				return Response::json(array('status' => 400, 'messages' => 'contract not updated', 'error' => $e), 400);

@@ -3,6 +3,7 @@
 use Inventory\models\Equipment;
 
 class InventoryTest extends TestCase{
+
 	public function testIsTrue(){
 		$this -> assertTrue(true);
 	}
@@ -39,16 +40,20 @@ class InventoryTest extends TestCase{
 		$this -> assertEquals(Equipment::where('serial_number', '=', '123456789')->first()->serial_number, $input['serial_number']);
 	}
 
-	// public function testDeleteEquipment(){
-	// 	 $id = array('id' => 5);
-	// 	 $response = $this -> call('POST', 'inventory/equipment/delete', $id);
-	// 	 $this -> assertCount(0, Equipment::find($id));
-	// }
+	public function testDeleteEquipment(){
+		 $id = array('id' => count(Equipment::all()));
+		 $response = $this -> call('POST', 'inventory/equipment/delete', $id);
+		 $this -> assertCount(0, Equipment::find($id));
+	}
 
 	public function testDataReturnsListOfAllEquipment(){
 		$response = $this -> call('POST', 'inventory/equipment/data');
 		$count = count($response);
 		$array = array(Equipment::all());
 		$this -> assertCount($count, $array);
+	}
+
+	public function testRemoveMigratedTables(){
+		Artisan::call('migrate:rollback');
 	}
 }

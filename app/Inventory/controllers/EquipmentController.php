@@ -45,7 +45,7 @@ class EquipmentController extends BaseController{
 		else{
 			try{
 				$equipment = Equipment::findOrFail($id);
-				$equipment -> update($validatedInput);
+				$equipment -> update($input);
 			}
 			catch(Exception $e){
 				return Response::json(array('status' => 400, 'messages' => 'equipment not updated', 'error' => $e), 400);

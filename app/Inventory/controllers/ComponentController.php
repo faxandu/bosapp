@@ -46,7 +46,7 @@ class ComponentController extends BaseController{
 		else{
 			try{
 				$component = Component::findOrFail($id);
-				$component -> update($validatedInput);
+				$component -> update($input);
 			}
 			catch(Exception $e){
 				return Response::json(array('status' => 400, 'messages' => 'component not updated', 'error' => $e), 400);
