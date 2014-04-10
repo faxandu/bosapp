@@ -15,8 +15,8 @@ class TimeEntryTable extends Migration {
 		Schema::create('time_tracking_entry',function($table) {
 
             $table->increments('id');
-            $table->foreign('category')->references('id')->on('time_tracking_categories');
-            $table->foreign('user')->references('id')->on('user');
+            $table->foreign('category_id')->references('id')->on('time_tracking_categories');
+            $table->foreign('user_id')->references('id')->on('user');
             $table->date('startDate');
             $table->date('endDate')->nullable();
             $table->time('startTime');

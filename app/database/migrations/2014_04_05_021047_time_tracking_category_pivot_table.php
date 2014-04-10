@@ -12,7 +12,7 @@ class TimeTrackingCategoryPivotTable extends Migration {
 	 */
 	public function up()
     {
-        Schema::create('time_tracking_category_pivot',function($table){
+        Schema::create('time_tracking_category_pivot' ,function($table){
         $table->unsignedInteger('time_id');
         $table->unsignedInteger('category_id');
         $table->foreign('time_id')->references('id')->on('time_tracking_entry');

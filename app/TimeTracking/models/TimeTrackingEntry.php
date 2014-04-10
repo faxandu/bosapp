@@ -7,9 +7,9 @@
  */
 
 namespace TimeTracking\models;
+use Eloquent, Validaton, Exception;
 
-
-class TimeTrackingEntry {
+class TimeTrackingEntry extends Eloquent{
 
     private $table = 'time_tracking_entry';
     private $fillable = array('start_time','end_time','start_date'
