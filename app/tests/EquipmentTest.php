@@ -11,6 +11,7 @@ class InventoryTest extends TestCase{
 		$input = array(
 			'serial_number' => '123456789',
 			'manufacturer' => 'Cisco',
+			'type' => 'Router',
 			'model' => 'ASX1200',
 			'location' => 'TI240',
 			'obtained' => '2014-12-12',

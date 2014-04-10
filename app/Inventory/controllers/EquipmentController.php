@@ -55,10 +55,6 @@ class EquipmentController extends BaseController{
 	}
 
 	public function getData(){
-		$response = Equipment::all();
-		$count = count($response);
-		print_r($count);
-		exit(0);
 		return Response::json(Equipment::all());
 	}
 

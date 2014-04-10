@@ -5,21 +5,21 @@ use BaseController, Input, User, Entry, Exception, Inventory\models\Component, I
 
 class ComponentController extends BaseController{
 		
-	public function postAdd(){
+	public function postCreate(){
 		$input = Input::all();
-		$validatedInput = Course::validate($input);
-		$messages = $validatedInput-> messages();
-		$equipment_id = Equipment::where('serial_number', $input['serial_number']) -> pluck('id');
-		$input['equipment_id'] = $equipment_id;	
-		try{
-			if(isset($input['serial_number']) && empty($equipment_id)){
-				throw new Exception("no equipment with serial number");
-			}
-			$component = Component::create($input);
-			return Response::json(array('status' => 201, 'message' => 'created component'), 201);
+		$input['equipment_id'] = Equipment::where('serial_number', $input['serial_number']) -> pluck('id');
+		$validate = Course::validate($input);
+		if($validate -> fails()){
+			return Response::json(array('status' => 400, 'messages' => 'input validation failed', 'error' => $validate -> messages()), 400);
 		}
-		catch(Exception $e){
-			return Response::json(array('status' => 400, 'message' => 'failed to create component', 'error' => $e), 400);
+		else{
+			try{
+				$component = Component::create($input);
+				return Response::json(array('status' => 201, 'message' => 'created component'), 201);
+			}
+			catch(Exception $e){
+				return Response::json(array('status' => 400, 'message' => 'failed to create component', 'error' => $e), 400);
+			}
 		}
 	}
 
@@ -37,9 +37,11 @@ class ComponentController extends BaseController{
 
 	public function postUpdate($id){
 		$input = Input::all();
-		$validatedInput = Component::validate($input);
-		$messages = $validateInput -> messages();
-		if(!$messages -> all()){
+		$validate = Component::validate($input);
+		if($validate -> fails()){
+			return Response::json(array('status' => 400, 'messages' => 'input validation failed', 'error' => $validate -> messages()), 400);
+		}
+		else{
 			try{
 				$component = Component::findOrFail($id);
 				$component -> update($validatedInput);
@@ -47,9 +49,6 @@ class ComponentController extends BaseController{
 			catch(Exception $e){
 				return Response::json(array('status' => 400, 'messages' => 'component not updated', 'error' => $e), 400);
 			}
-		}
-		else{
-			return Response::json(array('status' => 400, 'messages' => 'input validation failed', 'error' => $messages), 400);
 		}
 		return Response::json(array('status' => 201, 'messages' => 'component updated successfully'), 201);
 	}

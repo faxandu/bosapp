@@ -55,10 +55,3 @@ Route::group(array('before' => 'auth'), function()
 	});
 
 });
-
-
-
-
-//Route::match(array('GET', 'POST'), '/data', 'Inventory\controllers\EquipmentController@getData');
-
-

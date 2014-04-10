@@ -5,16 +5,21 @@ use BaseController, Input, User, Entry, Exception, Inventory\models\Contract, In
 
 class ContractController extends BaseController{
 
-	public function postAdd(){
+	public function postCreate(){
 		$input = Input::all();
-		$equipment_id = Equipment::where('serial_number', $input['serial_number']) -> pluck('id');
-		$input['equipment_id'] = $equipment_id;
-		try{
-			$contract = Contract::create($input);
-			return Response::json(array('status' => 201, 'message' => 'created contract'), 201);
+		$input['equipment_id'] = Equipment::where('serial_number', $input['serial_number']) -> pluck('id');
+		$validate = Contract::validate($input);
+		if($validate -> fails()){
+			return Response::json(array('status' => 400, 'messages' => 'input validation failed', 'error' => $validate -> messages()), 400);
 		}
-		catch(Exception $e){
-			return Response::json(array('status' => 400, 'message' => 'failed to create contract', 'error' => $e), 400);
+		else{
+			try{
+				$contract = Contract::create($input);
+				return Response::json(array('status' => 201, 'message' => 'created contract'), 201);
+			}
+			catch(Exception $e){
+				return Response::json(array('status' => 400, 'message' => 'failed to create contract', 'error' => $e), 400);
+			}
 		}
 	}
 
@@ -32,9 +37,11 @@ class ContractController extends BaseController{
 
 	public function postUpdate($id){
 		$input = Input::all();
-		$validatedInput = Contract::validate($input);
-		$messages = $validateInput -> messages();
-		if(!$messages -> all()){
+		$validate = Contract::validate($input);
+		if($validate -> fails()){
+			return Response::json(array('status' => 400, 'messages' => 'input validation failed', 'error' => $validate -> messages()), 400);
+		}
+		else{
 			try{
 				$contract = Contract::findOrFail($id);
 				$contract -> update($validatedInput);
@@ -42,9 +49,6 @@ class ContractController extends BaseController{
 			catch(Exception $e){
 				return Response::json(array('status' => 400, 'messages' => 'contract not updated', 'error' => $e), 400);
 			}
-		}
-		else{
-			return Response::json(array('status' => 400, 'messages' => 'input validation failed', 'error' => $messages), 400);
 		}
 		return Response::json(array('status' => 201, 'messages' => 'contract updated successfully'), 201);
 	}
