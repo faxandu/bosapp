@@ -23,7 +23,8 @@ class ContractController extends BaseController{
 		}
 	}
 
-	public function postDelete($id){
+	public function postDelete(){
+		$id = Input::get('id');
 		try{
 			$contract = Contract::findOrFail($id);
 			$contract -> delete();
@@ -35,8 +36,9 @@ class ContractController extends BaseController{
 		return Response::json(array('status' => 201, 'message' => 'contract deleted'), 201);
 	}
 
-	public function postUpdate($id){
+	public function postUpdate(){
 		$input = Input::all();
+		$id = Input::get('id');
 		$validate = Contract::validate($input);
 		if($validate -> fails()){
 			return Response::json(array('status' => 400, 'messages' => 'input validation failed', 'error' => $validate -> messages()), 400);

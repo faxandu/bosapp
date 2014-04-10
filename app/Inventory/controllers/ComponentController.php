@@ -23,7 +23,8 @@ class ComponentController extends BaseController{
 		}
 	}
 
-	public function postDelete($id){
+	public function postDelete(){
+		$input = Input::get('id');
 		try{
 			$component = Component::findOrFail($id);
 			$component -> delete();
@@ -35,8 +36,9 @@ class ComponentController extends BaseController{
 		return Response::json(array('status' => 201, 'message' => 'component deleted'), 201);
 	}
 
-	public function postUpdate($id){
+	public function postUpdate(){
 		$input = Input::all();
+		$id = Input::get('id');
 		$validate = Component::validate($input);
 		if($validate -> fails()){
 			return Response::json(array('status' => 400, 'messages' => 'input validation failed', 'error' => $validate -> messages()), 400);
