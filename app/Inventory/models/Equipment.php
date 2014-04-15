@@ -28,11 +28,11 @@ class Equipment extends Eloquent{
 	}
 
 	private static $rules = array(
-		'serial_number' => 'required|numeric',
-		'manufacturer' =>	'required|alpha_num',
+		'serial_number' => 'required|alpha_num',
+		'manufacturer' =>	'required|alpha_num_spaces',
 		'type' => 'required|alpha',
-		'model' =>	'alpha_num',
-		'location' =>	'required|alpha_num',
+		'model' =>	'alpha_num_spaces',
+		'location' =>	'required|alpha_num_spaces',
 		'obtained' =>	'date',
 		'warranty' =>    'date'
 		);

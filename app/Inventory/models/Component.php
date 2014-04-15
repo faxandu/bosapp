@@ -25,11 +25,11 @@ class Component extends Eloquent{
 
 	private static $rules = array(
 		'equipment_id' => 'numeric'
-		'location' =>	'required|alpha_num'
-		'model' =>	'required|alpha_num'
+		'location' =>	'required|alpha_num_spaces'
+		'model' =>	'required|alpha_num_spaces'
 		'type' =>	'required|alpha'
-		'storage' =>	'alpha_num'
-		'memory' =>    'alpha_num'
+		'storage' =>	'alpha_num_spaces'
+		'memory' =>    'alpha_num_spaces'
 		);
 
 	public static function validate($date){

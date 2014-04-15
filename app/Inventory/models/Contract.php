@@ -28,7 +28,7 @@ class Contract extends Eloquent{
 		'type' =>	'required|alpha_num'
 		'expiration' =>	'required|date'
 		'contract_number' =>	'required|alpha_num'
-		'vendor' =>	'required|alpha_num'
+		'vendor' =>	'required|alpha_num_spaces'
 		);
 
 	public static function validate($data){

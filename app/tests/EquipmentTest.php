@@ -29,7 +29,7 @@ class InventoryTest extends TestCase{
 		$this -> assertResponseStatus(400);
 	}
 
-	public function testIfAllRequiredFieldsAreEnteredForEquipment(){
+	public function testAllRequiredFieldsAreEnteredForEquipment(){
 		$input = array(
 			'serial_number' => '123456789',
 			'type' => 'Router',
@@ -38,6 +38,21 @@ class InventoryTest extends TestCase{
 			);
 		$response = $this -> call('POST', 'inventory/equipment/create', $input);
 		$this -> assertEquals(Equipment::where('serial_number', '=', '123456789')->first()->serial_number, $input['serial_number']);
+	}
+
+	public function testForFieldsThatContainsSpaces(){
+		$input = array(
+			'serial_number' => '123456789',
+			'manufacturer' => 'Com 3',
+			'type' => 'Router',
+			'model' => 'PTH1200',
+			'location' => 'TI240',
+			'obtained' => '2014-12-12',
+			'warranty' => '2014-12-12'
+			);
+
+		$response = $this -> call('POST', 'inventory/equipment/create', $input);
+		$this -> assertEquals(Equipment::where('model', '=', 'PTH1200')->first()->model, $input['model']);
 	}
 
 	public function testDeleteEquipment(){
