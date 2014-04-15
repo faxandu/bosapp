@@ -27,7 +27,7 @@ class Component extends Eloquent{
 		'equipment_id' => 'numeric'
 		'location' =>	'required|alpha_num_spaces'
 		'model' =>	'required|alpha_num_spaces'
-		'type' =>	'required|alpha'
+		'type' =>	'required|alpha_num_spaces'
 		'storage' =>	'alpha_num_spaces'
 		'memory' =>    'alpha_num_spaces'
 		);

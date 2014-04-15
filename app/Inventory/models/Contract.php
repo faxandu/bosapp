@@ -25,7 +25,7 @@ class Contract extends Eloquent{
 
 	private static $rules = array(
 		'equipment_id' => 'required|numeric'
-		'type' =>	'required|alpha_num'
+		'type' =>	'required|alpha_num_spaces'
 		'expiration' =>	'required|date'
 		'contract_number' =>	'required|alpha_num'
 		'vendor' =>	'required|alpha_num_spaces'
