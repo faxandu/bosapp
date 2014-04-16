@@ -16,8 +16,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 		return require __DIR__.'/../../bootstrap/start.php';
 	}
 
-<<<<<<< HEAD
-=======
+
 	public function setUp(){
 		parent::setUp();
 		$this -> prepareForTests();
@@ -30,5 +29,4 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 	// public function tearDown(){
 	// 	Artisan::call('migrate:rollback');
 	// }
->>>>>>> upstream/master
 }
