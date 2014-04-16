@@ -2,7 +2,7 @@
 
 namespace Lotto\models;
 
-use Eloquent, Validaton, Exception;
+use Eloquent, Validator, Exception;
 
 
 
@@ -99,29 +99,22 @@ class Course extends Eloquent {
     	
         $time = $course->creditHour;
 
-        // print_r( $user->courses->toarray() );
-        // exit;
         if(!empty($user->courses->toarray())){
         	foreach ($user->courses as $anotherCourse){
         		$time += $anotherCourse['creditHour'];
         	}
         }
-
-    	
-    
            
 		switch($user->type){
 
 			case 'labAide': if($time < Course::$labAide) return true;
 		}
 
-    	
 
 		throw new Exception("Insufficient time.");
     }
 
 	public static function checkUser($user, $course){
-        
 
         if(!('labAide' == $user->type))
             throw new Exception("Invalid employee type");
