@@ -3,6 +3,7 @@
 namespace Inventory\models;
 use Input, User, Response, Eloquent, Validator;
 
+
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
@@ -25,14 +26,14 @@ class Component extends Eloquent{
 
 	private static $rules = array(
 		'equipment_id' => 'numeric',
-		'location' =>	'required|alpha_num',
-		'model' =>	'required|alpha_num',
-		'type' =>	'required|alpha',
-		'storage' =>	'alpha_num',
-		'memory' =>    'alpha_num'
+		'location' =>	'required|alpha_num_spaces',
+		'model' =>	'required|alpha_num_spaces',
+		'type' =>	'required|alpha_num_spaces',
+		'storage' =>	'alpha_num_spaces',
+		'memory' =>    'alpha_num_spaces'
 		);
 
-	public static function validate($data){
+	public static function validate($date){
 		return Validator::make($data, static::$rules);
 	}
 }

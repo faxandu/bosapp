@@ -3,6 +3,7 @@
 namespace Inventory\controllers;
 use BaseController, Input, User, Entry, Inventory\models\Equipment, Response, View;
 
+
 class EquipmentController extends BaseController{
 	
 	public function postCreate(){
@@ -20,6 +21,7 @@ class EquipmentController extends BaseController{
 			catch(Exception $e){
 				$this->layout->content = View::make('inventory.equipmentForm', array('status' => 400, 'message' => 'Failed to add Eqipment', 'error' => $e));
 				//return Response::json(array('status' => 400, 'message' => 'failed to create equipment', 'error' => $e), 400);
+
 			}
 		}
 	}
@@ -63,6 +65,7 @@ class EquipmentController extends BaseController{
 
 	public function getForm() {
 		$this->layout->content = View::make('inventory.equipmentForm');
+
 	}
 
 	public function missingMethod($parameters = array())

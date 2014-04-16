@@ -1679,6 +1679,10 @@ th {
 }
 
 .table .table {
+<<<<<<< HEAD
+=======
+  background-color: #ffffff;
+>>>>>>> upstream/master
 }
 
 .table-condensed > thead > tr > th,

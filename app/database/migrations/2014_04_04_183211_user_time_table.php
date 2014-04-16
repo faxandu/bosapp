@@ -29,10 +29,15 @@ class UserTimeTable extends Migration {
 	public function down()
 	{
 
+<<<<<<< HEAD
 
         Schema::drop('user_time');
 
 
+=======
+        Schema::drop('user_time');
+
+>>>>>>> upstream/master
 	}
 
 }

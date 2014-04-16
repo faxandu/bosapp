@@ -13,12 +13,22 @@ return array(
 	|
 	*/
 
+<<<<<<< HEAD
+=======
+	//register error messages according to validator
+
+>>>>>>> upstream/master
 	"accepted"         => "The :attribute must be accepted.",
 	"active_url"       => "The :attribute is not a valid URL.",
 	"after"            => "The :attribute must be a date after :date.",
 	"alpha"            => "The :attribute may only contain letters.",
 	"alpha_dash"       => "The :attribute may only contain letters, numbers, and dashes.",
 	"alpha_num"        => "The :attribute may only contain letters and numbers.",
+<<<<<<< HEAD
+=======
+	"alpha_spaces"     => "The :attribute may only contain letters and spaces",
+	"alpha_num_spaces" => "The :attribute may only contain letters, numbers, and spaces",
+>>>>>>> upstream/master
 	"array"            => "The :attribute must be an array.",
 	"before"           => "The :attribute must be a date before :date.",
 	"between"          => array(

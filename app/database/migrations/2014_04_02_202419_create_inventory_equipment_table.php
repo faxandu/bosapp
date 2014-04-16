@@ -34,4 +34,8 @@ class CreateInventoryEquipmentTable extends Migration {
 		Schema::drop('inventory_equipment');
 	}
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> upstream/master

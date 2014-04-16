@@ -1,6 +1,7 @@
 <?php
 
 return array(
+<<<<<<< HEAD
   'default' => 'sqlite',
   'connections' => array(
     'sqlite' => array(
@@ -13,6 +14,8 @@ return array(
 
 
 return array(
+=======
+>>>>>>> upstream/master
 
 	/*
 	|--------------------------------------------------------------------------
@@ -134,4 +137,7 @@ return array(
 	),
 
 );
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master

@@ -44,11 +44,19 @@ App::after(function($request, $response)
 Route::filter('auth', function()
 {
 
+<<<<<<< HEAD
 	if(Auth::check()){
 		echo "logged in";
 		// exit;
 	}
 	App::abort(401);
+=======
+	if(!Auth::check()){
+		//return Redirect::intended();
+		App::abort(401, "Not authorized");
+	}
+	
+>>>>>>> upstream/master
 
 });
 

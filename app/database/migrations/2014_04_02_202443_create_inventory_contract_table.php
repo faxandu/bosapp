@@ -19,6 +19,10 @@ class CreateInventoryContractTable extends Migration {
 			$table->date('expiration');
 			$table->string('contract_number');
 			$table->string('vendor');
+<<<<<<< HEAD
+=======
+			$table->string('contact_info');
+>>>>>>> upstream/master
 			$table->foreign('equipment_id')->references('id')->on('inventory_equipment');
 		});
 	}

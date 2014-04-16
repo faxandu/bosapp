@@ -3,6 +3,7 @@
 namespace Inventory\controllers;
 use BaseController, Input, User, Entry, Exception, Inventory\models\Component, Inventory\models\Equipment, Response, Redirect;
 
+
 class ComponentController extends BaseController{
 		
 	public function postCreate(){

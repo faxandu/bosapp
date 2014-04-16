@@ -20,7 +20,12 @@ Route::get('/', function() use($layout) {
 
 
 
+<<<<<<< HEAD
 //Route::group(array('before' => 'auth'), function() {
+=======
+Route::group(array('before' => 'auth'), function()
+{
+>>>>>>> upstream/master
 
 	
 	Route::controller('user', 'UserController');
@@ -37,6 +42,12 @@ Route::get('/', function() use($layout) {
 		Route::controller('entry', 'GroupStudy\controllers\EntryController');
 		Route::controller('report', 'GroupStudy\controllers\ReportController');
 
+<<<<<<< HEAD
+=======
+		Route::match(array('GET', 'POST'), '/checkPunchedIn', 'GroupStudy\controllers\EntryController@checkPunchedIn');
+		Route::match(array('GET', 'POST'), '/StartEntry', 'GroupStudy\controllers\EntryController@StartEntry');
+
+>>>>>>> upstream/master
 	});
 
 	Route::group(array('prefix' => 'calendar/'), function() {
@@ -44,6 +55,7 @@ Route::get('/', function() use($layout) {
 		Route::controller('entries', 'Calendar\controllers\EntriesController');
 	});
 
+<<<<<<< HEAD
 	Route::match(array('GET', 'POST'), '/checkPunchedIn', 'GroupStudy\controllers\EntryController@checkPunchedIn');
 	Route::match(array('GET', 'POST'), '/StartEntry', 'GroupStudy\controllers\EntryController@StartEntry');
 
@@ -58,3 +70,12 @@ Route::get('/', function() use($layout) {
 
 
 
+=======
+	Route::group(array('prefix' => 'inventory/'), function() {
+		Route::controller('equipment', 'Inventory\controllers\EquipmentController');
+		Route::controller('component', 'Inventory\controllers\ComponentController');
+		Route::controller('contract', 'Inventory\controllers\ContractController');
+	});
+
+});
+>>>>>>> upstream/master

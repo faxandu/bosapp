@@ -25,14 +25,16 @@ class Equipment extends Eloquent{
 
 	public function component(){
 		return $this -> hasMany('Inventory\models\Component');
+
 	}
+
 
 	private static $rules = array(
 		'serial_number' => 'required|alpha_num',
-		'manufacturer' =>	'required|alpha_num',
+		'manufacturer' =>	'required|alpha_num_spaces',
 		'type' => 'required|alpha',
-		'model' =>	'alpha_num',
-		'location' =>	'required|alpha_num',
+		'model' =>	'alpha_num_spaces',
+		'location' =>	'required|alpha_num_spaces',
 		'obtained' =>	'date',
 		'warranty' =>    'date'
 		);

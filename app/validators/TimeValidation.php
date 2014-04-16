@@ -1,5 +1,9 @@
 <?php
 
+<<<<<<< HEAD
+=======
+//custom validators
+>>>>>>> upstream/master
 class TimeValidation extends Validator {
 
 

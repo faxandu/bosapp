@@ -1,6 +1,8 @@
 <?php 
 namespace Lotto\controllers;
-use BaseController, Lotto\models\Skill, Response, Input;
+
+use BaseController, Lotto\models\Skill, User;
+use Response, Input, Exception;
 
 class SkillController extends BaseController {
 
@@ -10,7 +12,7 @@ class SkillController extends BaseController {
 
 		try{
 			
-			Skill::findOrFail($id)->forceDelete();
+			Skill::findOrFail($id)->delete();
 
 		}catch(exception $e){
 			return Response::json(array('status' => 400, 	
@@ -82,7 +84,8 @@ class SkillController extends BaseController {
 		try{
 
 			User::findOrFail($userId)->skills()->attach($skill);
-		}catch(exception $e){
+
+		} catch(exception $e){
 			return Response::json(array('status' => 400, 
 				'message' => 'Failed to assign skill', 'error' => $e->getMessage()), 400);
 		}

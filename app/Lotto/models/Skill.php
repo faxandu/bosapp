@@ -1,5 +1,9 @@
 <?php
 namespace Lotto\models;
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 use Eloquent;
 
 class Skill extends Eloquent {

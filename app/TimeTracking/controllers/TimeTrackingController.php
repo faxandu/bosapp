@@ -9,12 +9,8 @@ namespace TimeTracking\controllers;
 
 use BaseController, Input, User,  Entry ,Response;
 
-class TimeTrackingController extends BaseController {
+class TimeTrackingController extends  BaseController{
 
-
-    public function getIndex() {
-        Response::json('hi');
-    }
 
     public function postCreateTime(){
 
