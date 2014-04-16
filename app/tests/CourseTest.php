@@ -3,8 +3,10 @@
 class CourseTest extends TestCase {
 
 
-	public function testSomethingIsTrue()
-    {
+	public function test_create_course(){
+        
+       
+
         $this->assertTrue(true);
     }
 

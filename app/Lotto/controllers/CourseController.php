@@ -97,6 +97,59 @@ class CourseController extends BaseController {
 
 	public function getAssignLabaides(){
 
+
+
+
+
+		//grab course list based off course level. lower -> higher
+		foreach(Course::all()->sortBy('course_number') as $course){
+			echo $course->course_title;
+
+
+			//$course = Course::find(2);
+			//for every course - grab all users that can cover it.
+			//Required skills
+			// and must be able to aide within the time
+
+			$eligibleLabaides = User::where('type','=','labAide')->with('skills')
+			->whereHas('skills', function($query) use ($course){
+				$query->where('name', '=', $course->course_title);
+			})->with('availability')->whereHas('availability', function($query) use($course){
+				$query->where('start_time', '<=', $course->start_time);
+				$query->where('end_time', '>=', $course->end_time);
+				$query->where('start_date', '<=', $course->start_date);
+				$query->where('end_date', '>=', $course->end_date);
+			})->get();
+
+			//debug - print all labaides per course;
+			foreach($eligibleLabaides as $user){
+				echo $user->username;
+			}
+
+			
+			//if only one labaide - assign as labaide
+			if( $eligibleLabaides->count() == 1){
+				$course->labaides()->attach($eligibleLabaides->first());
+
+				continue;
+			}
+
+
+			exit;
+
+			//get skill count
+
+			//if not equal lowest gets it. if some are equal on the lowest - rand
+
+
+
+			/// if skill count is equal
+
+			/// sort based on priority of class. Highest to lowest - first gets. If same then rand
+			echo $course;
+
+		}
+		exit;
 		// Staff all courses that are possible
 		foreach(Course::all() as $course){
 			// per course - grab the labaides that can staff it.
