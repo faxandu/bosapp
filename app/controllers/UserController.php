@@ -37,16 +37,9 @@ class UserController extends BaseController {
 			return Response::json(array('status' => 400, 	
 			'message' => 'Failed to delete user.', 'error' => $e->getMessage()), 400);
 		}
-<<<<<<< HEAD
 
-		$user->skills()->detach();
-		$user->labAide()->detach();
-		$user->staffType()->detach();
-		$user->forceDelete();
-=======
 		
 		$user->delete();
->>>>>>> upstream/master
 
 
 		return Response::json(array('status' => 200, 'message' => 'User Deleted'), 200);
@@ -72,8 +65,7 @@ class UserController extends BaseController {
 		}		
 	}
 
-<<<<<<< HEAD
-=======
+
 	public function postGetUserAvailability(){
 		
 		$id = Input::get('id');
@@ -107,8 +99,7 @@ class UserController extends BaseController {
 			'message' => 'Failed to get user.', 'error' => $e->getMessage()), 400);
 		}		
 	}
-
->>>>>>> upstream/master
+	
 	public function postLogin() {
 		//return Input::all();
 		
