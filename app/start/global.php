@@ -21,6 +21,7 @@ ClassLoader::addDirectories(array(
 
 ));
 
+
 //register validators here
 Validator::extend('time', 'TimeValidation@validateTime');
 Validator::extend('alpha_num_spaces', 'SpaceValidation@validateAlphaNumSpaces');
@@ -61,12 +62,13 @@ App::error(function(Exception $exception, $code)
 	Log::error($exception);
 });
 
-
+/*
 App::fatal(function($exception)
 {
     echo "no info for you";
     exit;
 });
+*/
 
 /*
 |--------------------------------------------------------------------------

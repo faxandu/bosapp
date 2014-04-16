@@ -37,6 +37,7 @@ class UserController extends BaseController {
 			return Response::json(array('status' => 400, 	
 			'message' => 'Failed to delete user.', 'error' => $e->getMessage()), 400);
 		}
+
 		
 		$user->delete();
 
@@ -63,6 +64,7 @@ class UserController extends BaseController {
 			'message' => 'Failed to get user.', 'error' => $e->getMessage()), 400);
 		}		
 	}
+
 
 	public function postGetUserAvailability(){
 		
@@ -97,7 +99,7 @@ class UserController extends BaseController {
 			'message' => 'Failed to get user.', 'error' => $e->getMessage()), 400);
 		}		
 	}
-
+	
 	public function postLogin() {
 		//return Input::all();
 		

@@ -35,3 +35,4 @@ class CreateInventoryEquipmentTable extends Migration {
 	}
 
 }
+

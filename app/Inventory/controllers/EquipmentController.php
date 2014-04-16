@@ -1,7 +1,8 @@
 <?php
 
 namespace Inventory\controllers;
-use BaseController, Input, User, Entry, Inventory\models\Equipment, Response;
+use BaseController, Input, User, Entry, Inventory\models\Equipment, Response, View;
+
 
 class EquipmentController extends BaseController{
 	
@@ -14,10 +15,13 @@ class EquipmentController extends BaseController{
 		else{
 			try{
 				$equipment = Equipment::create($input);
-				return Response::json(array('status' => 201, 'message' => 'created equipment'), 201);
+				$this->layout->content = View::make('inventory.equipmentForm', array('status' => 201, 'message' => 'Equipment Added Successfully'));
+				//return Response::json(array('status' => 201, 'message' => 'created equipment'), 201);
 			}
 			catch(Exception $e){
-				return Response::json(array('status' => 400, 'message' => 'failed to create equipment', 'error' => $e), 400);
+				$this->layout->content = View::make('inventory.equipmentForm', array('status' => 400, 'message' => 'Failed to add Eqipment', 'error' => $e));
+				//return Response::json(array('status' => 400, 'message' => 'failed to create equipment', 'error' => $e), 400);
+
 			}
 		}
 	}
@@ -54,8 +58,14 @@ class EquipmentController extends BaseController{
 		return Response::json(array('status' => 201, 'messages' => 'equipment updated successfully'), 201);
 	}
 
-	public function getData(){
-		return Response::json(Equipment::all());
+	public function getIndex(){
+		//return Response::json(Equipment::all());
+		$this->layout->content = View::make('inventory.home', array('equipment' => Equipment::all()));
+	}
+
+	public function getForm() {
+		$this->layout->content = View::make('inventory.equipmentForm');
+
 	}
 
 	public function missingMethod($parameters = array())

@@ -12,6 +12,7 @@ class Course extends Eloquent {
 	public $timestamps = true;
     protected $softDelete = true;
 
+
 	protected $fillable = array('building', 'course_number', 'course_title', 'credit_hours', 'crn',
 	 'days_of_week', 'end_date', 'end_time', 'instructor', 'part_of_term','room_number',
       'section', 'start_date', 'start_time', 'subject_code', 'term_code');
@@ -80,13 +81,16 @@ class Course extends Eloquent {
 
     }
 
+
 	public function labaides(){
         return $this->belongsToMany('User', 'schedule_course_labaide');
     }
 
     protected static function checkSkills($user, $course){
        
+
         if(in_array($course->course_title, $user->skills->fetch('name')->toarray()))
+
             return true;
 
     	throw new Exception("Missing required skill");
@@ -115,13 +119,10 @@ class Course extends Eloquent {
 			case 'labAide': if($time < Course::$labAide) return true;
 		}
 
-    	
-
 		throw new Exception("Insufficient time.");
     }
 
 	public static function checkUser($user, $course){
-        
 
         if(!('labAide' == $user->type))
             throw new Exception("Invalid employee type");

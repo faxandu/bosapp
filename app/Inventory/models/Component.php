@@ -1,7 +1,8 @@
 <?php
 
 namespace Inventory\models;
-use Input, User, Response, Eloquent;
+use Input, User, Response, Eloquent, Validator;
+
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;

@@ -3,6 +3,7 @@
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
+
 use Lotto\models\Course, Lotto\models\Skill, Lotto\models\Availability;
 
 class User extends Eloquent  implements UserInterface, RemindableInterface {
@@ -23,6 +24,7 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
         'username' => 'alpha_num|exists:user,username',
         //'password'=>'required|alpha_num|between:6,12|confirmed',
     );
+
 
     public static function boot(){
         parent::boot();
@@ -48,9 +50,6 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
 
 
 
-
-
-
     public static function validate($data){
         return Validator::make($data, static::$rules);
     }
@@ -60,6 +59,7 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
     }
 
     public function skills(){
+
         return $this->belongsToMany('Lotto\models\Skill', 'schedule_user_skill');
     }
 
@@ -70,6 +70,7 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
     public function availability(){
         return $this->belongsToMany('Lotto\models\Availability', 'schedule_user_availability', 'user_id', 'availability_id');
     }
+
 
 
 

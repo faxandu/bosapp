@@ -9,6 +9,7 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 class Contract extends Eloquent{
 
 	protected $table = 'inventory_contract';
+
 	protected $fillable = array('equipment_id', 'type', 'expiration', 'contract_number', 'vendor', 'contact_info');
 	protected $guarded = array('id');
 	public $timestamps = false;
@@ -20,11 +21,12 @@ class Contract extends Eloquent{
 	 */
 
 	public function entry(){
-		return $this -> belongsTo('Equipment');
+		return $this -> belongsTo('Inventory\models\Equipment');
 	}
 
 	private static $rules = array(
 		'equipment_id' => 'required|numeric',
+
 		'type' =>	'required|alpha_num_spaces',
 		'expiration' =>	'required|date',
 		'contract_number' =>	'required|alpha_num',
