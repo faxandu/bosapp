@@ -17,12 +17,9 @@
 			"app/Lotto/",
 			"app/Calendar/",
 			"app/GroupStudy/",
-<<<<<<< HEAD
 			"app/Inventory",
 			"app/TimeTracking"
-=======
-			"app/Inventory"
->>>>>>> upstream/master
+
 		]
 	},
 	"scripts": {

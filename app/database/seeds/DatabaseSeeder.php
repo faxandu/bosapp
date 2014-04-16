@@ -1,9 +1,7 @@
 <?php
-<<<<<<< HEAD
 
-=======
 use Lotto\models\Availability, Lotto\models\Course, Lotto\models\Skill;
->>>>>>> upstream/master
+
 class DatabaseSeeder extends Seeder {
 
 	/**
@@ -24,13 +22,6 @@ class UserTableSeeder extends Seeder{
 
 	public function run(){
 		DB::table('user')->delete();
-<<<<<<< HEAD
-		User::create(array('username' => 'bob', 'password' => Hash::make('1')));
-	}
-
-
-}
-=======
 		User::create(array('username' => 'bob', 'type' => 'labAide', 'password' => Hash::make('1')));
 		User::create(array('username' => 'fred', 'type' => 'labAide', 'password' => Hash::make('1')));
 		User::create(array('username' => 'dave', 'type' => 'labAide', 'password' => Hash::make('1')));
@@ -115,5 +106,3 @@ class AvailabilityTableSeeder extends Seeder{
 
 }
 
-
->>>>>>> upstream/master

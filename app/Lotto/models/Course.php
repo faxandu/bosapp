@@ -12,11 +12,8 @@ class Course extends Eloquent {
 	public $timestamps = true;
     protected $softDelete = true;
 
-<<<<<<< HEAD
-	protected $fillable = array('building', 'course_number', 'course_title', 'creditHour', 'crn',
-=======
+
 	protected $fillable = array('building', 'course_number', 'course_title', 'credit_hours', 'crn',
->>>>>>> upstream/master
 	 'days_of_week', 'end_date', 'end_time', 'instructor', 'part_of_term','room_number',
       'section', 'start_date', 'start_time', 'subject_code', 'term_code');
 	
@@ -63,10 +60,6 @@ class Course extends Eloquent {
 
         Course::created(function($course){
            	try{
-<<<<<<< HEAD
-                // Skill::create(array('name' => 'bob'));
-=======
->>>>>>> upstream/master
         		Skill::where('name' ,'=' , $course->course_title)->firstOrFail();
         	}catch (Exception $e){
         		Skill::create(array('name' => $course->course_title));
@@ -78,37 +71,26 @@ class Course extends Eloquent {
             
         });
 
-<<<<<<< HEAD
-        Course::deleting(function($course){
-           
-=======
         Course::updating(function($course){
             ////// UPDATING COURSE - NOTIFY USER?
         });
         Course::deleting(function($course){
             $course->labaides()->detach();
            ///// DELETING COURSE - NOTIFY USER?
->>>>>>> upstream/master
         });
 
     }
 
-<<<<<<< HEAD
-	public function labAides(){
-        return $this->belongsToMany('User', 'lotto_course_labAide');
-=======
+
 	public function labaides(){
         return $this->belongsToMany('User', 'schedule_course_labaide');
->>>>>>> upstream/master
     }
 
     protected static function checkSkills($user, $course){
        
-<<<<<<< HEAD
-        if(in_array($course->name, $user->skills->fetch('name')->toarray()))
-=======
+
         if(in_array($course->course_title, $user->skills->fetch('name')->toarray()))
->>>>>>> upstream/master
+
             return true;
 
     	throw new Exception("Missing required skill");
@@ -121,22 +103,6 @@ class Course extends Eloquent {
     	
         $time = $course->creditHour;
 
-<<<<<<< HEAD
-    	foreach ($user->courses as $anotherCourse){
-    		$time += $anotherCourse['creditHour'];
-    	}
-
-
-    	
-    	foreach ($user->staffTypes as $type){
-           
-    		switch($type['type']){
-
-    			case 'labAide': if($time < Course::$labAide) return true;
-    		}
-
-    	}
-=======
         // print_r( $user->courses->toarray() );
         // exit;
         if(!empty($user->courses->toarray())){
@@ -153,21 +119,12 @@ class Course extends Eloquent {
 			case 'labAide': if($time < Course::$labAide) return true;
 		}
 
-    	
->>>>>>> upstream/master
-
 		throw new Exception("Insufficient time.");
     }
 
 	public static function checkUser($user, $course){
-<<<<<<< HEAD
-
-        if(! in_array( 'labAide', $user->staffTypes->fetch('type')->toarray() ) )
-=======
-        
 
         if(!('labAide' == $user->type))
->>>>>>> upstream/master
             throw new Exception("Invalid employee type");
 		course::checkSkills($user, $course);		
 		course::checkTime($user, $course);

@@ -1,21 +1,7 @@
 <?php
 
 return array(
-<<<<<<< HEAD
-  'default' => 'sqlite',
-  'connections' => array(
-    'sqlite' => array(
-      'driver'   => 'sqlite',
-      'database' => ':memory:',
-      'prefix'   => ''
-    ),
-  )
-);
 
-
-return array(
-=======
->>>>>>> upstream/master
 
 	/*
 	|--------------------------------------------------------------------------
@@ -137,7 +123,4 @@ return array(
 	),
 
 );
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
+

@@ -5,13 +5,9 @@
 composer.phar
 composer.lock
 .env.local.php
-<<<<<<< HEAD
-.env.php
-=======
 .env.testing.php
 .env.php
 .env.testing.php
->>>>>>> upstream/master
 .DS_Store
 Thumbs.db
 sftp-config.json

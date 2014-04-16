@@ -3,11 +3,9 @@
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
-<<<<<<< HEAD
-=======
+
 use Lotto\models\Course, Lotto\models\Skill, Lotto\models\Availability;
 
->>>>>>> upstream/master
 class User extends Eloquent  implements UserInterface, RemindableInterface {
 
 	protected $table = 'user';
@@ -27,8 +25,7 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
         //'password'=>'required|alpha_num|between:6,12|confirmed',
     );
 
-<<<<<<< HEAD
-=======
+
     public static function boot(){
         parent::boot();
 
@@ -53,10 +50,6 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
 
 
 
-
-
-
->>>>>>> upstream/master
     public static function validate($data){
         return Validator::make($data, static::$rules);
     }
@@ -66,18 +59,7 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
     }
 
     public function skills(){
-<<<<<<< HEAD
-        return $this->belongsToMany('Skill', 'schedule_user_skill');
-    }
 
-    public function courses(){
-        return $this->belongsToMany('Course', 'schedule_course_labaide');
-    }
-
-    // public function entries(){
-    //     return $this->belongsToMany('Entry', 'lotto_user_entries', 'user_id', 'entry_id');
-    // }
-=======
         return $this->belongsToMany('Lotto\models\Skill', 'schedule_user_skill');
     }
 
@@ -88,7 +70,7 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
     public function availability(){
         return $this->belongsToMany('Lotto\models\Availability', 'schedule_user_availability', 'user_id', 'availability_id');
     }
->>>>>>> upstream/master
+
 
 
 
