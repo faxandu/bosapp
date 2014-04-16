@@ -24,11 +24,11 @@ class Component extends Eloquent{
 	}
 
 	private static $rules = array(
-		'equipment_id' => 'numeric'
-		'location' =>	'required|alpha_num_spaces'
-		'model' =>	'required|alpha_num_spaces'
-		'type' =>	'required|alpha_num_spaces'
-		'storage' =>	'alpha_num_spaces'
+		'equipment_id' => 'numeric',
+		'location' =>	'required|alpha_num_spaces',
+		'model' =>	'required|alpha_num_spaces',
+		'type' =>	'required|alpha_num_spaces',
+		'storage' =>	'alpha_num_spaces',
 		'memory' =>    'alpha_num_spaces'
 		);
 
