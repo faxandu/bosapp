@@ -1,0 +1,99 @@
+<?php
+
+class UserController extends BaseController {
+
+	public function postCreate(){
+		$input = Input::all();
+		
+		//$validatedInput = Course::validate(Input::all());
+
+		//$messages = $validatedInput->messages();
+
+		// if any error messages, don't create and return errors.
+		//if(!$messages->all()){
+			try{
+
+				$user = User::create($input);
+
+				return Response::json(array('status' => 201, 'message' => 'User created'), 201);
+
+			}catch(Exception $e){
+				return Response::json(array('status' => 400, 
+					'message' => 'Failed to create user', 'error' => $e), 400);
+			}
+		//}
+		return Response::json(array('status' => 400,
+		 'message' => 'Failed to create User', 'error' => $messages->all() ), 400);
+	}
+
+	public function postDelete(){
+		$id = Input::get('id');
+
+		try{
+
+			$user = User::findOrFail($id);
+			
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 	
+			'message' => 'Failed to delete user.', 'error' => $e->getMessage()), 400);
+		}
+
+		$user->skills()->detach();
+		$user->labAide()->detach();
+		$user->staffType()->detach();
+		$user->forceDelete();
+
+
+		return Response::json(array('status' => 200, 'message' => 'User Deleted'), 200);
+	}
+
+	public function getGet(){
+		return Response::json(User::all());
+	}
+
+	public function postGet(){
+		
+		$id = Input::get('id');
+
+		try{	
+
+			$user =  User::findOrFail($id);
+
+			return Response::json($user);
+
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 	
+			'message' => 'Failed to get user.', 'error' => $e->getMessage()), 400);
+		}		
+	}
+
+	public function postLogin() {
+		//return Input::all();
+		
+		$user = array(
+			'username' => Input::get('username'),
+			'password' => Input::get('password')
+		);
+		
+		try{
+			if(Auth::attempt($user)){
+				return Redirect::to('/');
+			}else{
+				return Response::json(array('error' => 'invalid username or password'), 400);
+			}
+		}catch(exception $e){
+			return Response::json(array('status' => 400, 'error' => $e->getMessage()), 400);
+		}
+
+	}
+
+	public function postLogout() {
+
+		Auth::logout();
+		return Response::json(array('logged out'));
+	}
+
+	public function missingMethod($parameters = array()){
+		return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
+	}
+}

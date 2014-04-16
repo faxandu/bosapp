@@ -1,0 +1,11 @@
+/bootstrap/compiled.php
+/vendor
+.idea/
+/app/_ide_helpers.php
+composer.phar
+composer.lock
+.env.local.php
+.env.php
+.DS_Store
+Thumbs.db
+sftp-config.json
