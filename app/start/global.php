@@ -64,8 +64,8 @@ App::error(function(Exception $exception, $code)
 
 App::fatal(function($exception)
 {
-    echo "no info for you";
-    exit;
+    Log::error($exception);
+    // exit;
 });
 
 /*

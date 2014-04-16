@@ -13,6 +13,7 @@ class UserController extends BaseController {
 		//if(!$messages->all()){
 			try{
 
+				$input['password'] = Hash::make($input['password']);
 				$user = User::create($input);
 
 				return Response::json(array('status' => 201, 'message' => 'User created'), 201);

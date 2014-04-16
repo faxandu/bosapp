@@ -19,7 +19,7 @@ class UserTable extends Migration {
 			$table->string('last_name', 30);
 			$table->string('password', 128);
 			$table->enum('department', array('bos', 'none'))->default('none');
-			$table->enum('admin', array('bos', 'none'))->default('none');
+			$table->boolean('admin')->default('false');
 			$table->enum('type', array('labAide','fullTime','partTime', 'adjunct', 'labTech', 'other'))->default('other');
 			$table->string('username', 30);
 			
