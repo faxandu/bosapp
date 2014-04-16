@@ -20,12 +20,14 @@ class Equipment extends Eloquent{
 	 */
 
 	public function contract(){
-		return $this -> hasMany('Contract');
+		return $this -> hasMany('Inventory\models\Contract');
 	}
 
 	public function component(){
-		return $this -> hasMany('Component');
+		return $this -> hasMany('Inventory\models\Component');
+
 	}
+
 
 	private static $rules = array(
 		'serial_number' => 'required|alpha_num',

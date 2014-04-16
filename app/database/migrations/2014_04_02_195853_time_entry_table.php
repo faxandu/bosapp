@@ -34,6 +34,7 @@ class TimeEntryTable extends Migration {
 	{
 
 		Schema::drop('time_tracking_entry');
+
 	}
 
 }

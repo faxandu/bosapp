@@ -1,6 +1,7 @@
 <?php 
 
 namespace Lotto\controllers;
+
 use BaseController, Lotto\models\Course, Lotto\models\Skill, User;
 use Input, Response, Exception;
 
@@ -224,6 +225,7 @@ class CourseController extends BaseController {
 		return Response::json(array('status' => 200, 'message' => 'labAide removed'), 200);
 	}
 
+
 	public function postSetLabaide(){
 		$courseId = Input::get('course');
 		$userId = Input::get('user');
@@ -234,6 +236,7 @@ class CourseController extends BaseController {
 			$course = Course::findorFail($courseId);
 			
 			if(Course::checkUser($user, $course)){
+
 				$course->labaides()->attach($user);
 			}
 

@@ -28,9 +28,7 @@ class UserTimeTable extends Migration {
 	 */
 	public function down()
 	{
-
         Schema::drop('user_time');
-
 	}
 
 }

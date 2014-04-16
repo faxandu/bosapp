@@ -1,5 +1,7 @@
 <?php
+
 use Lotto\models\Availability, Lotto\models\Course, Lotto\models\Skill;
+
 class DatabaseSeeder extends Seeder {
 
 	/**
@@ -103,5 +105,4 @@ class AvailabilityTableSeeder extends Seeder{
 
 
 }
-
 

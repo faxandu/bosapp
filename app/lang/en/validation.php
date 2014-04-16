@@ -13,6 +13,7 @@ return array(
 	|
 	*/
 
+
 	//register error messages according to validator
 
 	"accepted"         => "The :attribute must be accepted.",
