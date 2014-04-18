@@ -31,7 +31,7 @@ class TimeTrackingController extends  BaseController{
         }
 
     }
-    
+
     public function postDeleteTime(){
 
         $timeEntry = TimeTrackingEntry::find('id');
