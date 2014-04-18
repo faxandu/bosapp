@@ -95,5 +95,8 @@ class TimeTrackingController extends  BaseController{
             return (($hours > 0 &&  $minutes >= 0 && $seconds >= 0));
 
     return false; // Time wasn't valid..
+
     }
+
+
 }
