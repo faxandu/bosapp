@@ -8,12 +8,14 @@
 			echo HTML::style('css/bootstrap-theme.css');
 			echo HTML::style('css/bootstrap-datetimepicker.min.css');
 			echo HTML::style('css/fullcalendar.css');
+			echo HTML::style('css/jquery.dataTables.css');
 			echo HTML::style('css/styles.css');
 		?>
 		<!-- Scripts go Here -->
 	<?php
 		echo HTML::script('js/jquery.js');
 		echo HTML::script('js/jquery-ui.js');
+		echo HTML::script('js/jquery.dataTables.min.js');
 		echo HTML::script('js/bootstrap.js');
 		echo HTML::script('js/bootstrap-datetimepicker.js');
 		echo HTML::script('js/fullcalendar.js');
@@ -50,6 +52,13 @@
 		            <li><a href="#">One more separated link</a></li>
 		          </ul>
 		        </li>
+		        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventory <b class="caret"></b></a>
+		        	<ul class="dropdown-menu">
+		        		<li><a href="<?php echo URL::to('/inventory/equipment'); ?>">View Inventory</a></li>
+		        		<li><a href="<?php echo URL::to('/inventory/equipment/form'); ?>">Add Equipment</a></li>
+		        	</ul>
+		        </li>
+
 		      </ul>
 		      	<?php if(!Auth::check()) { ?>
 			      <?php echo Form::open(array('url'=>'login', 'class'=>'navbar-form pull-right')); ?>

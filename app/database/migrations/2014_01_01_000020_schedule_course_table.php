@@ -19,7 +19,7 @@ class ScheduleCourseTable extends Migration {
 			$table->string('building', 4);
 			$table->integer('course_number');
 			$table->string('course_title', 100);
-			$table->integer('creditHour')->unsigned();
+			$table->integer('credit_hours')->unsigned();
 			$table->string('crn', 10)->unique();
 			$table->string('days_of_week', 10);
 			$table->date('end_date');

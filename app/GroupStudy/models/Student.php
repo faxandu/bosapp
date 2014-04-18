@@ -1,7 +1,7 @@
 <?php
 
 namespace GroupStudy\models;
-use Input, User, Response;
+use Input, User, Response, Eloquent;
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
@@ -20,6 +20,8 @@ class Student extends Eloquent{
 	 */
 
 	public function entry(){
-		return $this -> belongsTo('Entry', 'group_study_student_entry');
+		return $this -> belongsToMany('Entry', 'group_study_student_entry');
 	}
+
+
 }

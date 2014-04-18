@@ -1,7 +1,9 @@
 <?php 
 
 namespace Lotto\controllers;
-use BaseController, Input, Lotto\models\Course, Response;
+
+use BaseController, Lotto\models\Course, Lotto\models\Skill, User;
+use Input, Response, Exception;
 
 class CourseController extends BaseController {
 
@@ -29,38 +31,92 @@ class CourseController extends BaseController {
 		 'message' => 'Failed to create course', 'error' => $messages->all() ), 400);
 	}
 
-	public function getImport(){
-		
-		$file = file_get_contents($_ENV['courseLink']);
+	/**
+	*	Grab the Json file from the link.
+	*	Parse each part into a specific array with keys. 
+	*	Format time and date.
+	*	Try to find existing entry, if so update else create
+	*	Look to see if any courses have been deleted.
+	*/
 
+
+
+	public function postImport(){
+
+		$file = file_get_contents($_ENV['courseLinkTest']);
 		$data = json_decode($file, true);
-	
-		foreach($data as  $value){
-			Course::create(
-					array(
 
-						'end_time' => $value['END_TIME'],
-						'building' => $value['BUILDING'],
-						'term_code' => $value['TERM_CODE'],
-						'crn' => $value['CRN'],
-						'days_of_week' => $value['DAYS'],
-						'instructor' => $value['INSTRUCTOR'],
-						'start_time' => $value['BEGIN_TIME'],
-						'start_date' => $value['START_DATE'],
-						'section' => $value['SECTION'],
-						'course_number' => $value['COURSE_NUMBER'],
-						'room_number' => $value['ROOM_NUMBER'],
-						'subject_code' => $value['SUBJECT_CODE'],
-						'course_title' => $value['COURSE_TITLE'],
-						'part_of_term' => $value['PART_OF_TERM'],
-						'end_date' => strtotime($value['END_DATE'])
-						)
-				);
+		$timeFormat = "H:i:s";
+		$dateFormat = "Y-m-d";
+
+		echo "Parsing file";
+		foreach($data as  $value){
+			
+			$parsed = array(
+				'credit_hours' => $value['CREDIT_HOURS'],
+				'end_time' => date($timeFormat,strtotime($value['END_TIME'])),
+				'building' => $value['BUILDING'],
+				'term_code' => $value['TERM_CODE'],
+				'crn' => $value['CRN'],
+				'days_of_week' => $value['DAYS'],
+				'instructor' => $value['INSTRUCTOR'],
+				'start_time' => date($timeFormat,strtotime($value['BEGIN_TIME'])),
+				'start_date' => date($dateFormat,strtotime($value['START_DATE'])),
+				'section' => $value['SECTION'],
+				'course_number' => $value['COURSE_NUMBER'],
+				'room_number' => $value['ROOM_NUMBER'],
+				'subject_code' => $value['SUBJECT_CODE'],
+				'course_title' => $value['COURSE_TITLE'],
+				'part_of_term' => $value['PART_OF_TERM'],
+				'end_date' => date($dateFormat,strtotime($value['END_DATE']))
+			);
+
+			try{
+
+				$course = Course::where('crn', '=', $parsed['crn'])->firstOrFail();
+				$course->update($parsed);
+
+			}catch(Exception $e){
+				Course::create($parsed);
+			}
+
+		}
+		
+		echo "<br>Parsed file, now checking for deleted courses";
+		foreach(Course::all() as $course){
+
+			if(!array_key_exists($course->crn, $data)){
+				$course->delete();
+			}
+
 		}
 
-		return Course::all();
-
 		exit;
+		// return Course::all();
+	}
+
+
+	public function getAssignLabaides(){
+
+		// Staff all courses that are possible
+		foreach(Course::all() as $course){
+			// per course - grab the labaides that can staff it.
+			$eligibleLabaides = User::where('type','=','labAide')->with('skills')
+			->whereHas('skills', function($query) use ($course){
+				$query->where('name', '=', $course->course_title);
+			})->get();
+
+			echo "<pre>";
+			foreach($eligibleLabaides as $user){
+				echo $user->username." can staff ".$course->course_title;
+				echo "<br>";
+			}
+			echo "<br>";
+			echo "</pre>";
+
+			
+		}
+		return "failed";
 	}
 
 	public function postDelete(){
@@ -70,8 +126,7 @@ class CourseController extends BaseController {
 		try{
 			
 			$course = Course::findOrFail($id);
-			$course->labAides()->detach();
-			$course->forceDelete();
+			$course->delete();
 
 		}catch(exception $e){
 			return Response::json(array('status' => 400, 	
@@ -91,7 +146,7 @@ class CourseController extends BaseController {
 		try{	
 			
 			$course = Course::findOrFail($id);
-			$course->labAides->toArray();
+			$course->labaides->toArray();
 			
 			return Response::json($course->toArray());
 
@@ -107,7 +162,7 @@ class CourseController extends BaseController {
 		$courseId = Input::get('course');
 
 		try{		
-			Course::findorFail($courseId)->labAides()->detatch($userId);
+			Course::findorFail($courseId)->labaides()->detatch($userId);
 
 		}catch(exception $e){
 			return Response::json(array('status' => 400, 	
@@ -117,7 +172,8 @@ class CourseController extends BaseController {
 		return Response::json(array('status' => 200, 'message' => 'labAide removed'), 200);
 	}
 
-	public function postSetLabAide(){
+
+	public function postSetLabaide(){
 		$courseId = Input::get('course');
 		$userId = Input::get('user');
 		
@@ -127,7 +183,8 @@ class CourseController extends BaseController {
 			$course = Course::findorFail($courseId);
 			
 			if(Course::checkUser($user, $course)){
-				$course->labAides()->attach($user);
+
+				$course->labaides()->attach($user);
 			}
 
 		}catch(exception $e){

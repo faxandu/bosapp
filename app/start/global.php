@@ -21,7 +21,12 @@ ClassLoader::addDirectories(array(
 
 ));
 
+
+//register validators here
 Validator::extend('time', 'TimeValidation@validateTime');
+Validator::extend('alpha_num_spaces', 'SpaceValidation@validateAlphaNumSpaces');
+Validator::extend('alpha_spaces', 'SpaceValidation@validateAlphaSpaces');
+
 // Validator::resolver(function($translator, $data, $rules, $messages)
 // {
 //     return new TimeValidation($translator, $data, $rules, $messages);
@@ -56,6 +61,14 @@ App::error(function(Exception $exception, $code)
 {
 	Log::error($exception);
 });
+
+/*
+App::fatal(function($exception)
+{
+    echo "no info for you";
+    exit;
+});
+*/
 
 /*
 |--------------------------------------------------------------------------
