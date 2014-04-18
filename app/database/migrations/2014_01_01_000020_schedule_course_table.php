@@ -17,15 +17,16 @@ class ScheduleCourseTable extends Migration {
 			$table->increments('id');
 
 			$table->string('building', 4);
-			$table->integer('course_number');
+			$table->string('course_number', 10);
 			$table->string('course_title', 100);
 			$table->integer('credit_hours')->unsigned();
 			$table->string('crn', 10)->unique();
 			$table->string('days_of_week', 10);
+			$table->string('status_code',1);
 			$table->date('end_date');
 			$table->time('end_time');
 			$table->string('instructor', 30);
-			$table->integer('part_of_term');
+			$table->string('part_of_term', 5);
 			$table->integer('room_number');
 			$table->string('section', 10);
 			$table->date('start_date');

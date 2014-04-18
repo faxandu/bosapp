@@ -80,7 +80,7 @@
 			   	  			<li><a href="<?php echo URL::to('users/logout'); ?>">Log Out</a></li>
 			   	  		</ul>
 			   	  	</li>
-			   	  	<?php if (false) {   /////////////////// need to look into this - getting an error for now   //// Auth::user()->hasRole('admin') ?>
+			   	  	<?php if (Auth::user()->admin) {   /////////////////// need to look into this - getting an error for now   //// Auth::user()->hasRole('admin') ?>
 						<li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="<?php echo URL::to('admin/useradmin'); ?>">User Management</a></li>

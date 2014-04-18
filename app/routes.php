@@ -26,6 +26,10 @@ Route::get('/', function() use($layout) {
 
 	
 	Route::controller('user', 'UserController');
+
+	Route::get('/lotto', function() use($layout){
+		return $layout->nest('content', 'lotto.home');
+	});
 	
 	Route::group(array('prefix' => 'lotto/'), function(){
 
@@ -55,7 +59,7 @@ Route::get('/', function() use($layout) {
         Route::controller('entries', 'TimeTracking\controllers\TimeTrackingController');
     });
 
-});
+
 
 	Route::group(array('prefix' => 'inventory/'), function() {
 		Route::controller('equipment', 'Inventory\controllers\EquipmentController');

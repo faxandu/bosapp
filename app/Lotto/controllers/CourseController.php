@@ -4,9 +4,17 @@ namespace Lotto\controllers;
 
 use BaseController, Lotto\models\Course, Lotto\models\Skill, User;
 use Input, Response, Exception;
+use View;
 
 class CourseController extends BaseController {
 
+	public function getHome(){
+		$this->layout->content = View::make('lotto.home');
+	}
+
+	public function getCreate(){
+		$this->layout->content = View::make('lotto.course.courseCreate')->nest('courseForm', 'lotto.course.courseForm');
+	}
 
 	public function postCreate(){
 
@@ -20,15 +28,13 @@ class CourseController extends BaseController {
 
 				$course = Course::create($input);
 
-				return Response::json(array('status' => 201, 'message' => 'Course created'), 201);
+				$this->layout->content = View::make('lotto.course.courseCreate')->nest('courseForm', 'lotto.course.courseForm', array('course' => $course));
 
 			}catch(Exception $e){
-				return Response::json(array('status' => 400, 
-					'message' => 'Failed to create course', 'error' => $e), 400);
+				$this->layout->content = View::make('lotto.course.courseCreate')->nest('courseForm', 'lotto.course.courseForm')->with('error', $e);
 			}
 		}
-		return Response::json(array('status' => 400,
-		 'message' => 'Failed to create course', 'error' => $messages->all() ), 400);
+		$this->layout->content = View::make('lotto.course.courseCreate')->nest('courseForm', 'lotto.course.courseForm')->with('error', $messages->all());
 	}
 
 	/**
@@ -38,18 +44,17 @@ class CourseController extends BaseController {
 	*	Try to find existing entry, if so update else create
 	*	Look to see if any courses have been deleted.
 	*/
-
-
-
-	public function postImport(){
-
+	public function getImport(){
+		
 		$file = file_get_contents($_ENV['courseLinkTest']);
 		$data = json_decode($file, true);
 
 		$timeFormat = "H:i:s";
 		$dateFormat = "Y-m-d";
+		$newCourses = 0;
+		$updatedCourses = 0;
+		$canceledCourses = 0;
 
-		echo "Parsing file";
 		foreach($data as  $value){
 			
 			$parsed = array(
@@ -58,6 +63,7 @@ class CourseController extends BaseController {
 				'building' => $value['BUILDING'],
 				'term_code' => $value['TERM_CODE'],
 				'crn' => $value['CRN'],
+				'status_code' => $value['SSTS_CODE'],
 				'days_of_week' => $value['DAYS'],
 				'instructor' => $value['INSTRUCTOR'],
 				'start_time' => date($timeFormat,strtotime($value['BEGIN_TIME'])),
@@ -74,43 +80,48 @@ class CourseController extends BaseController {
 			try{
 
 				$course = Course::where('crn', '=', $parsed['crn'])->firstOrFail();
-				$course->update($parsed);
+
+				if($course->status_code == 'X'){
+					$canceledCourses++;
+					$course->delete();
+				}
+		
+				if(!empty(array_diff_assoc($parsed, $course->toArray()))){
+					$course->update($parsed);
+					$updatedCourses++;
+				}
+
 
 			}catch(Exception $e){
 				Course::create($parsed);
+				$newCourses++;
 			}
-
 		}
 		
-		echo "<br>Parsed file, now checking for deleted courses";
-		foreach(Course::all() as $course){
 
-			if(!array_key_exists($course->crn, $data)){
-				$course->delete();
-			}
 
-		}
+		// foreach(Course::all() as $course){
 
-		exit;
-		// return Course::all();
+		// 	if(!array_key_exists($course->crn, $data)){
+		// 		$course->delete();
+		// 	}
+		// }
+
+		$this->layout->content = View::make('lotto.course.importStatus',
+		 array('created' => $newCourses, 
+		 	'updated' => $updatedCourses, 
+			'canceled' => $canceledCourses));
 	}
 
-
 	public function getAssignLabaides(){
-
-
-
-
 
 		//grab course list based off course level. lower -> higher
 		foreach(Course::all()->sortBy('course_number') as $course){
 			echo $course->course_title;
 
-
-			//$course = Course::find(2);
 			//for every course - grab all users that can cover it.
-			//Required skills
-			// and must be able to aide within the time
+			// 		Required skills
+			// 		and must be able to aide within the time
 
 			$eligibleLabaides = User::where('type','=','labAide')->with('skills')
 			->whereHas('skills', function($query) use ($course){
@@ -134,8 +145,6 @@ class CourseController extends BaseController {
 
 				continue;
 			}
-
-
 			exit;
 
 			//get skill count
@@ -150,6 +159,7 @@ class CourseController extends BaseController {
 			echo $course;
 
 		}
+
 		exit;
 		// Staff all courses that are possible
 		foreach(Course::all() as $course){
@@ -166,18 +176,16 @@ class CourseController extends BaseController {
 			}
 			echo "<br>";
 			echo "</pre>";
-
-			
 		}
 		return "failed";
 	}
+
 
 	public function postDelete(){
 		
 		$id = Input::get('id');
 		
 		try{
-			
 			$course = Course::findOrFail($id);
 			$course->delete();
 
@@ -189,7 +197,7 @@ class CourseController extends BaseController {
 	}
 
 	public function getGet(){
-		return Response::json(Course::all());		
+		$this->layout->content = View::make('lotto.course.list')->withCourses(Course::all());		
 	}
 
 	public function postGet(){
@@ -197,10 +205,8 @@ class CourseController extends BaseController {
 		$id = Input::get('id');
 
 		try{	
-			
 			$course = Course::findOrFail($id);
 			$course->labaides->toArray();
-			
 			return Response::json($course->toArray());
 
 		}catch(exception $e){
@@ -236,7 +242,6 @@ class CourseController extends BaseController {
 			$course = Course::findorFail($courseId);
 			
 			if(Course::checkUser($user, $course)){
-
 				$course->labaides()->attach($user);
 			}
 
