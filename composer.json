@@ -17,7 +17,7 @@
 			"app/Lotto/",
 			"app/Calendar/",
 			"app/GroupStudy/",
-			"app/Inventory",
+		"app/Inventory",
 			"app/TimeTracking"
 
 		]

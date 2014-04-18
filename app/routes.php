@@ -51,6 +51,12 @@ Route::get('/', function() use($layout) {
 	});
 
 
+    Route::group(array('prefix' => 'time/'), function() {
+        Route::controller('entries', 'TimeTracking\controllers\TimeTrackingController');
+    });
+
+});
+
 	Route::group(array('prefix' => 'inventory/'), function() {
 		Route::controller('equipment', 'Inventory\controllers\EquipmentController');
 		Route::controller('component', 'Inventory\controllers\ComponentController');
