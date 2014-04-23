@@ -2,7 +2,7 @@
 
 namespace Lotto\models;
 
-use Eloquent, Validaton, Exception;
+use Eloquent, Validator, Exception;
 
 
 
@@ -10,11 +10,11 @@ class Course extends Eloquent {
 
 	protected $table = 'schedule_course';
 	public $timestamps = true;
-    protected $softDelete = true;
+    protected $softDelete = false;
 
 
 	protected $fillable = array('building', 'course_number', 'course_title', 'credit_hours', 'crn',
-	 'days_of_week', 'end_date', 'end_time', 'instructor', 'part_of_term','room_number',
+	 'days_of_week', 'end_date', 'end_time', 'instructor', 'status_code', 'part_of_term','room_number',
       'section', 'start_date', 'start_time', 'subject_code', 'term_code');
 	
 
@@ -75,6 +75,7 @@ class Course extends Eloquent {
             ////// UPDATING COURSE - NOTIFY USER?
         });
         Course::deleting(function($course){
+            echo "deleting";
             $course->labaides()->detach();
            ///// DELETING COURSE - NOTIFY USER?
         });
@@ -103,21 +104,17 @@ class Course extends Eloquent {
     	
         $time = $course->creditHour;
 
-        // print_r( $user->courses->toarray() );
-        // exit;
         if(!empty($user->courses->toarray())){
         	foreach ($user->courses as $anotherCourse){
         		$time += $anotherCourse['creditHour'];
         	}
         }
-
-    	
-    
            
 		switch($user->type){
 
 			case 'labAide': if($time < Course::$labAide) return true;
 		}
+
 
 		throw new Exception("Insufficient time.");
     }

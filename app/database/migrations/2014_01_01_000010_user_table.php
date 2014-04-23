@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class UserTable extends Migration {
 
+
 	/**
 	 * Run the migrations.
 	 *
@@ -18,11 +19,12 @@ class UserTable extends Migration {
 			$table->string('first_name', 30);
 			$table->string('last_name', 30);
 			$table->string('password', 128);
+			$table->integer('prefered_hours');
+			$table->integer('working_hours');
 			$table->enum('department', array('bos', 'none'))->default('none');
-			$table->enum('admin', array('bos', 'none'))->default('none');
+			$table->boolean('admin')->default(false);
 			$table->enum('type', array('labAide','fullTime','partTime', 'adjunct', 'labTech', 'other'))->default('other');
-			$table->string('username', 30);
-			
+			$table->string('username', 40);
 			
 			$table->timestamps();
 			
