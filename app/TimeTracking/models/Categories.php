@@ -8,7 +8,7 @@
 
 namespace TimeTracking\models;
 
-use Eloquent, Validaton, Exception;
+use Eloquent, Validaton, Exception , Validaton;
 class Categories extends Eloquent {
 
     private $table = 'time_tracking_categories_table';
@@ -22,5 +22,14 @@ class Categories extends Eloquent {
         return $this->belongsTo('user');
     }
 
+    private static $rules = array(
+      
+      'category' => 'unique:category'
+   
+    );
+    
+    public static function validate($category){
+    	return Validaton::make($category,static::$rules);
+    }
 
 } 

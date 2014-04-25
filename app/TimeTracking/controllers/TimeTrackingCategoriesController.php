@@ -19,15 +19,26 @@ class TimeTrackingCategoriesController extends BaseController{
     public function postAddCategory(){
 
         $input = Input::all();
-        $category = new Categories();
+        $temp = Categories::validate($input['category'])
 
-        try{
-            $category['category'] = $input['category'];
-            $category->save();
-        }catch (exception $e){
-            Response::json('Message',$e);
+        if(!$temp->fails()){
+
+            $category = new Categories();
+            try
+            {
+                $category['category'] = $input['category'];
+                $category->save();
+                Response::json(array('status' => 200, 'message' => 'category added'), 200);
+            }
+            catch (exception $e)
+            {
+                Response::json(
+                    array('status' => 401, 'message' => 'category not saved ' , 'error' => $e), 401);
+            }
         }
-
+        else
+            Response::json(
+                array('status' => 401, 'message' => 'category already exists '), 401);
     }
 
     public public function postDeleteCategory(){
@@ -35,10 +46,12 @@ class TimeTrackingCategoriesController extends BaseController{
         $input = Input::all();
         $category = Categories::find($input['id']);
         try {
-             category->delete();
-             Response::json('Message',200);
+             $category->delete();
+             Response::json(
+                array('status' => 200 'message' => 'successful deletion') , 200);
         } catch (exception $e) {
-                 Response::json('Message', $e , 404);
+                 Response::json(
+                    array('status' => 401, 'message' => 'deletion failed' , 'error' => $e), 401);
         }
     }
 
@@ -46,12 +59,15 @@ class TimeTrackingCategoriesController extends BaseController{
 
         $input = Input::all();
         $category = Categories::find($input[id]);
-        try{
+        try
+        {
             $category['category'] = $input['category'];
             $category->save();
-            Response::json('Message','category updated' , 200);
-        }catch (exception $e){
-            Response::json('Message' , $e , 404);
+            Response::json(array('status' => 200 , 'message' =>'category updated' ) , 200);
+        }
+        catch (exception $e)
+        {
+            Response::json(array('status' => 401 , 'message' => 'edit failed ', 'error' => $e) ,401);
         }
 
     }
@@ -64,6 +80,11 @@ class TimeTrackingCategoriesController extends BaseController{
         if($categories->count() > 0)
             Response::json($categories,200);
         else
-            Response::json('Message' , 404);
+            Response::json(
+                array('status'=> 401 , 'message' => 'category does not exist'), 401);
+    }
+
+    private function failed($category){
+        return Categories::validate($category)->fails();
     }
 } 
