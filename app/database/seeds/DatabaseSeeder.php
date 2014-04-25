@@ -18,17 +18,6 @@ class DatabaseSeeder extends Seeder {
 
 }
 
-class UserTableSeeder extends Seeder{
-
-	public function run(){
-		DB::table('user')->delete();
-		User::create(array('username' => 'bob', 'type' => 'labAide', 'password' => Hash::make('1')));
-		User::create(array('username' => 'fred', 'type' => 'labAide', 'password' => Hash::make('1')));
-		User::create(array('username' => 'dave', 'type' => 'labAide', 'password' => Hash::make('1')));
-	}
-
-
-}
 
 class ManyTableSeeder extends Seeder{
 
@@ -42,9 +31,12 @@ class ManyTableSeeder extends Seeder{
 		// dave and robert can only cover one.
 
 		
-		$bob = User::create(array('username' => 'bob', 'type' => 'labAide', 'password' => Hash::make('1')));
+		$bob = User::create(array('username' => 'bob', 'admin' => true, 'type' => 'labAide', 'password' => Hash::make('1')));
 		$dave = User::create(array('username' => 'dave', 'type' => 'labAide', 'password' => Hash::make('1')));
 		$robert = User::create(array('username' => 'robert', 'type' => 'labAide', 'password' => Hash::make('1')));
+		$fog = User::create(array('username' => 'fog', 'type' => 'labAide', 'password' => Hash::make('1')));
+
+
 
 		$course1 = Course::create(array('course_title' => 'CPS 171', 'course_number' => '1', 'crn' => '1',
 		 'start_time' => '08:30:00', 'end_time' => '09:30:00',
@@ -58,11 +50,17 @@ class ManyTableSeeder extends Seeder{
 		 'start_time' => '10:30:00', 'end_time' => '11:30:00',
 		 'start_date' => '2004/02/02', 'end_date' => '2004/02/02'));
 
+
+		$course4 = Course::create(array('course_title' => 'CPS 181', 'course_number' => '4', 'crn' => '4',
+		 'start_time' => '10:30:00', 'end_time' => '11:30:00',
+		 'start_date' => '2004/02/02', 'end_date' => '2004/02/02'));
+
 		// User::find(1)->skills()->attach(Skill::find(1));
 
-		$skills = Skill::all();
-		$skill2 = $skills->first();
 		$skill1 = Skill::where('name', '=', $course1->course_title)->firstOrFail();
+		$skill2 = Skill::where('name', '=', $course2->course_title)->firstOrFail();
+		$skill3 = Skill::where('name', '=', $course3->course_title)->firstOrFail();
+		$skill4 = Skill::where('name', '=', $course4->course_title)->firstOrFail();
 
 		// bobs
 		$bobsA1 = Availability::create(array('start_time' => '08:30:00','end_time' => '09:30:00',
@@ -72,6 +70,8 @@ class ManyTableSeeder extends Seeder{
 		 'start_date' => '2004/02/02', 'end_date' => '2004/02/02'));
 
 		$bob->skills()->attach($skill1->id);
+		$bob->skills()->attach($skill3->id);
+		$bob->skills()->attach($skill4->id);
 		$bob->availability()->attach($bobsA1->id);
 		$bob->availability()->attach($bobsA2->id);
 
@@ -88,6 +88,11 @@ class ManyTableSeeder extends Seeder{
 
 		$robert->skills()->attach($skill2->id);
 		$robert->availability()->attach($robertsA1->id);
+
+		//fogs
+		$fog->skills()->attach($skill4->id);
+		$fog->skills()->attach($skill1->id);
+		$fog->availability()->attach($davesA1->id);
 	}
 
 
