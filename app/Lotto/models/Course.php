@@ -87,6 +87,10 @@ class Course extends Eloquent {
         return $this->belongsToMany('User', 'schedule_course_labaide');
     }
 
+    public function setLabaide($user){
+        $this->labaides()->sync(array($user->id));
+    }
+
     protected static function checkSkills($user, $course){
        
 

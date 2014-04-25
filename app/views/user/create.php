@@ -1,10 +1,10 @@
-<h2>Course</h2>
+<h2>User</h2>
 
 <?php
 	if(isset($error)){
 		print_r($error);
 	}
-	echo $courseForm;
+	echo $form;
 ?>
 
 

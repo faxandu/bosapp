@@ -2,6 +2,10 @@
 
 class UserController extends BaseController {
 
+	public function getCreate(){
+		$this->layout->content = View::make('user.create')->nest('form', 'user.form');
+	}
+
 	public function postCreate(){
 		$input = Input::all();
 		
@@ -112,19 +116,26 @@ class UserController extends BaseController {
 		try{
 			if(Auth::attempt($user)){
 				return Redirect::to('/');
+
 			}else{
-				return Response::json(array('error' => 'invalid username or password'), 400);
+				return Redirect::to('/')->with(array(
+						'status' => 401
+					));
 			}
 		}catch(exception $e){
-			return Response::json(array('status' => 400, 'error' => $e->getMessage()), 400);
+			return Redirect::to('/')->with(array(
+						'status' => 401, 'error' => $e->getMessage()
+					));
 		}
-
 	}
 
 	public function postLogout() {
 
 		Auth::logout();
-		return Response::json(array('logged out'));
+
+		return Redirect::to('/')->with(array(
+					'status' => 200, 'message' => 'logged out'
+				));
 	}
 
 	public function missingMethod($parameters = array()){

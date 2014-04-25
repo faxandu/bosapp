@@ -2,10 +2,21 @@
  namespace Lotto\controllers;
 
 use BaseController, Lotto\models\Availability, User;
- use Input, Response, Exception;
+use Input, Response, Auth, Exception;
+use View;
 
 class AvailabilityController extends BaseController {
 
+	public function getMyAvailability(){
+
+		// give the user availability.
+
+		// each course they have.
+
+
+		$this->layout->content = View::make('lotto.availability')
+		->with(array('user' => Auth::user(), 'userAvailability' => Auth::user()->availability));
+	}
 
 	public function postCreate(){
 		$input = Input::all();
