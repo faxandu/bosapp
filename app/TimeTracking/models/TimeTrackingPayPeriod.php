@@ -16,6 +16,7 @@ class TimeTrackingPayPeriod extends Eloquent{
     private $fillable = array('start_pay_period','end_pay_period');
     private $timestamps = false;
 
+    
     public function getPeriod(){
         return $this->select(array('start_pay_period','end_pay_period'));
     }
@@ -27,7 +28,7 @@ class TimeTrackingPayPeriod extends Eloquent{
     	'start_pay_period' => 'before:end_pay_period' ,
     	'end_pay_period'   => 'after:start_pay_period',
     	);
-    
+
     public static function validate($pay_period){
     	return Validaton::make($pay_period, static::$rules);
     }

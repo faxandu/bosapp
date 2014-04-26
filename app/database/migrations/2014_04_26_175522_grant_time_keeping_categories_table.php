@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class TineTrackingPayPeriod extends Migration {
+class GrantTimeKeepingCategoriesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,13 +12,11 @@ class TineTrackingPayPeriod extends Migration {
 	 */
 	public function up()
 	{
-        Schema::create('time_traking_pay_period',function($table){
+        Schema::create('grant_time_tracking_categories',function($table){
 
             $table->increments('id');
-            $table->date('start_pay_period');
-            $table->date('end_pay_period');
+            $table->string('category',30);
         });
-		//
 	}
 
 	/**
@@ -28,9 +26,7 @@ class TineTrackingPayPeriod extends Migration {
 	 */
 	public function down()
 	{
-
-        Schema::drop('time_traking_pay_period');
-			//
+		Schema::drop('grant_time_tracking_categories');
 	}
 
 }

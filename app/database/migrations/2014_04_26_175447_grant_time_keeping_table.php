@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class TimeEntryTable extends Migration {
+class GrantTimeKeepingTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,15 +12,15 @@ class TimeEntryTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('time_tracking_entry',function($table) {
+		Schema::create('grant_time_tracking',function($table) {
 
             $table->increments('id');
             $table->integer('category_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->integer('pay_id')->unsigned();
-            $table->foreign('category_id')->references('id')->on('time_tracking_categories');
+            $table->foreign('category_id')->references('id')->on('grant_time_tracking_categories');
             $table->foreign('user_id')->references('id')->on('user');
-            $table->foreign('pay_id')->references('id')->on('time_traking_pay_period')
+            $table->foreign('pay_id')->references('id')->on('grant_time_tracking_pay_period')
             $table->date('startDate');
             $table->date('endDate')->nullable();
             $table->time('startTime');
@@ -39,7 +39,7 @@ class TimeEntryTable extends Migration {
 	public function down()
 	{
 
-		Schema::drop('time_tracking_entry');
+		Schema::drop('grant_time_tracking');
 
 	}
 
