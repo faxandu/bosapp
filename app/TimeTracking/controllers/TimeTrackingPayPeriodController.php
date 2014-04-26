@@ -46,22 +46,22 @@ class TimeTrackingPayPeriodController extends BaseController{
 
 		if(!$this->failed(Input::get('start_pay_period')) 
     		&& !$this->failed(Input::get('end_pay_period'))){
-    	$start_date = new date("Y-n-j",strtotime(Input::get('start_pay_period')));
-    	$end_date = new date("Y-n-j",strtotime(Input::get('end_pay_period')));
+    		$start_date = new date("Y-n-j",strtotime(Input::get('start_pay_period')));
+    		$end_date = new date("Y-n-j",strtotime(Input::get('end_pay_period')));
     	
-    	try
-    	{
-    		$pay_period['start_pay_period'] = $start_date;
-    		$pay_period['end_pay_period']   = $end_date;
-    		$pay_period->save();
-	    	Response::json(array('status' => 200, 'message' => 'pay period saved'), 200);
-    	}
-    	catch(exception $e){
-        	Response::json(array('status' => 401, 'message' => 'pay period not saved' , 'error' => $e ),401)  
-    	}
-      }
-       else
-           Response::json(array('status' => 401, 'message' => 'date is not unique '), 401);	
+    		try
+    		{
+    			$pay_period['start_pay_period'] = $start_date;
+    			$pay_period['end_pay_period']   = $end_date;
+    			$pay_period->save();
+	    		Response::json(array('status' => 200, 'message' => 'pay period saved'), 200);
+    		}
+    		catch(exception $e){
+        		Response::json(array('status' => 401, 'message' => 'pay period not saved' , 'error' => $e ),401)  
+    		}
+      	}
+       	else
+        	Response::json(array('status' => 401, 'message' => 'date is not unique '), 401);	
     }  
     
     private function failed($pay_period){
