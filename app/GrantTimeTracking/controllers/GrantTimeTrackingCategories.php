@@ -87,4 +87,5 @@ class GrantTimeTrackingCategories extends BaseController{
     private function failed($category){
         return Categories::validate($category)->fails();
     }
-} 
+}
+ 
