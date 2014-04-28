@@ -6,7 +6,7 @@
  * Time: 12:57 PM
  */
 
-namespace TimeTracking\models;
+namespace GrantTimeTracking\models;
 use Eloquent, Validaton, Exception;
 
 class GrantTimeTrackingEntry extends Eloquent{
