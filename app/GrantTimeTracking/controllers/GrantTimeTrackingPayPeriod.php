@@ -6,23 +6,23 @@
  * Time: 11:04 PM
  */
 
-namespace TimeTracking\controllers;
+namespace GrantTimeTracking\controllers;
 
 use BaseController, User,  Entry ,Response;
 
-class TimeTrackingPayPeriodController extends BaseController{
+class GrantTimeTrackingPayPeriod extends BaseController{
 
 
 	public function postCreatPayPeriod(){
    
-    $pay_period = new TimeTrackingPayPeriod();
+    $pay_period = new GrantTimeTrackingPayPeriod();
     $this->postPayPeriod($pay_period);
       
 	}
 
 	public function postDeletePeriod(){
 
-		$period = TimeTrackingPayPeriod::find(Input::get('id'));
+		$period = GrantTimeTrackingPayPeriod::find(Input::get('id'));
 		try
 		{
           $period->delete();
@@ -37,7 +37,7 @@ class TimeTrackingPayPeriodController extends BaseController{
     
 	public function postModifyPeriod(){
 
-		$period = TimeTrackingPayPeriod::find(Input::get('id'));
+		$period = GrantTimeTrackingPayPeriod::find(Input::get('id'));
 		$this->postPayPeriod($period);
 
 	}
@@ -65,7 +65,7 @@ class TimeTrackingPayPeriodController extends BaseController{
     }  
     
     private function failed($pay_period){
-    	return TimeTrackingPayPeriod::validate($pay_period)->fails();
+    	return GrantTimeTrackingPayPeriod::validate($pay_period)->fails();
     }
 
 } 

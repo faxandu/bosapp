@@ -5,14 +5,14 @@
  *
  */
 
-namespace TimeTracking\controllers;
+namespace GrantTimeTracking\controllers;
 
 use BaseController, Input, User,  Entry ,Response;
 use Illuminate\Support\Facades\Auth;
 use TimeTracking\models\Categories;
 use TimeTracking\models\TimeTrackingEntry;
 
-class TimeTrackingController extends  BaseController{
+class GrantTimeTracking extends  BaseController{
     
     /**
     * This function will allow the user to create a time entry 
@@ -21,7 +21,7 @@ class TimeTrackingController extends  BaseController{
     public function postCreateTime()
     {
 
-        $timeEntry = new TimeTrackingEntry();
+        $timeEntry = new GrantTimeTrackingEntry();
         $timeEntry->user_id = Auth::user()->id;
         $input = Input::all();
 
@@ -34,15 +34,15 @@ class TimeTrackingController extends  BaseController{
     */
     public function postCreateTimeOrModify(){
 
-        $userTime = TimeTrackingEntry::where('id' , ' = ' , Input::get('id'))->count();
+        $userTime = GrantTimeTrackingEntry::where('id' , ' = ' , Input::get('id'))->count();
 
         if ($userTime != 0) 
         {
-            $this->postAddTime($userTime = new TimeTrackingEntry(), Input::all());
+            $this->postAddTime($userTime = new GrantTimeTrackingEntry(), Input::all());
         }
         else
         {    
-            $timeEntry = TimeTrackingEntry::find('id')->get();
+            $timeEntry = GrantTimeTrackingEntry::find('id')->get();
             $this->postAddTime($timeEntry, Input::all() );
         }
 
@@ -56,7 +56,7 @@ class TimeTrackingController extends  BaseController{
     public function postDeleteTime()
     {
 
-        $timeEntry = TimeTrackingEntry::find('id');
+        $timeEntry = GrantTimeTrackingEntry::find('id');
         
         try{
             $timeEntry->delete();
@@ -75,7 +75,7 @@ class TimeTrackingController extends  BaseController{
     public function postModifyTime()
     {
 
-        $timeEntry = TimeTrackingEntry::find('id')->get();
+        $timeEntry = GrantTimeTrackingEntry::find('id')->get();
         $this->postAddTime($timeEntry, Input::all() );
     }
     /**
@@ -86,7 +86,7 @@ class TimeTrackingController extends  BaseController{
     public function getPayDates()
     {
 
-    $entry = TimeTrackingEntry::where('pay_id' , ' = ' , Input::get('pay_id') )
+    $entry = GrantTimeTrackingEntry::where('pay_id' , ' = ' , Input::get('pay_id') )
     ->select( 'start_time' , 'end_time' , 'start_date' , 'end_date')->get();
 
     return $entry; 

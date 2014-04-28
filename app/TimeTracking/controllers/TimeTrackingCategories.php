@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Input;
 use BaseController, User,  Entry ,Response;
 use TimeTracking\models\Categories;
 
-class TimeTrackingCategoriesController extends BaseController{
+class TimeTrackingCategories extends BaseController{
 
 
     public function postAddCategory(){
