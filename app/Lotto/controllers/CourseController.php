@@ -80,12 +80,10 @@ class CourseController extends BaseController {
 
 				$course = Course::where('crn', '=', $parsed['crn'])->firstOrFail();
 				
-
-				// Not in current php version !
-				// if(!empty(array_diff_assoc($parsed, $course->toArray()))){
-				// 	$course->update($parsed);
-				// 	$updatedCourses++;
-				// }
+				if(!empty(array_diff_assoc($parsed, $course->toArray()))){
+					$course->update($parsed);
+					$updatedCourses++;
+				}
 
 				if($course->status_code == 'X'){
 					$canceledCourses++;

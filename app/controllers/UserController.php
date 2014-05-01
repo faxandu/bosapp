@@ -105,22 +105,26 @@ class UserController extends BaseController {
 		}		
 	}
 	
-	public function postLogin() {
-		//return Input::all();
-		
+	public function login() {
+
 		$user = array(
 			'username' => Input::get('username'),
 			'password' => Input::get('password')
 		);
 		
 		try{
-			if(Auth::attempt($user)){
-				return Redirect::to('/');
 
+
+			if(Auth::attempt($user)){
+
+				return Redirect::to('/');
+			
 			}else{
+			
 				return Redirect::to('/')->with(array(
 						'status' => 401
 					));
+			
 			}
 		}catch(exception $e){
 			return Redirect::to('/')->with(array(
@@ -129,7 +133,7 @@ class UserController extends BaseController {
 		}
 	}
 
-	public function postLogout() {
+	public function logout() {
 
 		Auth::logout();
 
