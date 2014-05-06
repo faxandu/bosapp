@@ -26,6 +26,7 @@ class UserTable extends Migration {
 			$table->enum('type', array('labAide','fullTime','partTime', 'adjunct', 'labTech', 'other'))->default('other');
 			$table->string('username', 40);
 			
+			$table->string('remember_token', 100)->nullable();
 			$table->timestamps();
 			
 		});

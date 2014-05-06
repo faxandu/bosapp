@@ -7,7 +7,7 @@
 */
 
 Route::post('login', 'UserController@login');
-Route::post('logout', 'UserController@logout');
+Route::get('logout', 'UserController@logout');
 // Route::match(array('POST', 'GET'), 'asd', 'Lotto\controllers\CourseController@getImport');
 
 View::name('layouts.layout', 'layout');
