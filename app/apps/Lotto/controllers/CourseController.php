@@ -27,10 +27,12 @@ class CourseController extends BaseController {
 					'courseForm', 'lotto.course.courseForm', array('course' => $course));
 
 			}catch(Exception $e){
+				
 				$this->layout->content = View::make('lotto.course.courseCreate')->nest(
 					'courseForm', 'lotto.course.courseForm')->with('error', $e);
 			}
 		}
+
 		$this->layout->content = View::make('lotto.course.courseCreate')->nest(
 			'courseForm', 'lotto.course.courseForm')->with('error', $messages->all());
 	}

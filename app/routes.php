@@ -29,6 +29,43 @@ Route::group(array('before' => 'auth'), function() use($layout){
 
 		Route::group(array('prefix' => 'admin/'), function() use($layout){
 
+
+			/*	admin user -> its grouping
+			-----------------------*/
+			Route::group(array('prefix' => 'user'), function() use($layout){
+
+				/*	Schedule Management root
+				-----------------------*/
+				Route::get('/', function() use($layout) {
+
+					return $layout->nest('content', 'admin.user.home');
+				
+				});
+
+				/*	Schedule Management user list
+				-----------------------*/
+				Route::controller('user', 'Lotto\controllers\UserController');
+
+				/*	Schedule Management user form
+				-----------------------*/
+				Route::get('user-assignment', function() use($layout) {
+					return $layout->nest('content', 'admin.lotto.userSkillForm');
+				});
+
+				/*	Schedule Management course list
+				-----------------------*/
+				// Route::get('course-list', 'Lotto\controllers\CourseController@getAll');
+
+				Route::controller('course', 'Lotto\controllers\CourseController');
+
+				// Route::get('course-list', function() use($layout) {
+				// 	return $layout->nest('content', 'admin.lotto.courseList');
+				// });
+
+			}); // end of admin user group
+
+
+
 			/*	Schedule Management -> its grouping
 			-----------------------*/
 			Route::group(array('prefix' => 'schedule'), function() use($layout){

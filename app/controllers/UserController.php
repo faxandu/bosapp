@@ -3,7 +3,9 @@
 class UserController extends BaseController {
 
 	public function getCreate(){
-		$this->layout->content = View::make('user.create')->nest('form', 'user.form');
+
+		$this->layout->content = View::make('admin.user.create_page');
+	
 	}
 
 	public function postCreate(){

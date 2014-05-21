@@ -1,45 +1,62 @@
 <?php 
- namespace Lotto\controllers;
+
+namespace Lotto\controllers;
 
 use BaseController, Lotto\models\Availability, User;
-use Input, Response, Auth, Exception;
+use Lotto\controllers\HelperController;
+use Input, Response, Auth, Exception, Session;
 use View;
 
 class AvailabilityController extends BaseController {
 
+	/*	
+		Gets the logged in users availability.
+		creates the view assosiated with displaying user availability
+	----------------------------------- */
+
 	public function getMyAvailability(){
 
-		// give the user availability.
-
-		// each course they have.
-
-
-		$this->layout->content = View::make('lotto.availability')
-		->with(array('user' => Auth::user(), 'userAvailability' => Auth::user()->availability));
+		$this->layout->content = View::make('lotto.availability.myAvailability')
+		->with(array(
+			'user' => Auth::user(), 
+			'userAvailability' => Auth::user()->availability,
+			Session::all()
+			)
+		);
 	}
 
+	public function getCreatePage(){
+
+		$this->layout->content = View::make('lotto.availability.create-page');
+	}
+
+
+	/*	
+		Creates an availability
+			-check if that availability already exists
+				- if so use the same one.
+			-if a user is logged in
+				attach to user
+	----------------------------------- */
 	public function postCreate(){
-		$input = Input::all();
 		
-		//$validatedInput = Course::validate(Input::all());
+		return HelperController::create(new Availability, Input::all(), 
+			'schedule/availability/my-availability', '/schedule/availability/create-page');
+		exit;
+		return $messages;
+		
+		try{
 
-		//$messages = $validatedInput->messages();
+			$availability = Availability::create($input);
 
-		// if any error messages, don't create and return errors.
-		//if(!$messages->all()){
-			try{
+			return Response::json(array('status' => 201, 'message' => 'Availability created'), 201);
 
-				$availability = Availability::create($input);
+		}catch(Exception $e){
+			return Response::json(array('status' => 400, 
+				'message' => 'Failed to create Availability', 'error' => $e), 400);
+		}
 
-				return Response::json(array('status' => 201, 'message' => 'Availability created'), 201);
-
-			}catch(Exception $e){
-				return Response::json(array('status' => 400, 
-					'message' => 'Failed to create Availability', 'error' => $e), 400);
-			}
-		//}
-		// return Response::json(array('status' => 400,
-		 // 'message' => 'Failed to create Availability', 'error' => $messages->all() ), 400);
+		// return something if something unexpected occured.
 	}	
 
 	public function postDelete(){

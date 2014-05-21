@@ -1,7 +1,7 @@
 <?php 
 namespace Lotto\models;
 
-use Eloquent, Validaton, Exception;
+use Eloquent, Validator, Exception;
 
 
 
@@ -15,6 +15,14 @@ class Availability extends Eloquent {
 
     protected $guarded = array('id');
     protected $hidden = array('pivot');
+
+    private static $rules = array(
+		//'end_date' => 'required|date_format:m/d/y'
+	);
+
+	public static function validate($data){
+		return Validator::make($data, static::$rules);
+	}
 
 }
 
