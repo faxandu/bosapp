@@ -6,12 +6,12 @@
  * Time: 12:57 PM
  */
 
-namespace TimeTracking\models;
+namespace GrantTimeTracking\models;
 use Eloquent, Validaton, Exception;
 
-class TimeTrackingEntry extends Eloquent{
+class GrantTimeTrackingEntry extends Eloquent{
 
-    private $table = 'time_tracking_entry';
+    private $table = 'grant_time_tracking_entry';
     private $fillable = array('start_time','end_time','start_date'
                              ,'end_date','description','clocked_in','category'
                              ,'user_id','category_id','pay_id');
