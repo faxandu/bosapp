@@ -24,6 +24,34 @@ class UserController extends BaseController {
 		return $this->layout->content;
 	}
 
+	public function postDeleteUser(){
+
+		$input = Input::all();
+
+		try{
+
+			User::findOrFail($input['id'])->delete();
+
+			$this->layout->content = Redirect::to('admin/user/')->with(array(
+				'status' => 200,
+				
+				));
+
+		}catch(exception $e){
+
+			$this->layout->content = Redirect::to('admin/user/create')->with(array(
+				'status' => 400,
+				'error' => 'deletion failed'
+				));	
+		
+		}		
+
+			
+		return $this->layout->content;
+
+
+	}
+
 	
 	public function getAdminUserHomePage(){
 
@@ -38,6 +66,7 @@ class UserController extends BaseController {
 		$this->layout->content = View::make('admin.user.create')->with(Session::all());
 	
 	}
+
 
 	
 	
