@@ -94,7 +94,7 @@
 			   	  	<?php if (Auth::user()->admin) {   /////////////////// need to look into this - getting an error for now   //// Auth::user()->hasRole('admin') ?>
 						<li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li><a href="<?php echo URL::to('admin/#'); ?>">User Management</a></li>
+								<li><a href="<?php echo URL::to('admin/user/'); ?>">User Management</a></li>
 								<li><a href="<?php echo URL::to('admin/schedule'); ?>">Schedule Management</a></li>
 								<li><a href="#">Project Management</a></li>
 								<li><a href="#">System Configurations</a></li>

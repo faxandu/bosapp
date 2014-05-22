@@ -2,35 +2,21 @@
 
 class UserController extends BaseController {
 
+
 	public function getCreate(){
 
-		$this->layout->content = View::make('admin.user.create_page');
+		$this->layout->content = View::make('admin.user.create');
 	
 	}
 
 	public function postCreate(){
+
 		$input = Input::all();
 		
-		//$validatedInput = Course::validate(Input::all());
+		$input['password'] = Hash::make($input['password']);
 
-		//$messages = $validatedInput->messages();
+		ControllerHelper::create(new User, $input, '/admin/user');
 
-		// if any error messages, don't create and return errors.
-		//if(!$messages->all()){
-			try{
-
-				$input['password'] = Hash::make($input['password']);
-				$user = User::create($input);
-
-				return Response::json(array('status' => 201, 'message' => 'User created'), 201);
-
-			}catch(Exception $e){
-				return Response::json(array('status' => 400, 
-					'message' => 'Failed to create user', 'error' => $e), 400);
-			}
-		//}
-		return Response::json(array('status' => 400,
-		 'message' => 'Failed to create User', 'error' => $messages->all() ), 400);
 	}
 
 	public function postDelete(){
@@ -52,8 +38,12 @@ class UserController extends BaseController {
 		return Response::json(array('status' => 200, 'message' => 'User Deleted'), 200);
 	}
 
-	public function getGet(){
-		return Response::json(User::all());
+	public function get(){
+
+		$this->layout->content = View::make('admin.user.home')->with(array(
+			'users' => User::all()
+			));
+
 	}
 
 	public function postGet(){
