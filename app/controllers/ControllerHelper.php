@@ -13,6 +13,7 @@ class ControllerHelper {
 		if($checkedInput->fails()){
 
 			return Redirect::to($route_fail)->with(array(
+				'status' => 400,
 				'error' => $checkedInput->messages()->all()
 			));
 		
@@ -30,9 +31,9 @@ class ControllerHelper {
 
 		}
 
-		/* Assumed all is well
-		* * * * * * * * * * * * * * * * */
-		return Redirect::to($route_pass);
+		return Redirect::to($route_pass)->with(array(
+				'status' => 200
+			));;
 
 	}
 

@@ -17,14 +17,10 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
 	
     private static $rules = array(
        // 'id' => 'numeric|exists:user,id',
-        'username' => 'required|alpha|min:4',
-        'email' => 'required|email|unique:users',
+        // 'username' => 'required|alpha|min:4',
+        // 'email' => 'required|email|unique:users',
     );
 
-    private static $rulesForLogin = array(
-        'username' => 'alpha_num|exists:user,username',
-        //'password'=>'required|alpha_num|between:6,12|confirmed',
-    );
 
 
     public static function boot(){
@@ -55,9 +51,6 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
         return Validator::make($data, static::$rules);
     }
 
-    public static function validateLogin($data){
-        return Validator::make($data, static::$rulesForLogin);
-    }
 
     public function skills(){
 

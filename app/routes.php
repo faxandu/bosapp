@@ -34,9 +34,14 @@ Route::group(array('before' => 'auth'), function() use($layout){
 			-----------------------*/
 			Route::group(array('prefix' => 'user'), function() use($layout){
 
-				/*	User home - list
+				/*	User home - listing users
 				-----------------------*/
-				Route::get('/', 'UserController@get');
+				Route::get('/', 'UserController@getAdminUserHomePage');
+
+				/*	User create - form
+				-----------------------*/
+				Route::get('/create', 'UserController@getCreateUserPage');
+				Route::post('/create', 'UserController@postCreateUser');
 
 			}); // end of admin user group
 
