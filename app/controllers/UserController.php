@@ -2,17 +2,17 @@
 
 class UserController extends BaseController {
 
-
+	
 	
 
-	public function postCreateUser(){
+	public function postCreate(){
 
 		$input = Input::all();
 
 		try{
 
 			$input['password'] = Hash::make($input['password']);
-			$this->layout->content = ControllerHelper::create(new User, $input, '/admin/user/', '/admin/user/create');
+			$this->layout->content = ControllerHelper::create(new User, $input, '/admin/user/home', '/admin/user/create');
 
 		}catch(exception $e){
 
@@ -24,7 +24,7 @@ class UserController extends BaseController {
 		return $this->layout->content;
 	}
 
-	public function postDeleteUser(){
+	public function postDelete(){
 
 		$input = Input::all();
 
@@ -32,7 +32,7 @@ class UserController extends BaseController {
 
 			User::findOrFail($input['id'])->delete();
 
-			$this->layout->content = Redirect::to('admin/user/')->with(array(
+			$this->layout->content = Redirect::to('admin/user/home')->with(array(
 				'status' => 200,
 				
 				));
@@ -53,7 +53,7 @@ class UserController extends BaseController {
 	}
 
 	
-	public function getAdminUserHomePage(){
+	public function getHome(){
 
 		$this->layout->content = View::make('admin.user.home')->with(array(
 			'users' => User::all()
@@ -61,7 +61,7 @@ class UserController extends BaseController {
 
 	}
 
-	public function getCreateUserPage(){
+	public function getCreate(){
 
 		$this->layout->content = View::make('admin.user.create')->with(Session::all());
 	

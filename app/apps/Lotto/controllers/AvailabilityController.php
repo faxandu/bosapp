@@ -16,7 +16,7 @@ class AvailabilityController extends BaseController {
 
 	public function getMyAvailability(){
 
-		$this->layout->content = View::make('lotto.availability.myAvailability')
+		$this->layout->content = View::make('lotto.availability.home')
 		->with(array(
 			'user' => Auth::user(), 
 			'userAvailability' => Auth::user()->availability,

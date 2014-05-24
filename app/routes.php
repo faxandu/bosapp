@@ -1,21 +1,20 @@
 <?php
 
+View::name('layouts.layout', 'layout');
+$layout = View::of('layout');
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
 |--------------------------------------------------------------------------
 */
 
-Route::post('login', 'UserController@login');
-Route::get('logout', 'UserController@logout');
-// Route::match(array('POST', 'GET'), 'asd', 'Lotto\controllers\CourseController@getImport');
-
-View::name('layouts.layout', 'layout');
-$layout = View::of('layout');
-
 Route::get('/', function() use($layout) {
 	return $layout->nest('content', 'home');
 });
+
+Route::post('login', 'UserController@login');
+Route::get('logout', 'UserController@logout');
 
 
 /*	Must be Authenticated  - auth grouping
@@ -30,35 +29,20 @@ Route::group(array('before' => 'auth'), function() use($layout){
 		Route::group(array('prefix' => 'admin/'), function() use($layout){
 
 
-			/*	admin user -> its grouping
+			/*	admin user uses user functions
 			-----------------------*/
-			Route::group(array('prefix' => 'user'), function() use($layout){
-
-
-					
-				/*	User home - listing users
-				-----------------------*/
-				Route::get('/', 'UserController@getAdminUserHomePage');
-
-				/*	User create - form
-				-----------------------*/
-				Route::get('/create', 'UserController@getCreateUserPage');
-				Route::post('/create', 'UserController@postCreateUser');
-
-				Route::post('/delete', 'UserController@postDeleteUser');
-
-			}); // end of admin user group
+			Route::controller('user', 'UserController');
 
 
 
-			/*	Schedule Management -> its grouping
+			/*	Schedule Management grouping
 			-----------------------*/
 			Route::group(array('prefix' => 'schedule'), function() use($layout){
 
 				/*	Schedule Management root
 				-----------------------*/
 				Route::get('/', function() use($layout) {
-					return $layout->nest('content', 'admin.lotto.index');
+					return $layout->nest('content', 'admin.lotto.home');
 				});
 
 				/*	Schedule Management user list
@@ -71,15 +55,7 @@ Route::group(array('before' => 'auth'), function() use($layout){
 					return $layout->nest('content', 'admin.lotto.userSkillForm');
 				});
 
-				/*	Schedule Management course list
-				-----------------------*/
-				// Route::get('course-list', 'Lotto\controllers\CourseController@getAll');
-
 				Route::controller('course', 'Lotto\controllers\CourseController');
-
-				// Route::get('course-list', function() use($layout) {
-				// 	return $layout->nest('content', 'admin.lotto.courseList');
-				// });
 
 			}); // end of schedule management group
 			
@@ -93,21 +69,18 @@ Route::group(array('before' => 'auth'), function() use($layout){
 	-----------------------*/
 	Route::group(array('prefix' => 'schedule/'), function() use ($layout) {
 
-		/*	Availability display
-		-----------------------*/
 		Route::controller('user', 'Lotto\controllers\UserController');
 
 		/*	Availability display
 		-----------------------*/
 		Route::controller('availability', 'Lotto\controllers\AvailabilityController');
-		// Route::get('/availability', function() use($layout) {
-		// 	return $layout->nest('content', 'lotto.availability');
-		// });
-		//Route::controller('course', 'Lotto\controllers\CourseController');
-		//Route::controller('skill', 'Lotto\controllers\SkillController');
-		
-		//Route::controller('user', 'Lotto\controllers\UserController');
+
 	}); // end of schedule group
+
+
+
+
+
 
 	Route::group(array('prefix' => 'group_study/'), function(){
 

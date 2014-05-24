@@ -17,7 +17,7 @@ class UserController extends BaseController {
 		// each course they have.
 
 
-		$this->layout->content = View::make('lotto.schedule')
+		$this->layout->content = View::make('lotto.schedule.home')
 		->with(array('user' => Auth::user(), 'userCourses' => Auth::user()->courses));
 	}
 
