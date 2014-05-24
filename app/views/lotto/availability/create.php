@@ -1,3 +1,9 @@
+
+<h2>to do</h2>
+<p>What time format? </p>
+<br><br>
+<?= (Session::get('error') ? print_r(Session::get('error')) : 'no errors') ?><br><br>
+
 <form method='POST' action='<?= URL::to('/schedule/availability/create'); ?>'>
 
 

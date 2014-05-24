@@ -1,5 +1,6 @@
 create user form<br><br>
 
+Validation not yet set<br><br>
 <?= (Session::get('error') ? print_r(Session::get('error')) : 'no errors') ?><br><br>
 
 

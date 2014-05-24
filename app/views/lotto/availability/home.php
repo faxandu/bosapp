@@ -1,8 +1,15 @@
 My availability<br>
-<a href = "<?= URL::to('schedule/availability/create-page'); ?>">update my availability</a><br>
+<a href = "<?= URL::to('schedule/availability/create'); ?>">update my availability</a><br>
 
 
 <br>
+
+<form method ="POST" action="<?= URL::to('schedule/availability/delete')?>">
+delete by id<input type="text" name="id">
+<input type="submit">
+</form>
+
+<pre>
 <?php
 	print_r(@Session::get('error'));
 
@@ -13,3 +20,5 @@ My availability<br>
 
 
 ?>
+
+</pre>
