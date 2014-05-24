@@ -1,9 +1,34 @@
 <?php
 
+
 class UserController extends BaseController {
 
+	/*
+	|--------------------------------------------------------------------------
+	| Controller Views
+	|--------------------------------------------------------------------------
+	*/
 	
+	public function getHome(){
+
+		$this->layout->content = View::make('admin.user.home')->with(array(
+			'users' => User::all()
+			));
+
+	}
+
+	public function getCreate(){
+
+		$this->layout->content = View::make('admin.user.create')->with(Session::all());
 	
+	}
+
+
+	/*
+	|--------------------------------------------------------------------------
+	| Controller Posts
+	|--------------------------------------------------------------------------
+	*/
 
 	public function postCreate(){
 
@@ -43,33 +68,13 @@ class UserController extends BaseController {
 				'status' => 400,
 				'error' => 'deletion failed'
 				));	
-		
 		}		
-
 			
 		return $this->layout->content;
 
-
-	}
-
-	
-	public function getHome(){
-
-		$this->layout->content = View::make('admin.user.home')->with(array(
-			'users' => User::all()
-			));
-
-	}
-
-	public function getCreate(){
-
-		$this->layout->content = View::make('admin.user.create')->with(Session::all());
-	
 	}
 
 
-	
-	
 	public function login() {
 
 		$user = array(

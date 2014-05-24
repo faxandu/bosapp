@@ -49,12 +49,6 @@ Route::group(array('before' => 'auth'), function() use($layout){
 				-----------------------*/
 				Route::controller('user', 'Lotto\controllers\UserController');
 
-				/*	Schedule Management user form
-				-----------------------*/
-				Route::get('user-assignment', function() use($layout) {
-					return $layout->nest('content', 'admin.lotto.userSkillForm');
-				});
-
 				Route::controller('course', 'Lotto\controllers\CourseController');
 
 			}); // end of schedule management group

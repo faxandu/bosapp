@@ -8,34 +8,30 @@ use View;
 
 class CourseController extends BaseController {
 
-	/*	
-		Deprecated
-	---------------------*/
-	public function postCreate(){
 
-		$input = Input::all();
-		$validatedInput = Course::validate(Input::all());
-		$messages = $validatedInput->messages();
 
-		// if any error messages, don't create and return errors.
-		if(!$messages->all()){
-			try{
 
-				$course = Course::create($input);
+	/*
+	|--------------------------------------------------------------------------
+	| Controller Views
+	|--------------------------------------------------------------------------
+	*/
 
-				$this->layout->content = View::make('lotto.course.courseCreate')->nest(
-					'courseForm', 'lotto.course.courseForm', array('course' => $course));
-
-			}catch(Exception $e){
-				
-				$this->layout->content = View::make('lotto.course.courseCreate')->nest(
-					'courseForm', 'lotto.course.courseForm')->with('error', $e);
-			}
-		}
-
-		$this->layout->content = View::make('lotto.course.courseCreate')->nest(
-			'courseForm', 'lotto.course.courseForm')->with('error', $messages->all());
+	/* Admin: Get all courses
+	------------ */
+	public function getAll(){
+		$this->layout->content = View::make('admin.lotto.courseList', array (
+			'courses' => Course::all()), Session::all());		
 	}
+
+
+
+	/*
+	|--------------------------------------------------------------------------
+	| Controller Posts
+	|--------------------------------------------------------------------------
+	*/
+
 
 	/*
 		Grabs a JSON file from an external source.
@@ -220,26 +216,26 @@ class CourseController extends BaseController {
 		try{
 
 			$course = Course::findOrFail($id);
+
 			$course->delete();
 
 		}catch(exception $e){
 
-			return Redirect::to('admin/schedule/course/all')
-			->with(array('status' => 400, 'message' => 'Failed to Delete Course', 'error' => $e));
+			return Redirect::to('admin/schedule/course/all')->with(array(
+				'status' => 400,
+				'message' => 'Failed to Delete Course',
+				'error' => $e
+				));
 			
 		}
 
-		return Redirect::to('admin/schedule/course/all')
-		->with(array('status' => 200, 'message' => 'Course Deleted Successfully'));
+		return Redirect::to('admin/schedule/course/all')->with(array(
+				'status' => 200,
+				));
 	}
 
 
-	/* Admin: Get all courses
-	------------ */
-	public function getAll(){
-		$this->layout->content = View::make('admin.lotto.courseList', array (
-			'courses' => Course::all()), Session::all());		
-	}
+
 
 	/* Removes a user as a labaide from a course.
 	------------------ */

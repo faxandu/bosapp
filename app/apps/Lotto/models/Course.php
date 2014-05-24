@@ -65,10 +65,38 @@ class Course extends Eloquent {
         Course::updating(function($course){
             ////// UPDATING COURSE - NOTIFY USER?
         });
+
+
         Course::deleting(function($course){
-            echo "deleting";
+
             $course->labaides()->detach();
            ///// DELETING COURSE - NOTIFY USER?
+        });
+
+        Course::deleted(function($course){
+
+
+
+            // Delete skill when no courses left?
+            // currently failing because of skill linked to user on delete
+            // try{
+
+            //     $count = Course::where('course_title' ,'=' , $course->course_title)->count();
+
+            //     if($count == 0){
+            //         $skill = Skill::where('name' ,'=' , $course->course_title)->firstOrFail();
+                    
+            //         print_r($skill);
+            //         exit;
+
+            //         $skill->delete();
+            //     }
+            
+            // }catch (Exception $e){
+            
+            //     // do nothing on fail
+            
+            // }
         });
 
     }

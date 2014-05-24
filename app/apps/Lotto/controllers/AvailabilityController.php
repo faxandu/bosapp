@@ -31,10 +31,8 @@ class AvailabilityController extends BaseController {
 			Session::all()
 
 			));
+
 	}
-
-
-
 
 
 
@@ -76,7 +74,8 @@ class AvailabilityController extends BaseController {
 		} catch(Exception $e){
 
 			return Redirect::to('/schedule/availability/create')->with(array(
-				'error' => $e->getMessage()
+				'status' => 400,
+				'error' => $checkedInput->messages()->all()
 			));
 
 		}
@@ -106,7 +105,8 @@ class AvailabilityController extends BaseController {
 		}catch(exception $e){
 			
 			return Redirect::to('/schedule/availability/my-availability')->with(array(
-				'error' => $e->getMessage()
+				'status' => 400,
+				'error' => $checkedInput->messages()->all()
 			));
 		}
 		
@@ -114,25 +114,6 @@ class AvailabilityController extends BaseController {
 				'status' => 200
 			));;
 	}
-
-
-
-	// public function postRemoveAvailabilityFromUser(){
-	// 	$userId = Input::get('user');
-	// 	$availabilityId = Input::get('availability');
-
-	// 	try{
-			
-
-	// 		User::findorFail($userId)->availability()->detatch($availabilityId);
-
-	// 	}catch(exception $e){
-	// 		return Response::json(array('status' => 400, 	
-	// 		'message' => 'Failed to remove Availability.', 'error' => $e->getMessage()), 400);
-	// 	}
-
-	// 	return Response::json(array('status' => 200, 'message' => 'Availability removed'), 200);
-	// }
 
 }
 
