@@ -26,40 +26,31 @@ delete a course
 <br><br>
 
 
-<table id="courseTable" border="1">
-<thead>
-	<tr>
-		<th>Course Title</th>
-		<th>Course Num</th>
-		<th>Lab Aide name</th>
-	</tr>
-</thead>
-<tbody>
+<pre>
 <?php
-
+	use Lotto\models\Skill;
 	//echo $created;
 	foreach($courses as $course){
-		echo "<tr>";
-			echo "<td>";
-			echo $course->course_title;
-			echo "</td>";
+		
 
-			echo "<td>";
-			echo $course->course_num;
-			echo "</td>";
-
-			echo "<td>";
-			echo @$course->labaides()->first()->username;
-			echo "</td>";
-
-		echo "</tr>";
+		print_r($course->toarray());
 		
 
 	}
 
+	echo "<hr>";
+foreach(Skill::all() as $course){
+		
+
+		print_r($course->toarray());
+		
+
+	}
+
+
+
 ?>	
+</pre>
 
-</tbody>
 
-</table>
 

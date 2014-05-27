@@ -31,10 +31,10 @@ class ManyTableSeeder extends Seeder{
 		// dave and robert can only cover one.
 
 		
-		$bob = User::create(array('username' => 'bob', 'admin' => true, 'type' => 'labAide', 'password' => Hash::make('1')));
-		$dave = User::create(array('username' => 'dave', 'type' => 'labAide', 'password' => Hash::make('1')));
-		$robert = User::create(array('username' => 'robert', 'type' => 'labAide', 'password' => Hash::make('1')));
-		$fog = User::create(array('username' => 'fog', 'type' => 'labAide', 'password' => Hash::make('1')));
+		$bob = User::create(array('email' => 'b@b.b','username' => 'bob', 'admin' => true, 'type' => 'labAide', 'password' => Hash::make('1')));
+		$dave = User::create(array('email' => 'd@b.b','username' => 'dave', 'type' => 'labAide', 'password' => Hash::make('1')));
+		$robert = User::create(array('email' => 'r@b.b','username' => 'robert', 'type' => 'labAide', 'password' => Hash::make('1')));
+		$fog = User::create(array('email' => 'f@b.b', 'username' => 'fog', 'type' => 'labAide', 'password' => Hash::make('1')));
 
 
 

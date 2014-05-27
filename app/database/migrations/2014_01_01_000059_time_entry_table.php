@@ -20,7 +20,7 @@ class TimeEntryTable extends Migration {
             $table->integer('pay_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('time_tracking_categories');
             $table->foreign('user_id')->references('id')->on('user');
-            $table->foreign('pay_id')->references('id')->on('time_traking_pay_period')
+            $table->foreign('pay_id')->references('id')->on('time_tracking_pay_period');
             $table->date('startDate');
             $table->date('endDate')->nullable();
             $table->time('startTime');

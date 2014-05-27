@@ -34,36 +34,27 @@ class Course extends Eloquent {
 		//'instructor' => 'numeric|exists:auth_user,id'
 	);
 
-    private static $updateRules = array(
-        'id' => 'required|numeric|exists:lotto_course,id',
-        'creditHour' => 'numeric',
-        'crn' => 'alpha_num',
-        'daysInWeek' => 'alpha',
-        'endDate' => 'date',
-        //'endTime' => 'time',
-        //'name' => 'required|alpha_num',
-        'startDate' => 'date',
-        'startTime' => 'time',
-        'labAide' => 'numeric|exists:global_user,id'
-    );
+
 
 	public static function validate($data){
 		return Validator::make($data, static::$rules);
 	}
 
-    public static function updateValidate($data){
-        return Validator::make($data, static::$updateRules);
-    }
 
 	public static function boot(){
         parent::boot();
 
         Course::created(function($course){
+
            	try{
+
         		Skill::where('name' ,'=' , $course->course_title)->firstOrFail();
-        	}catch (Exception $e){
-        		Skill::create(array('name' => $course->course_title));
-        	}
+        	
+            }catch (Exception $e){
+        	
+            	Skill::create(array('name' => $course->course_title));
+        	
+            }
 
         });
 
@@ -74,10 +65,38 @@ class Course extends Eloquent {
         Course::updating(function($course){
             ////// UPDATING COURSE - NOTIFY USER?
         });
+
+
         Course::deleting(function($course){
-            echo "deleting";
+
             $course->labaides()->detach();
            ///// DELETING COURSE - NOTIFY USER?
+        });
+
+        Course::deleted(function($course){
+
+
+
+            // Delete skill when no courses left?
+            // currently failing because of skill linked to user on delete
+            // try{
+
+            //     $count = Course::where('course_title' ,'=' , $course->course_title)->count();
+
+            //     if($count == 0){
+            //         $skill = Skill::where('name' ,'=' , $course->course_title)->firstOrFail();
+                    
+            //         print_r($skill);
+            //         exit;
+
+            //         $skill->delete();
+            //     }
+            
+            // }catch (Exception $e){
+            
+            //     // do nothing on fail
+            
+            // }
         });
 
     }
