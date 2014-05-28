@@ -12,7 +12,7 @@ class TimeTrackingPayPeriod extends Migration {
 	 */
 	public function up()
 	{
-        Schema::create('time_traking_pay_period',function($table){
+        Schema::create('time_tracking_pay_period',function($table){
 
             $table->increments('id');
             $table->date('start_pay_period');

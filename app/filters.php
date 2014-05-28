@@ -53,6 +53,18 @@ Route::filter('auth', function()
 
 });
 
+Route::filter('admin', function()
+{
+
+
+	if(!Auth::user()->admin){
+		//return Redirect::intended();
+		App::abort(401, "Not authorized");
+	}
+
+
+});
+
 
 Route::filter('auth.basic', function()
 {

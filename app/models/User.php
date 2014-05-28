@@ -10,21 +10,17 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
 
 	protected $table = 'user';
 	public $timestamps = false;
-	protected $fillable = array('username','email','first_name','last_name','type','password',
-     'prefered_hours', 'working_hours', 'department', 'admin');
+	protected $fillable = array('username', 'admin', 'email','first_name','last_name','type','password',
+     'prefered_hours', 'working_hours', 'department');
 	protected $guarded = array('id');
-    protected $hidden = array('password', 'is_active', 'date_joined', 'pivot');
+    protected $hidden = array('password', 'is_active', 'remember_token', 'date_joined', 'pivot');
 	
     private static $rules = array(
-        'id' => 'numeric|exists:user,id',
-        'username' => 'required|alpha|min:4',
-        'email' => 'required|email|unique:users',
+       // 'id' => 'numeric|exists:user,id',
+        // 'username' => 'required|alpha|min:4',
+        // 'email' => 'required|email|unique:users',
     );
 
-    private static $rulesForLogin = array(
-        'username' => 'alpha_num|exists:user,username',
-        //'password'=>'required|alpha_num|between:6,12|confirmed',
-    );
 
 
     public static function boot(){
@@ -55,9 +51,6 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
         return Validator::make($data, static::$rules);
     }
 
-    public static function validateLogin($data){
-        return Validator::make($data, static::$rulesForLogin);
-    }
 
     public function skills(){
 
@@ -74,8 +67,7 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
 
 
 
-
-        /**
+    /**
      * Get the unique identifier for the user.
      *
      * @return mixed
@@ -96,6 +88,37 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
     }
 
     /**
+     * Get the token value for the "remember me" session.
+     *
+     * @return string
+     */
+    public function getRememberToken()
+    {
+        return $this->remember_token;
+    }
+
+    /**
+     * Set the token value for the "remember me" session.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setRememberToken($value)
+    {
+        $this->remember_token = $value;
+    }
+
+    /**
+     * Get the column name for the "remember me" token.
+     *
+     * @return string
+     */
+    public function getRememberTokenName()
+    {
+        return 'remember_token';
+    }
+
+    /**
      * Get the e-mail address where password reminders are sent.
      *
      * @return string
@@ -104,4 +127,5 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
     {
         return $this->email;
     }
+
 }

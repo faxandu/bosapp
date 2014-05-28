@@ -30,13 +30,13 @@ class Equipment extends Eloquent{
 
 
 	private static $rules = array(
-		'serial_number' => 'required|alpha_num',
-		'manufacturer' =>	'required|alpha_num_spaces',
-		'type' => 'required|alpha',
-		'model' =>	'alpha_num_spaces',
-		'location' =>	'required|alpha_num_spaces',
-		'obtained' =>	'date',
-		'warranty' =>    'date'
+		// 'serial_number' => 'required|alpha_num',
+		// 'manufacturer' =>	'required|alpha_num_spaces',
+		// 'type' => 'required|alpha',
+		// 'model' =>	'alpha_num_spaces',
+		// 'location' =>	'required|alpha_num_spaces',
+		// 'obtained' =>	'date',
+		// 'warranty' =>    'date'
 		);
 
 	public static function validate($data){

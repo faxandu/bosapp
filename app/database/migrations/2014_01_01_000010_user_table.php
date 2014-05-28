@@ -15,7 +15,7 @@ class UserTable extends Migration {
 		Schema::create('user', function($table){
 			$table->increments('id');
 
-			$table->string('email', 50);
+			$table->string('email', 50)->unique();
 			$table->string('first_name', 30);
 			$table->string('last_name', 30);
 			$table->string('password', 128);
@@ -24,8 +24,9 @@ class UserTable extends Migration {
 			$table->enum('department', array('bos', 'none'))->default('none');
 			$table->boolean('admin')->default(false);
 			$table->enum('type', array('labAide','fullTime','partTime', 'adjunct', 'labTech', 'other'))->default('other');
-			$table->string('username', 40);
+			$table->string('username', 40)->unique();
 			
+			$table->string('remember_token', 100)->nullable();
 			$table->timestamps();
 			
 		});

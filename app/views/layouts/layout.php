@@ -12,14 +12,14 @@
 			echo HTML::style('css/styles.css');
 		?>
 		<!-- Scripts go Here -->
-	<?php
-		echo HTML::script('js/jquery.js');
-		echo HTML::script('js/jquery-ui.js');
-		echo HTML::script('js/jquery.dataTables.min.js');
-		echo HTML::script('js/bootstrap.js');
-		echo HTML::script('js/bootstrap-datetimepicker.js');
-		echo HTML::script('js/fullcalendar.js');
-	?>
+		<?php
+			echo HTML::script('js/jquery.js');
+			echo HTML::script('js/jquery-ui.js');
+			echo HTML::script('js/jquery.dataTables.min.js');
+			echo HTML::script('js/bootstrap.js');
+			echo HTML::script('js/bootstrap-datetimepicker.js');
+			echo HTML::script('js/fullcalendar.js');
+		?>
 	</head>
 	<body>
 		<nav class="navbar navbar-default navbar-inverse" role="navigation">
@@ -40,6 +40,17 @@
 		      <ul class="nav navbar-nav">
 		        <li><a href="#">Time Tracking</a></li>
 		        <li><a href="<?php echo URL::to('/calendar/entries'); ?>">Calendar</a></li>
+
+
+		         <li class="dropdown">
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Schedule<b class="caret"></b></a>
+		          <ul class="dropdown-menu">
+		            <li><a href="/schedule/user/my-schedule">My Schedule</a></li>
+		            <li><a href="/schedule/availability/my-availability">My Availability</a></li>
+		          </ul>
+		        </li>
+
+
 		        <li class="dropdown">
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Faculty Request <b class="caret"></b></a>
 		          <ul class="dropdown-menu">
@@ -77,13 +88,14 @@
 			   	  		<ul class="dropdown-menu">
 			   	  			<li><a href="#">Dashboard</a></li>
 			   	  			<li><a href="#">My Projects</a></li>
-			   	  			<li><a href="<?php echo URL::to('users/logout'); ?>">Log Out</a></li>
+			   	  			<li><a href="<?php echo URL::to('logout'); ?>">Log Out</a></li>
 			   	  		</ul>
 			   	  	</li>
 			   	  	<?php if (Auth::user()->admin) {   /////////////////// need to look into this - getting an error for now   //// Auth::user()->hasRole('admin') ?>
 						<li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li><a href="<?php echo URL::to('admin/useradmin'); ?>">User Management</a></li>
+								<li><a href="<?php echo URL::to('admin/user/home'); ?>">User Management</a></li>
+								<li><a href="<?php echo URL::to('admin/schedule'); ?>">Schedule Management</a></li>
 								<li><a href="#">Project Management</a></li>
 								<li><a href="#">System Configurations</a></li>
 							</ul>

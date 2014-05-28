@@ -3,47 +3,44 @@
 namespace Lotto\controllers;
 
 use BaseController, Lotto\models\Course, Lotto\models\Skill, User;
-use Input, Response, Exception;
+use Input, Response, Redirect, Session, Exception;
 use View;
 
 class CourseController extends BaseController {
 
-	public function getHome(){
-		$this->layout->content = View::make('lotto.home');
-	}
 
-	public function getCreate(){
-		$this->layout->content = View::make('lotto.course.courseCreate')->nest('courseForm', 'lotto.course.courseForm');
-	}
 
-	public function postCreate(){
 
-		$input = Input::all();
-		$validatedInput = Course::validate(Input::all());
-		$messages = $validatedInput->messages();
-
-		// if any error messages, don't create and return errors.
-		if(!$messages->all()){
-			try{
-
-				$course = Course::create($input);
-
-				$this->layout->content = View::make('lotto.course.courseCreate')->nest('courseForm', 'lotto.course.courseForm', array('course' => $course));
-
-			}catch(Exception $e){
-				$this->layout->content = View::make('lotto.course.courseCreate')->nest('courseForm', 'lotto.course.courseForm')->with('error', $e);
-			}
-		}
-		$this->layout->content = View::make('lotto.course.courseCreate')->nest('courseForm', 'lotto.course.courseForm')->with('error', $messages->all());
-	}
-
-	/**
-	*	Grab the Json file from the link.
-	*	Parse each part into a specific array with keys. 
-	*	Format time and date.
-	*	Try to find existing entry, if so update else create
-	*	Look to see if any courses have been deleted.
+	/*
+	|--------------------------------------------------------------------------
+	| Controller Views
+	|--------------------------------------------------------------------------
 	*/
+
+	/* Admin: Get all courses
+	------------ */
+	public function getAll(){
+		$this->layout->content = View::make('admin.lotto.courseList', array (
+			'courses' => Course::all()), Session::all());		
+	}
+
+
+
+	/*
+	|--------------------------------------------------------------------------
+	| Controller Posts
+	|--------------------------------------------------------------------------
+	*/
+
+
+	/*
+		Grabs a JSON file from an external source.
+		Parse the JSOn into an array format
+			-format the time and dates.
+		For each object try to create, update.
+		Keep count along the way of create, update, or canceled courses.
+		Return results.
+	------------------------- */
 	public function getImport(){
 		
 		$file = file_get_contents($_ENV['courseLinkTest']);
@@ -80,44 +77,60 @@ class CourseController extends BaseController {
 			try{
 
 				$course = Course::where('crn', '=', $parsed['crn'])->firstOrFail();
-
-				if($course->status_code == 'X'){
-					$canceledCourses++;
-					$course->delete();
-				}
-		
+				
 				if(!empty(array_diff_assoc($parsed, $course->toArray()))){
 					$course->update($parsed);
 					$updatedCourses++;
 				}
 
+				if($course->status_code == 'X'){
+					$canceledCourses++;
+					//$course->delete();
+				}
 
 			}catch(Exception $e){
 				Course::create($parsed);
 				$newCourses++;
 			}
 		}
-		
 
 
-		// foreach(Course::all() as $course){
-
-		// 	if(!array_key_exists($course->crn, $data)){
-		// 		$course->delete();
-		// 	}
-		// }
-
-		$this->layout->content = View::make('lotto.course.importStatus',
-		 array('created' => $newCourses, 
+		return Redirect::to('admin/schedule/course/all')->with( 
+			array('status' => 200, 
+			'message' => 'Courses Imported Successfully',
+			'created' => $newCourses, 
 		 	'updated' => $updatedCourses, 
 			'canceled' => $canceledCourses));
 	}
 
+
+	/*
+		Get all the courses.
+			-sort by the course number (lower number higher the priority).
+
+
+				-- For every user that is a labaide
+					- check to see if they have the skills of the current course
+					- also check to see that their availability would work for the course.
+
+					* then get those users.
+
+				--if only one user
+					- assign them as the labaide and move onto the next course
+					<-
+				--get the number of skills each user has.
+					-assign to the labaide with the lowest # of skills.
+					-if same # then rand pick
+
+				-- if all have same number sort
+
+
+
+	------------------------- */
 	public function getAssignLabaides(){
 
 		//grab course list based off course level. lower -> higher
 		foreach(Course::all()->sortBy('course_number') as $course){
-			echo $course->course_title;
 
 			//for every course - grab all users that can cover it.
 			// 		Required skills
@@ -133,88 +146,99 @@ class CourseController extends BaseController {
 				$query->where('end_date', '>=', $course->end_date);
 			})->get();
 
-			//debug - print all labaides per course;
-			foreach($eligibleLabaides as $user){
-				echo $user->username;
+			if($eligibleLabaides->count() == 0){
+				continue;
 			}
-
-			
+						
 			//if only one labaide - assign as labaide
 			if( $eligibleLabaides->count() == 1){
-				$course->labaides()->attach($eligibleLabaides->first());
+				$course->labaides()->attach($eligibleLabaides->first()->id);
 
 				continue;
 			}
-			exit;
 
-			//get skill count
-
+			//sort by skill count
+			$eligibleLabaides->sortBy(function($user){
+				return $user->skills->count();
+			});
+			
 			//if not equal lowest gets it. if some are equal on the lowest - rand
+			// get all labaides with the same lowest skill count
+			$assignList = $eligibleLabaides->filter(function($user) use($eligibleLabaides){
+				if($user->skills->count() == $eligibleLabaides->first()->skills->count()){
+					return $user;
+				}
 
+			});
 
+			//if only one - assign as labaide
+			if($assignList->count() == 1){
+				$course->labaides()->attach($assignList->first()->id);
+
+				continue;
+			}else if($eligibleLabaides->count() == $assignList->count()){
+				echo $eligibleLabaides->count();
+				print_r($assignList);
+				exit;
+				$course->labaides()->attach($assignList->get(rand(0, $eligibleLabaides->count()-1))->id);
+
+				continue;
+			}
+
+			///////////////////////////////////// MAY NEED WORK
 
 			/// if skill count is equal
+			// $eligibleLabaides->sortBy(function($user){
+			// 	$skills = $user->skills;
+			// 	$priority = 0;
+			// 	foreach($skills as $skill){
+			// 		$priority += $skill
+			// 	}
+			// 	return $user->skills->count();
+			// });
 
 			/// sort based on priority of class. Highest to lowest - first gets. If same then rand
-			echo $course;
+			$course->labaides()->attach($assignList->get(rand(0, $eligibleLabaides->count()-1)));
 
 		}
 
-		exit;
-		// Staff all courses that are possible
-		foreach(Course::all() as $course){
-			// per course - grab the labaides that can staff it.
-			$eligibleLabaides = User::where('type','=','labAide')->with('skills')
-			->whereHas('skills', function($query) use ($course){
-				$query->where('name', '=', $course->course_title);
-			})->get();
-
-			echo "<pre>";
-			foreach($eligibleLabaides as $user){
-				echo $user->username." can staff ".$course->course_title;
-				echo "<br>";
-			}
-			echo "<br>";
-			echo "</pre>";
-		}
-		return "failed";
+		$this->layout->content = Redirect::to('admin/schedule/user/all');	
 	}
 
-
+	/*	Admin: deletes a course.
+		Grab a course and delete it,
+		then redirect to the listing page. 
+	--------------- */
 	public function postDelete(){
 		
 		$id = Input::get('id');
 		
 		try{
+
 			$course = Course::findOrFail($id);
+
 			$course->delete();
 
 		}catch(exception $e){
-			return Response::json(array('status' => 400, 	
-			'message' => 'Failed to delete course.', 'error' => $e->getMessage()), 400);
+
+			return Redirect::to('admin/schedule/course/all')->with(array(
+				'status' => 400,
+				'message' => 'Failed to Delete Course',
+				'error' => $e
+				));
+			
 		}
-		return Response::json(array('status' => 200, 'message' => 'Course Deleted'), 200);
+
+		return Redirect::to('admin/schedule/course/all')->with(array(
+				'status' => 200,
+				));
 	}
 
-	public function getGet(){
-		$this->layout->content = View::make('lotto.course.list')->withCourses(Course::all());		
-	}
 
-	public function postGet(){
-		
-		$id = Input::get('id');
 
-		try{	
-			$course = Course::findOrFail($id);
-			$course->labaides->toArray();
-			return Response::json($course->toArray());
 
-		}catch(exception $e){
-			return Response::json(array('status' => 400, 	
-			'message' => 'Failed to get course.', 'error' => $e->getMessage()), 400);
-		}		
-	}
-
+	/* Removes a user as a labaide from a course.
+	------------------ */
 	public function postRemoveLabAide(){
 		
 		$userId = Input::get('user');
