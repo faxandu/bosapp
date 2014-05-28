@@ -69,7 +69,6 @@ class EntryController extends BaseController{
 	 * @return returns json response if user is created or not
 	 */
 	 public function postAddStudent($student_num, $class){
-
 	 	$input = Input::all();
 	 	$student_arr = array('first_name' => $input['first_name'], 'last_name' => $input['last_name'], 
 	 					'student_num' => $student_num);
@@ -87,7 +86,6 @@ class EntryController extends BaseController{
 	 * @return json response to add_student that returns the entry created or not created.
 	 */
 	public function postStartEntry($student_id, $class){
-
 		$start_date = date('Y-m-d');
 		$entry_arr = array(
 				'class' => $class,
@@ -103,7 +101,6 @@ class EntryController extends BaseController{
 	}
 
 	public function postEndEntry($entry_id, $date){
-
 		if(empty($entry_id))
 			return Response::json(array('status' => 'entry_not_found'));
 		else{
@@ -119,7 +116,6 @@ class EntryController extends BaseController{
 	 * @return (PK) (id) returns json response for error or success
 	 */
 	public function postDeleteEntry($id){
-
 		$entry = Entry::find($id);
 		if(empty($entry)) 
 			return Response::json(array('status' => 'entry_not_found'));
@@ -136,7 +132,6 @@ class EntryController extends BaseController{
 	 * @return (PK) (id) returns json response for error or success
 	 */
 	public function postUpdateEntry($id){
-
 		$input = Input::all();
 		$entry = Entry::find($id);
 		if(empty($entry))
@@ -146,8 +141,7 @@ class EntryController extends BaseController{
 		}
 	}
 
-	public function missingMethod($parameters = array())
-	{
+	public function missingMethod($parameters = array()){
 		return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
 	}
 }
