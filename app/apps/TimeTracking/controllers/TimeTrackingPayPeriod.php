@@ -29,7 +29,8 @@ class TimeTrackingPayPeriod extends BaseController{
     /**
     * This function @uses TimeTrackingPayPeriod::find(Input::get('id'))
     * to find the given payperiod object if it exists. If it doesn't 
-    * it , or if the id was not found it @throws an exception.   
+    * it , or if the id was not found it exception 
+    * @throws an exception and handels it .   
     */
 	public function postDeletePeriod() {
 
@@ -88,7 +89,15 @@ class TimeTrackingPayPeriod extends BaseController{
        	else
         	Response::json(array('status' => 401, 'message' => 'date is not unique '), 401);	
     }  
-    
+    /**
+    * 
+    * This is a helper function that validates if the parameter is
+    * is unique to the database table. This function calls 
+    * @see /app/apps/TimeTracking/models/TimeTrackingPayPeriod for
+    * information on that function.  
+    * @param $pay_period the payperiod to validate 
+    * @return true if it is unique false other wise.
+    */
     private function failed($pay_period){
     	return TimeTrackingPayPeriod::validate($pay_period)->fails();
     }
