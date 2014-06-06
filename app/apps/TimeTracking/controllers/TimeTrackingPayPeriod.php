@@ -90,7 +90,7 @@ class TimeTrackingPayPeriod extends BaseController{
         	Response::json(array('status' => 401, 'message' => 'date is not unique '), 401);	
     }
     public function getPayPeriod(){
-        Response::json(array('pay_period' => , TimeTrackingPayPeriod::all()->toArray() ) );
+       return Response::json(array('pay_period' => , TimeTrackingPayPeriod::all()->toArray() ) );
     } 
     /**
     * 
