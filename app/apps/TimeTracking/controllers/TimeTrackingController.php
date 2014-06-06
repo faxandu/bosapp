@@ -91,7 +91,21 @@ class TimeTrackingController extends  BaseController{
         }
 
     }
+    public function getUserTime(){
+         $time = TimeTrackingEntry::table('time_tracking_entry')where->('user_id' '= ' Input::get('user_id') )
+         ->select('start_time','end_time','category')-get();
+         Response::json(array('start_time' => $time['start_time'] , 'end_time' => $time['end_time'], 'category' 
+            => $time['category']));
+         
+    }
 
+    public function getCategories(){
+        //felt a little sick when writing this it may work. 
+        Response::json(array('category' => Categories::select('category')
+            ->where('id' '=' Input::get('category_id') )->toArray() ) );
+    }
+    
+    }
     public function missingMethod($parameters = array()){
         return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
     }

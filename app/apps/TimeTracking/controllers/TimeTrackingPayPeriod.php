@@ -88,7 +88,10 @@ class TimeTrackingPayPeriod extends BaseController{
       	}
        	else
         	Response::json(array('status' => 401, 'message' => 'date is not unique '), 401);	
-    }  
+    }
+    public function getPayPeriod(){
+        Response::json(array('pay_period' => , TimeTrackingPayPeriod::all()->toArray() ) );
+    } 
     /**
     * 
     * This is a helper function that validates if the parameter is

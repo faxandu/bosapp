@@ -91,15 +91,8 @@ class TimeTrackingCategories extends BaseController{
     }
 
     public function getCategories(){
-
-
-        $categories = Categories::all()->toArray();
-
-        if($categories->count() > 0)
-            Response::json($categories,200);
-        else
             Response::json(
-                array('status'=> 401 , 'message' => 'category does not exist'), 401);
+                array('category'=> Categories::all()->toArray() ));
     }
     /**
     * @link http://laravel.com/docs/validation 
