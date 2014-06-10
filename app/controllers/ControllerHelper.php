@@ -37,7 +37,23 @@ class ControllerHelper {
 
 	}
 
+	public static function delete($model, $input, $route_pass, $route_fail = null){
+		
+	}
 
+	public static function convertTimeAndDate($input){
+
+		foreach($input as $key => $value){
+
+			if(preg_match('/time$/', $key))
+				$input[$key] = date("H:i:s", strtotime($value));
+			else if(preg_match('/date$/', $key))
+				$input[$key] = date("m/d/Y", strtotime($value));
+			
+		}
+
+		return $input;
+	}
 
 
 }
