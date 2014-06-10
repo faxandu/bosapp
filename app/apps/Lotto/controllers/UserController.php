@@ -20,11 +20,6 @@ class UserController extends BaseController {
 	--------- */
 	public function getMySchedule(){
 
-		// give the user schedule.
-
-		// each course they have.
-
-
 		$this->layout->content = View::make('lotto.schedule.home')->with(array(
 
 			'user' => Auth::user(),
