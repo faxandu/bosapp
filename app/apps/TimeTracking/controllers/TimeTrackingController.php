@@ -47,6 +47,15 @@ class TimeTrackingController extends  BaseController{
         }
 
     }
+    /*
+    Alternet version for adding time.
+    public function postCreateTime(){
+
+        if(Auth::validate(Input::get('id')) ){
+            TimeTrackingEntry::create(Input::all());
+        }
+    }
+    */
     /**
     * This function will allow the user to retrieve a time based 
     * on the id . This function calls find() which is inherited from  
@@ -91,17 +100,26 @@ class TimeTrackingController extends  BaseController{
         }
 
     }
+    /*
+    Alternet version of the modiy time.
+    public function postModifyTime(){
+        
+        if(Auth::validate(Input::get('id')) )
+            TimeTrackingEntry::update(TimeTrackingEntry::find('id'));
+
+    }
+     
+    */
     public function getUserTime(){
-         $time = TimeTrackingEntry::table('time_tracking_entry')where->('user_id' '= ' Input::get('user_id') )
-         ->select('start_time','end_time','category')-get();
-         Response::json(array('start_time' => $time['start_time'] , 'end_time' => $time['end_time'], 'category' 
+         $time = TimeTrackingEntry::find(Auth::user()->id);
+       return  Response::json(array('start_time' => $time['start_time'] , 'end_time' => $time['end_time'], 'category' 
             => $time['category']));
          
     }
 
     public function getCategories(){
-        //felt a little sick when writing this it may work. 
-        Response::json(array('category' => Categories::select('category')
+         
+      return  Response::json(array('category' => Categories::select('category')
             ->where('id' '=' Input::get('category_id') )->toArray() ) );
     }
     
