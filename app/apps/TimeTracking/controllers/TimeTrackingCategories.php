@@ -52,7 +52,18 @@ class TimeTrackingCategories extends BaseController{
             Response::json(
                 array('status' => 401, 'message' => 'category already exists '), 401);
     }
+    /*
+    public function postAddCategory(){
 
+        if(!$this->failed($Input::get())){
+              Categories::create(Input::get());
+        }
+    }
+    */
+    public function postModify(){
+        
+        Categories::update(Input::get('id'));
+    }
     /**
     * This function will delete a category based upon a 
     * the id sent in from the user. If the category does not
@@ -91,7 +102,7 @@ class TimeTrackingCategories extends BaseController{
     }
 
     public function getCategories(){
-            Response::json(
+          return  Response::json(
                 array('category'=> Categories::all()->toArray() ));
     }
     /**
