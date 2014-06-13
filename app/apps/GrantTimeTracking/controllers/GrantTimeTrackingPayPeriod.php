@@ -42,6 +42,10 @@ class GrantTimeTrackingPayPeriod extends BaseController{
 
 	}
     
+    public function getPayPeriod(){
+       return Response::json(array('pay_period' => , TimeTrackingPayPeriod::all()->toArray() ) );
+    } 
+
     private function postPayPeriod($pay_period){
 
 		if(!$this->failed(Input::get('start_pay_period')) 
