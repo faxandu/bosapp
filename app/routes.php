@@ -16,6 +16,10 @@ Route::get('/', function() use($layout) {
 Route::post('login', 'UserController@login');
 Route::get('logout', 'UserController@logout');
 
+Route::post('passwordRecovery', 'UserController@passwordRecovery');
+Route::get('passwordReset/{token}', 'UserController@passwordResetForm');
+Route::post('passwordResetSubmit', 'UserController@passwordReset');
+
 
 /*	Must be Authenticated  - auth grouping
 -----------------------*/
@@ -95,6 +99,7 @@ Route::group(array('before' => 'auth'), function() use($layout){
 
     Route::group(array('prefix' => 'time/'), function() {
         Route::controller('entries', 'TimeTracking\controllers\TimeTrackingController');
+        Route::controller('payperiods', 'TimeTracking\controllers\TimeTrackingPayPeriod');
     });
 
 

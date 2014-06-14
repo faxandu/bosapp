@@ -39,7 +39,7 @@
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
 		      	<?php if (Auth::check()) {  ?>
-		        <li><a href="#">Time Tracking</a></li>
+		        <li><a href="<?php echo URL::to('/time/payperiods/payperiods'); ?>">Time Tracking</a></li>
 		        <li><a href="<?php echo URL::to('/calendar/entries'); ?>">Calendar</a></li>
 
 		         <li class="dropdown">
@@ -78,7 +78,7 @@
 			        <button type="submit" class="btn btn-default">Login</button>
 			      </form>
 			      <ul class="nav navbar-nav navbar-right">
-			        <!-- <li><a href="<?php echo URL::to('users/register'); ?>">Register</a></li> -->
+			        <li><a data-toggle="modal" data-target="#passwordReset">Password Reset</a></li>
 			      </ul>
 			   	<?php } else { ?>
 			   	  <ul class="nav navbar-nav navbar-right">
@@ -109,7 +109,30 @@
 			<?php echo $content; ?>
 		</div>
 
-	
+		<div class="modal fade" id="passwordReset">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title">Password Recovery</h4>
+		      </div>
+		      <form role="form" method="post" action="<?php echo URL::to('passwordRecovery'); ?>">
+		      <div class="modal-body">
+		        <p>Please enter your username to recover your password</p>
+		        	<div class="form-group">
+		        		<label for="username">Username</label>
+		        		<input type="text" class="form-control" name="username" />
+		        	</div>
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <input class="btn btn-default" type="submit" name="submit" value="Send Recovery Email" />
+		      </div>
+		      </form>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 
 	</body>
 </html>

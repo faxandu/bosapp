@@ -14,6 +14,10 @@ use BaseController, User,  Entry ,Response;
 
 class TimeTrackingPayPeriod extends BaseController{
 
+    public function getIndex() {
+        Response::json(TimeTrackingPayPeriod::all());
+    }
+
     /**
     * This function is used to create a new payperiod 
     * to be saved to the payperiod table. This function 
@@ -83,14 +87,14 @@ class TimeTrackingPayPeriod extends BaseController{
 	    		Response::json(array('status' => 200, 'message' => 'pay period saved'), 200);
     		}
     		catch(exception $e){
-        		Response::json(array('status' => 401, 'message' => 'pay period not saved' , 'error' => $e ),401)  
+        		Response::json(array('status' => 401, 'message' => 'pay period not saved' , 'error' => $e ),401);  
     		}
       	}
        	else
         	Response::json(array('status' => 401, 'message' => 'date is not unique '), 401);	
     }
     public function getPayPeriod(){
-       return Response::json(array('pay_period' => , TimeTrackingPayPeriod::all()->toArray() ) );
+       return Response::json(array('pay_period' => TimeTrackingPayPeriod::all()->toArray() ) );
     } 
     /**
     * 

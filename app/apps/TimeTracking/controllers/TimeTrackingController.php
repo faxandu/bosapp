@@ -120,10 +120,9 @@ class TimeTrackingController extends  BaseController{
     public function getCategories(){
          
       return  Response::json(array('category' => Categories::select('category')
-            ->where('id' '=' Input::get('category_id') )->toArray() ) );
+            ->where('id', '=', Input::get('category_id') )->toArray() ) );
     }
     
-    }
     public function missingMethod($parameters = array()){
         return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
     }

@@ -1,3 +1,12 @@
+<?php if (Session::get('message')) { ?>
+<div class="row">
+	<div class="col-sm-10 col-sm-offset-1">
+		<div class="alert alert-<?php echo Session::get('alert'); ?>">
+		<?php echo Session::get('message'); ?>
+		</div>
+	</div>
+</div>
+<?php } ?>
 <div class="row">
 	<div class="col-sm-2 col-sm-offset-1">
 		<form method="post" role="form" action="<?= URL::to('admin/user/create');?>">
