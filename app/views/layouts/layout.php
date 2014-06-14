@@ -38,19 +38,17 @@
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
+		      	<?php if (Auth::check()) {  ?>
 		        <li><a href="#">Time Tracking</a></li>
 		        <li><a href="<?php echo URL::to('/calendar/entries'); ?>">Calendar</a></li>
-
 
 		         <li class="dropdown">
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Schedule<b class="caret"></b></a>
 		          <ul class="dropdown-menu">
-		            <li><a href="/schedule/user/my-schedule">My Schedule</a></li>
-		            <li><a href="/schedule/availability/my-availability">My Availability</a></li>
+		            <li><a href="<?php echo URL::to('/schedule/user/my-schedule'); ?>">My Schedule</a></li>
+		            <li><a href="<?php echo URL::to('/schedule/availability/my-availability') ?>">My Availability</a></li>
 		          </ul>
 		        </li>
-
-
 		        <li class="dropdown">
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Faculty Request <b class="caret"></b></a>
 		          <ul class="dropdown-menu">
@@ -69,7 +67,7 @@
 		        		<li><a href="<?php echo URL::to('/inventory/equipment/form'); ?>">Add Equipment</a></li>
 		        	</ul>
 		        </li>
-
+		        <?php } ?>
 		      </ul>
 		      	<?php if(!Auth::check()) { ?>
 			      <?php echo Form::open(array('url'=>'login', 'class'=>'navbar-form pull-right')); ?>
@@ -95,6 +93,7 @@
 						<li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="<?php echo URL::to('admin/user/home'); ?>">User Management</a></li>
+								<li><a href="<?php echo URL::to(''); ?>">Payroll</a></li>
 								<li><a href="<?php echo URL::to('admin/schedule'); ?>">Schedule Management</a></li>
 								<li><a href="#">Project Management</a></li>
 								<li><a href="#">System Configurations</a></li>
