@@ -10,12 +10,16 @@
 
 namespace TimeTracking\controllers;
 
-use BaseController, User,  Entry ,Response;
+use BaseController, User,  Entry ,Response, TimeTracking\models\TimeTrackingPayPeriod, View, Input, Redirect;
 
-class TimeTrackingPayPeriod extends BaseController{
+class TimeTrackingPayPeriodController extends BaseController{
 
     public function getIndex() {
-        Response::json(TimeTrackingPayPeriod::all());
+        $this->layout->content = View::make('time/payperiod', array('pay_periods' => TimeTrackingPayPeriod::all()));
+    }
+
+    public function index() {
+        $this->layout->content = View::make('admin/time/payperiod', array('pay_periods' => TimeTrackingPayPeriod::all()));
     }
 
     /**
@@ -24,12 +28,27 @@ class TimeTrackingPayPeriod extends BaseController{
     * makes a call to the the helper function and @uses postPayPeriod()
     * create a @see TimeTrackingPayPeriod object and pass it to said function
     */
-	public function postCreatPayPeriod(){
+	public function postCreatePayPeriod(){
    
     $pay_period = new TimeTrackingPayPeriod();
     $this->postPayPeriod($pay_period);
       
 	}
+    /*
+    public function postCreatPayPeriod(){
+      
+
+      TimeTrackingPayPeriod::create(Input::all()); 
+    }
+    */
+    
+    /*
+    public function postModifyPeriod(){
+        $period = TimeTrackingPayPeriod::find(Input::get('id'));
+        TimeTrackingPayPeriod::update($period);
+    }
+    */
+     
     /**
     * This function @uses TimeTrackingPayPeriod::find(Input::get('id'))
     * to find the given payperiod object if it exists. If it doesn't 
@@ -46,7 +65,7 @@ class TimeTrackingPayPeriod extends BaseController{
 		}
 		catch(exception $e)
 		{
-			Response::json(array('status' => 401, 'message' => 'deletion unsuccessful', 'error' => $e), 400);
+			Response::json(array('status' => 401, 'message' => 'deletion unsuccessful', 'error' => $e), 401);
 		}
 
 	}
@@ -74,27 +93,34 @@ class TimeTrackingPayPeriod extends BaseController{
     */
     private function postPayPeriod($pay_period){
 
-		if(!$this->failed(Input::get('start_pay_period')) 
-    		&& !$this->failed(Input::get('end_pay_period'))){
-    		$start_date = new date("Y-n-j",strtotime(Input::get('start_pay_period')));
-    		$end_date = new date("Y-n-j",strtotime(Input::get('end_pay_period')));
+		//if(!$this->failed(Input::get('start_pay_period')) 
+    	//	&& !$this->failed(Input::get('end_pay_period'))){
+        if (!$this->failed(Input::all())) {
+    		$start_date = date("Y-n-j",strtotime(Input::get('start_pay_period')));
+    		$end_date = date("Y-n-j",strtotime(Input::get('end_pay_period')));
     	    
     		try
     		{
+                $pay_period['name'] = Input::get('name');
     			$pay_period['start_pay_period'] = $start_date;
     			$pay_period['end_pay_period']   = $end_date;
     			$pay_period->save();
-	    		Response::json(array('status' => 200, 'message' => 'pay period saved'), 200);
+	    		//Response::json(array('status' => 200, 'message' => 'pay period saved'), 200);
+                $this->layout->content = Redirect::to('admin/payroll')->with(array('message' => 'Pay Period Created', 'alert' => 'Success'));
     		}
     		catch(exception $e){
-        		Response::json(array('status' => 401, 'message' => 'pay period not saved' , 'error' => $e ),401);  
+        		//return Response::json(array('status' => 401, 'message' => 'pay period not saved' , 'error' => $e ),401);
+                $this->layout->content = Redirect::to('admin/payroll')->with(array('message' => 'Pay Period Creation Failed', 'alert' => 'danger'));
     		}
       	}
        	else
-        	Response::json(array('status' => 401, 'message' => 'date is not unique '), 401);	
+        	//return Response::json(array('status' => 401, 'message' => 'pay period was not saved '), 401);	
+            $this->layout->content = Redirect::to('admin/payroll')->with(array('message' => 'Pay Period Creation Failed', 'alert' => 'danger'));
     }
+
     public function getPayPeriod(){
        return Response::json(array('pay_period' => TimeTrackingPayPeriod::all()->toArray() ) );
+
     } 
     /**
     * 

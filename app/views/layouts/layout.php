@@ -39,7 +39,7 @@
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
 		      	<?php if (Auth::check()) {  ?>
-		        <li><a href="<?php echo URL::to('/time/payperiods/payperiods'); ?>">Time Tracking</a></li>
+		        <li><a href="<?php echo URL::to('/time/payperiods'); ?>">Time Tracking</a></li>
 		        <li><a href="<?php echo URL::to('/calendar/entries'); ?>">Calendar</a></li>
 
 		         <li class="dropdown">
@@ -93,7 +93,7 @@
 						<li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="<?php echo URL::to('admin/user/home'); ?>">User Management</a></li>
-								<li><a href="<?php echo URL::to(''); ?>">Payroll</a></li>
+								<li><a href="<?php echo URL::to('admin/payroll'); ?>">Payroll</a></li>
 								<li><a href="<?php echo URL::to('admin/schedule'); ?>">Schedule Management</a></li>
 								<li><a href="#">Project Management</a></li>
 								<li><a href="#">System Configurations</a></li>
@@ -105,6 +105,15 @@
 		    </div><!-- /.navbar-collapse -->
 		  </div><!-- /.container-fluid -->
 		</nav>
+		<?php if (Session::get('message')) { ?>
+			<div class="row">
+				<div class="col-sm-10 col-sm-offset-1">
+					<div class="alert alert-<?php echo Session::get('alert'); ?>">
+						<?php echo Session::get('message'); ?>
+					</div>
+				</div>
+			</div>
+		<?php } ?>
 		<div id="content">
 			<?php echo $content; ?>
 		</div>
@@ -117,18 +126,17 @@
 		        <h4 class="modal-title">Password Recovery</h4>
 		      </div>
 		      <form role="form" method="post" action="<?php echo URL::to('passwordRecovery'); ?>">
-		      <div class="modal-body">
-		        <p>Please enter your username to recover your password</p>
-		        	<div class="form-group">
-		        		<label for="username">Username</label>
-		        		<input type="text" class="form-control" name="username" />
-		        	</div>
-		        </form>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		        <input class="btn btn-default" type="submit" name="submit" value="Send Recovery Email" />
-		      </div>
+		      	<div class="modal-body">
+		        	<p>Please enter your username to recover your password</p>
+		        		<div class="form-group">
+		        			<label for="username">Username</label>
+		        			<input type="text" class="form-control" name="username" />
+		        		</div>
+		      	</div>
+		      	<div class="modal-footer">
+		        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        	<input class="btn btn-default" type="submit" name="submit" value="Send Recovery Email" />
+		      	</div>
 		      </form>
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->

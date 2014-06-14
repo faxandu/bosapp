@@ -15,7 +15,7 @@ namespace TimeTracking\controllers;
 
 
 use Illuminate\Support\Facades\Input;
-use BaseController, User,  Entry ,Response;
+use BaseController, User,  Entry ,Response, Redirect;
 use TimeTracking\models\Categories;
 
 class TimeTrackingCategories extends BaseController{
@@ -29,7 +29,7 @@ class TimeTrackingCategories extends BaseController{
     * If the object can not be saved for whatever reason it 
     * @throws exception 
     */
-    public function postAddCategory(){
+    public function postCreate(){
 
         $input = Input::all();
     
@@ -40,17 +40,18 @@ class TimeTrackingCategories extends BaseController{
             {
                 $category['category'] = $input['category'];
                 $category->save();
-                Response::json(array('status' => 200, 'message' => 'category added'), 200);
+                //return Response::json(array('status' => 200, 'message' => 'category added'), 200);
+                $this->layout->content = Redirect::to('/admin/payroll')->with(array('message' => 'Category Added', 'alert' => 'success'));
             }
             catch (exception $e)
             {
-                Response::json(
-                    array('status' => 401, 'message' => 'category not saved ' , 'error' => $e), 401);
+                //return Response::json(array('status' => 401, 'message' => 'category not saved ' , 'error' => $e), 401);
+                $this->layout->content = Redirect::to('/admin/payroll')->with(array('message' => 'Category Creation Failed', 'alert' => 'danger'));
             }
         }
         else
-            Response::json(
-                array('status' => 401, 'message' => 'category already exists '), 401);
+            //return Response::json(array('status' => 401, 'message' => 'category already exists '), 401);
+            $this->layout->content = Redirect::to('/admin/payroll')->with(array('message' => 'Category Creation Failed', 'alert' => 'danger'));
     }
     /*
     public function postAddCategory(){
@@ -60,26 +61,30 @@ class TimeTrackingCategories extends BaseController{
         }
     }
     */
+    
+    /*
     public function postModify(){
-        
+
         Categories::update(Input::get('id'));
     }
+    */
+    
     /**
     * This function will delete a category based upon a 
     * the id sent in from the user. If the category does not
     * exist it @throws exception 
     * 
     */
-    public public function postDeleteCategory(){
+    public function postDeleteCategory(){
         
         
         $category = Categories::find(Input::get('id' ) );
         try {
              $category->delete();
-             Response::json(
-                array('status' => 200 'message' => 'successful deletion') , 200);
+             return Response::json(
+                array('status' => 200, 'message' => 'successful deletion') , 200);
         } catch (exception $e) {
-                 Response::json(
+                 return Response::json(
                     array('status' => 401, 'message' => 'deletion failed' , 'error' => $e), 401);
         }
     }
@@ -92,11 +97,11 @@ class TimeTrackingCategories extends BaseController{
         {
             $category['category'] = $input['category'];
             $category->save();
-            Response::json(array('status' => 200 , 'message' =>'category updated' ) , 200);
+            return Response::json(array('status' => 200 , 'message' =>'category updated' ) , 200);
         }
         catch (exception $e)
         {
-            Response::json(array('status' => 401 , 'message' => 'edit failed ', 'error' => $e) ,401);
+            return Response::json(array('status' => 401 , 'message' => 'edit failed ', 'error' => $e) ,401);
         }
 
     }
@@ -110,6 +115,6 @@ class TimeTrackingCategories extends BaseController{
     * Documentation for fails() function  
     */
     private function failed($category){
-        return Categories::validate($category)->fails();
+        //return Categories::validate($category)->fails();
     }
 } 
