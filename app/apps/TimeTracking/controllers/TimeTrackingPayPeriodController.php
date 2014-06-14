@@ -57,7 +57,7 @@ class TimeTrackingPayPeriodController extends BaseController{
 		}
 		catch(exception $e)
 		{
-			Response::json(array('status' => 401, 'message' => 'deletion unsuccessful', 'error' => $e), 400);
+			Response::json(array('status' => 401, 'message' => 'deletion unsuccessful', 'error' => $e), 401);
 		}
 
 	}
