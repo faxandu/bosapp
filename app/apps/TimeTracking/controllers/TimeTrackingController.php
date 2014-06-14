@@ -40,9 +40,9 @@ class TimeTrackingController extends  BaseController{
             $this->postAddTime($timeEntry);
             try{
                 $timeEntry->save();
-                Response::json('Message','Time saved');
+               return  Response::json(array('status' => 200, 'message' => 'time was saved '),200 );
             }catch (exception $e){
-                Response::json('Message',$e);
+                return Response::json(array('status' => 401, 'message' => 'time was not saved', 'error' => $e), 401);
             }
         }
 
@@ -68,9 +68,9 @@ class TimeTrackingController extends  BaseController{
 
         try{
             $timeEntry->delete();
-            Response::json('Message', 'deleted');
+            return Response::json(array('status' => 201, 'message' => 'time was deleted '),200 );
         }catch (exception $e){
-            Response::json('Message' , $e);
+            return Response::json(array( 'status' => 401, 'message' => 'time was not saved' , 'error' => $e), 401);
         }
 
 
@@ -93,9 +93,9 @@ class TimeTrackingController extends  BaseController{
             $this->postAddTime($timeEntry);
             try{
                 $timeEntry->save();
-                Response::json(array('status' => , 200 , 'message' => 'time was saved '), 200);
+                return Response::json(array('status' =>  200 , 'message' => 'time was saved '), 200);
             }catch (exception $e){
-                Response::json(array('status' => 401, 'message' => 'time was not saved ', 'error' => $e),401);
+                return Response::json(array('status' => 401, 'message' => 'time was not saved ', 'error' => $e),401);
             }
         }
 
@@ -122,7 +122,23 @@ class TimeTrackingController extends  BaseController{
       return  Response::json(array('category' => Categories::select('category')
             ->where('id', '=' Input::get('category_id') )->toArray() ) );
     }
+    /**
+    * This function will retreive the current pay period and return the 
+    * dates worked for the user to see .  
+    * @return $payperiod for the user  
+    */
+    public function getPayDates()
+    {
+
+    return Response::json(TimeTrackingEntry::where('pay_id' , ' = ' , Input::get('pay_id') )
+    ->select( 'start_time' , 'end_time' , 'start_date' , 'end_date')->all()->toArray() ); 
+
+    }
     
+    public function getAllPayDays(){
+        return Response::json(TimeTrackingPayPeriod::all()->toArray() );
+    }
+
     public function missingMethod($parameters = array()){
         return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
     }
