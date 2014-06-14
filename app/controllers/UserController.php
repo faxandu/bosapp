@@ -148,6 +148,7 @@ class UserController extends BaseController {
 		if ($input['password'] === $input['vpassword']) {
 			$user = User::where('reset_token', $input['token'])->firstOrFail();
 			$user->password = Hash::make($input['password']);
+			$user->reset_token = null;
 			$user->save();
 			return Redirect::to('/')->with(array('message' => 'Your password has been reset. You may now log in'));
 		} else {
