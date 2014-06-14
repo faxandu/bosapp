@@ -100,7 +100,17 @@ class GrantTimeTracking extends  BaseController{
     public function missingMethod($parameters = array()){
         return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
     }
-    
+
+    public function getUserTime(){
+         $time = GrantTimeKeeping::find(Auth::user()->id);
+       return  Response::json(array('start_time' => $time['start_time'] , 'end_time' => $time['end_time'], 'category' 
+            => $time['category']));
+         
+    }
+    public function getCategories(){
+          return  Response::json(
+                array('category'=> GrantCategories::all()->toArray() ));
+    }
     /**
     * This is a helper function to provide flexablity through out the class
     * This function will validate the time and then add the time to the 

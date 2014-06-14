@@ -4,8 +4,8 @@
  * User: brian
  * Date: 4/18/14
  * Time: 11:04 PM
- * This class is the implementation of the model @see{#/app/apps/TimeTracking/models/TimeTrackingPayPeriod.php } 
- *  
+ * This class is the implementation of the model @see /app/apps/TimeTracking/models/TimeTrackingPayPeriod.php 
+ * This will allow the andim to create, delete and modify the payperiods in the database 
  */
 
 namespace TimeTracking\controllers;
