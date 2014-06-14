@@ -98,13 +98,13 @@ class TimeTrackingPayPeriodController extends BaseController{
 	    		Response::json(array('status' => 200, 'message' => 'pay period saved'), 200);
     		}
     		catch(exception $e){
-        		Response::json(array('status' => 401, 'message' => 'pay period not saved' , 'error' => $e ),401)  
+        		Response::json(array('status' => 401, 'message' => 'pay period not saved' , 'error' => $e ),401);  
     		}
       	}
        	else
         	Response::json(array('status' => 401, 'message' => 'pay period was not saved '), 401);	
     }
-    
+
     public function getPayPeriod(){
        return Response::json(array('pay_period' => TimeTrackingPayPeriod::all()->toArray() ) );
     } 
