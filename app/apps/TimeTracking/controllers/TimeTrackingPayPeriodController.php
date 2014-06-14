@@ -12,7 +12,7 @@ namespace TimeTracking\controllers;
 
 use BaseController, User,  Entry ,Response;
 
-class TimeTrackingPayPeriod extends BaseController{
+class TimeTrackingPayPeriodController extends BaseController{
 
     /**
     * This function is used to create a new payperiod 
@@ -26,6 +26,21 @@ class TimeTrackingPayPeriod extends BaseController{
     $this->postPayPeriod($pay_period);
       
 	}
+    /*
+    public function postCreatPayPeriod(){
+      
+
+      TimeTrackingPayPeriod::create(Input::all()); 
+    }
+    */
+    
+    /*
+    public function postModifyPeriod(){
+        $period = TimeTrackingPayPeriod::find(Input::get('id'));
+        TimeTrackingPayPeriod::update($period);
+    }
+    */
+     
     /**
     * This function @uses TimeTrackingPayPeriod::find(Input::get('id'))
     * to find the given payperiod object if it exists. If it doesn't 
@@ -42,7 +57,7 @@ class TimeTrackingPayPeriod extends BaseController{
 		}
 		catch(exception $e)
 		{
-			Response::json(array('status' => 401, 'message' => 'deletion unsuccessful', 'error' => $e), 400);
+			Response::json(array('status' => 401, 'message' => 'deletion unsuccessful', 'error' => $e), 401);
 		}
 
 	}
@@ -83,14 +98,15 @@ class TimeTrackingPayPeriod extends BaseController{
 	    		Response::json(array('status' => 200, 'message' => 'pay period saved'), 200);
     		}
     		catch(exception $e){
-        		Response::json(array('status' => 401, 'message' => 'pay period not saved' , 'error' => $e ),401)  
+        		Response::json(array('status' => 401, 'message' => 'pay period not saved' , 'error' => $e ),401);  
     		}
       	}
        	else
-        	Response::json(array('status' => 401, 'message' => 'date is not unique '), 401);	
+        	Response::json(array('status' => 401, 'message' => 'pay period was not saved '), 401);	
     }
+
     public function getPayPeriod(){
-       return Response::json(array('pay_period' => , TimeTrackingPayPeriod::all()->toArray() ) );
+       return Response::json(array('pay_period' => TimeTrackingPayPeriod::all()->toArray() ) );
     } 
     /**
     * 
