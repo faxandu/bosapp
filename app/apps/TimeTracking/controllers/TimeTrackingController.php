@@ -93,9 +93,9 @@ class TimeTrackingController extends  BaseController{
             $this->postAddTime($timeEntry);
             try{
                 $timeEntry->save();
-                Response::json('Message','Time saved');
+                Response::json(array('status' => , 200 , 'message' => 'time was saved '), 200);
             }catch (exception $e){
-                Response::json('Message',$e);
+                Response::json(array('status' => 401, 'message' => 'time was not saved ', 'error' => $e),401);
             }
         }
 
@@ -113,17 +113,16 @@ class TimeTrackingController extends  BaseController{
     public function getUserTime(){
          $time = TimeTrackingEntry::find(Auth::user()->id);
        return  Response::json(array('start_time' => $time['start_time'] , 'end_time' => $time['end_time'], 'category' 
-            => $time['category']));
+            => $time['category'] ) );
          
     }
 
     public function getCategories(){
          
       return  Response::json(array('category' => Categories::select('category')
-            ->where('id' '=' Input::get('category_id') )->toArray() ) );
+            ->where('id', '=' Input::get('category_id') )->toArray() ) );
     }
     
-    }
     public function missingMethod($parameters = array()){
         return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
     }
