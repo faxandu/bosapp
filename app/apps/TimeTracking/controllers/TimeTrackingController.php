@@ -93,7 +93,7 @@ class TimeTrackingController extends  BaseController{
             $this->postAddTime($timeEntry);
             try{
                 $timeEntry->save();
-                return Response::json(array('status' =>  200 , 'message' => 'time was saved '), 200);
+                return Response::json(array('status' => 200 , 'message' => 'time was saved '), 200);
             }catch (exception $e){
                 return Response::json(array('status' => 401, 'message' => 'time was not saved ', 'error' => $e),401);
             }
@@ -120,7 +120,7 @@ class TimeTrackingController extends  BaseController{
     public function getCategories(){
          
       return  Response::json(array('category' => Categories::select('category')
-            ->where('id', '=' Input::get('category_id') )->toArray() ) );
+            ->where('id', '=' ,Input::get('category_id') )->toArray() ) );
     }
     /**
     * This function will retreive the current pay period and return the 
