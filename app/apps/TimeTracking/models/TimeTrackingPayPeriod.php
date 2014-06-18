@@ -7,14 +7,14 @@
  */
 
 namespace TimeTracking\models;
-use Eloquent, Validaton, Exception;
+use Eloquent, Validator, Exception;
 
 class TimeTrackingPayPeriod extends Eloquent{
 
-    private $table = 'pay_period';
-    private $guarded = 'id';
-    private $fillable = array('start_pay_period','end_pay_period');
-    private $timestamps = false;
+    protected $table = 'time_tracking_pay_period';
+    protected $guarded = 'id';
+    protected $fillable = array('start_pay_period','end_pay_period');
+    public $timestamps = false;
 
     
     public function getPeriod(){
@@ -30,6 +30,6 @@ class TimeTrackingPayPeriod extends Eloquent{
     	);
 
     public static function validate($pay_period){
-    	return Validaton::make($pay_period, static::$rules);
+    	return Validator::make($pay_period, static::$rules);
     }
 } 

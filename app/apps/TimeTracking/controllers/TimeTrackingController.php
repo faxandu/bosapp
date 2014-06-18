@@ -7,7 +7,7 @@
 
 namespace TimeTracking\controllers;
 
-use BaseController, Input, User,  Entry ,Response;
+use BaseController, Input, User,  Entry ,Response, View;
 use Illuminate\Support\Facades\Auth;
 use TimeTracking\models\Categories;
 use TimeTracking\models\TimeTrackingEntry;
@@ -21,6 +21,11 @@ use TimeTracking\models\TimeTrackingEntry;
 */
 class TimeTrackingController extends  BaseController{
 
+    public function getIndex($pay_period) {
+        //return Response::json('hi');
+        return Response::json(TimeTrackingEntry::where(array('pay_id' => $pay_period, 'user_id' => Auth::user()->id)));
+    }
+
     /**
     * This function will create an new TimeTrackingEntry 
     * object. This function calls the Auth::user() to validate 
@@ -30,13 +35,13 @@ class TimeTrackingController extends  BaseController{
     * validate time. 
     * @throws an exception if the obect can't be saved.
     */
-    public function postCreateTime(){
+    public function postCreate(){
 
         $timeEntry = new TimeTrackingEntry();
         $timeEntry->user_id = Auth::user()->id;
         $input = Input::all();
 
-        if($this->validateTime(Input::get('start_time')) && $this->validateTime(Input::get('end_time')) ){
+        //if($this->validateTime(Input::get('start_time')) && $this->validateTime(Input::get('end_time')) ){
             $this->postAddTime($timeEntry);
             try{
                 $timeEntry->save();
@@ -44,7 +49,7 @@ class TimeTrackingController extends  BaseController{
             }catch (exception $e){
                 return Response::json(array('status' => 401, 'message' => 'time was not saved', 'error' => $e), 401);
             }
-        }
+        //}
 
     }
     /*
@@ -110,10 +115,11 @@ class TimeTrackingController extends  BaseController{
     }
      
     */
-    public function getUserTime(){
-         $time = TimeTrackingEntry::find(Auth::user()->id);
-       return  Response::json(array('start_time' => $time['start_time'] , 'end_time' => $time['end_time'], 'category' 
-            => $time['category'] ) );
+    public function getEntries($pay_period) {
+        $categories = Categories::all();
+        $time = TimeTrackingEntry::user()->period($pay_period)->get();
+        //return Response::json($time);
+        $this->layout->content = View::make('time/entries', array('entries' => $time, 'categories' => $categories, 'pay_id' => $pay_period));
          
     }
 
@@ -157,6 +163,7 @@ class TimeTrackingController extends  BaseController{
         $timeEntry->endDate = Input::get('end_date');
         $timeEntry->endTime   = Input::get('end_time');
         $timeEntry->description = Input::get('description');
+        $timeEntry->pay_id = Input::get('pay_id');
 
     }
     /**

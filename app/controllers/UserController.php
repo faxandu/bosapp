@@ -36,7 +36,7 @@ class UserController extends BaseController {
 
 		try{
 
-			$input['password'] = Hash::make($input['password']);
+			$input['password'] = Hash::make(str_random(10));
 			$this->layout->content = ControllerHelper::create(new User, $input, '/admin/user/home', '/admin/user/create');
 
 		}catch(exception $e){
@@ -49,24 +49,25 @@ class UserController extends BaseController {
 		return $this->layout->content;
 	}
 
-	public function postDelete(){
-
-		$input = Input::all();
+	public function getDelete($id){
 
 		try{
 
-			User::findOrFail($input['id'])->delete();
+			User::findOrFail($id)->delete();
 
 			$this->layout->content = Redirect::to('admin/user/home')->with(array(
 				'status' => 200,
+				'alert' => 'success',
+				'message' => 'User Deleted',
 				
 				));
 
 		}catch(exception $e){
 
-			$this->layout->content = Redirect::to('admin/user/create')->with(array(
+			$this->layout->content = Redirect::to('admin/user/home')->with(array(
 				'status' => 400,
-				'error' => 'deletion failed'
+				'alert' => 'danger',
+				'message' => 'User Deletion Failed',
 				));	
 		}		
 			
@@ -120,4 +121,40 @@ class UserController extends BaseController {
 					'message' => 'logged out'
 				));
 	}
+
+	public function passwordRecovery() {
+		
+		$user = User::where('username', Input::get('username'))->firstOrFail();
+
+		$user->reset_token = str_random(10);
+
+		$user->save();
+		Mail::send('emails.password', $user->toArray(), function($message) use ($user) {
+			$message->to($user->email, $user->first_name . ' ' . $user->last_name)->subject('BOSApp Password Recovery');
+		});
+
+		return Redirect::to('/')->with(array('message' => 'Password Recovery Email Sent'));
+		
+	}
+
+	public function passwordResetForm($token) {
+
+		$this->layout->content = View::make('user/passwordReset', array('token' => $token));
+	}
+
+	public function passwordReset() {
+		$input = Input::all();
+
+		if ($input['password'] === $input['vpassword']) {
+			$user = User::where('reset_token', $input['token'])->firstOrFail();
+			$user->password = Hash::make($input['password']);
+			$user->reset_token = null;
+			$user->save();
+			return Redirect::to('/')->with(array('message' => 'Your password has been reset. You may now log in'));
+		} else {
+			return Redirect::to('/passwordReset/'.$input['token'])->with(array('message' => 'Passwords do not match'));
+		}
+	}
+
+
 }
