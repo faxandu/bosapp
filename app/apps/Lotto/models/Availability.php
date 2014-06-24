@@ -8,7 +8,18 @@ use Exception;
 
 class Availability extends Eloquent {
 
-	protected $table = 'schedule_availability';
+    /* Migration variables
+    
+        end_date -- date
+        start_date -- date
+        end_time    -- time
+        start_time -- time
+        notes -- text
+        title -- string - 50
+    */
+
+
+    protected $table = 'schedule_availability';
 	public $timestamps = false;
     protected $softDelete = false;
 
@@ -17,10 +28,18 @@ class Availability extends Eloquent {
     protected $guarded = array('id');
     protected $hidden = array('pivot');
 
+
+
     private static $rules = array(
 		//'end_date' => 'required|date_format:m/d/y'
 	);
 
+    /*
+        uses the above rules to validate $data
+    */
+    public static function validate($data){
+        return Validator::make($data, static::$rules);
+    }
 
     public static function boot(){
         parent::boot();
@@ -31,6 +50,12 @@ class Availability extends Eloquent {
 
         Availability::updating(function($v){ });
 
+
+        /*
+            Upon deleting an ojbect of this model.
+            This function is called before it is actually deleted.
+            Detaches its self from any user - for allowing it to be deleted. 
+        */
         Availability::deleting(function($v){
 
         	try{
@@ -47,9 +72,7 @@ class Availability extends Eloquent {
 
 
 
-	public static function validate($data){
-		return Validator::make($data, static::$rules);
-	}
+	
 
 }
 

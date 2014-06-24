@@ -3,7 +3,8 @@
 class ControllerHelper {
 
 
-	public static function create($model, $input, $route_pass, $route_fail = null){
+	public static function create($model, $input, $route_pass,
+	 $route_fail = null, $attach = null, $attachValue = null){
 
 		if($route_fail == null)
 			$route_fail = $route_pass;
@@ -21,7 +22,16 @@ class ControllerHelper {
 
 		try{
 
-			$model::create($input);
+			$model->update($input);
+			$model->save();
+
+			if($attach != null){
+
+				if($attachValue != null)
+					$attachValue->$attach()->attach($model);
+				else
+					$model->$attach()->attach($)
+			}
 
 		} catch(Exception $e){
 
@@ -39,6 +49,25 @@ class ControllerHelper {
 
 	public static function delete($model, $input, $route_pass, $route_fail = null){
 		
+		if($route_fail == null)
+			$route_fail = $route_pass;		
+		
+		try{
+
+			$model::findOrFail($input['id'])->delete();
+
+		}catch(exception $e){
+
+			return Redirect::to($route_fail)->with(array(
+				'status' => 400,
+				'error' => 'Failed to delete'
+			));
+			
+		}
+
+		return Redirect::to($route_pass)->with(array(
+				'status' => 200
+			));;
 	}
 
 	public static function convertTimeAndDate($input){
@@ -57,3 +86,4 @@ class ControllerHelper {
 
 
 }
+

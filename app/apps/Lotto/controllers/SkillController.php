@@ -6,6 +6,40 @@ use Response, Input, Exception;
 
 class SkillController extends BaseController {
 
+
+
+	/*
+	|--------------------------------------------------------------------------
+	| Controller Views
+	|--------------------------------------------------------------------------
+	*/
+
+	public function getCreate(){
+
+		$this->layout->content = View::make('lotto.availability.create');
+	}
+
+
+	public function getMyAvailability(){
+
+		$this->layout->content = View::make('lotto.availability.home')->with(array(
+
+			'user' => Auth::user(), 
+			'userAvailability' => Auth::user()->availability,
+			Session::all()
+
+			));
+
+	}
+
+
+	/*
+	|--------------------------------------------------------------------------
+	| Controller Posts
+	|--------------------------------------------------------------------------
+	*/
+
+
 	public function postDelete(){
 		
 		$id = Input::get('id');
@@ -40,7 +74,8 @@ class SkillController extends BaseController {
 			'message' => 'Failed to get skill.', 'error' => $e->getMessage()), 400);
 		}		
 	}
-		public function postGetUserSkill(){
+	
+	public function postGetUserSkill(){
 
 			$id = Input::get('id');
 
