@@ -15,7 +15,7 @@ namespace TimeTracking\controllers;
 
 
 use Illuminate\Support\Facades\Input;
-use BaseController, User,  Entry ,Response;
+use BaseController, User,  Entry ,Response, Redirect;
 use TimeTracking\models\Categories;
 
 class TimeTrackingCategories extends BaseController{
@@ -29,7 +29,7 @@ class TimeTrackingCategories extends BaseController{
     * If the object can not be saved for whatever reason it 
     * @throws exception 
     */
-    public function postAddCategory(){
+    public function postCreate(){
 
         $input = Input::all();
     
@@ -40,17 +40,18 @@ class TimeTrackingCategories extends BaseController{
             {
                 $category['category'] = $input['category'];
                 $category->save();
-                return Response::json(array('status' => 200, 'message' => 'category added'), 200);
+                //return Response::json(array('status' => 200, 'message' => 'category added'), 200);
+                $this->layout->content = Redirect::to('/admin/payroll')->with(array('message' => 'Category Added', 'alert' => 'success'));
             }
             catch (exception $e)
             {
-                return Response::json(
-                    array('status' => 401, 'message' => 'category not saved ' , 'error' => $e), 401);
+                //return Response::json(array('status' => 401, 'message' => 'category not saved ' , 'error' => $e), 401);
+                $this->layout->content = Redirect::to('/admin/payroll')->with(array('message' => 'Category Creation Failed', 'alert' => 'danger'));
             }
         }
         else
-            return Response::json(
-                array('status' => 401, 'message' => 'category already exists '), 401);
+            //return Response::json(array('status' => 401, 'message' => 'category already exists '), 401);
+            $this->layout->content = Redirect::to('/admin/payroll')->with(array('message' => 'Category Creation Failed', 'alert' => 'danger'));
     }
     /*
     public function postAddCategory(){
@@ -74,7 +75,7 @@ class TimeTrackingCategories extends BaseController{
     * exist it @throws exception 
     * 
     */
-    public public function postDeleteCategory(){
+    public function postDeleteCategory(){
         
         
         $category = Categories::find(Input::get('id' ) );
@@ -114,6 +115,6 @@ class TimeTrackingCategories extends BaseController{
     * Documentation for fails() function  
     */
     private function failed($category){
-        return Categories::validate($category)->fails();
+        //return Categories::validate($category)->fails();
     }
 } 
