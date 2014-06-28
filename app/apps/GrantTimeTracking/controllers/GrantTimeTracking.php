@@ -7,7 +7,7 @@
 
 namespace GrantTimeTracking\controllers;
 
-use BaseController, Input, User,  Entry ,Response;
+use BaseController, Input, User,  Entry ,Response, View;
 use Illuminate\Support\Facades\Auth;
 use TimeTracking\models\Categories;
 use TimeTracking\models\TimeTrackingEntry;
