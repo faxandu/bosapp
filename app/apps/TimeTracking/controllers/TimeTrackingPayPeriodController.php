@@ -91,16 +91,13 @@ class TimeTrackingPayPeriodController extends BaseController{
     			$pay_period['start_pay_period'] = $start_date;
     			$pay_period['end_pay_period']   = $end_date;
     			$pay_period->save();
-	    		//Response::json(array('status' => 200, 'message' => 'pay period saved'), 200);
                 $this->layout->content = Redirect::to('admin/payroll')->with(array('message' => 'Pay Period Created', 'alert' => 'Success'));
     		}
     		catch(exception $e){
-        		//return Response::json(array('status' => 401, 'message' => 'pay period not saved' , 'error' => $e ),401);
                 $this->layout->content = Redirect::to('admin/payroll')->with(array('message' => 'Pay Period Creation Failed', 'alert' => 'danger'));
     		}
       	}
        	else
-        	//return Response::json(array('status' => 401, 'message' => 'pay period was not saved '), 401);	
             $this->layout->content = Redirect::to('admin/payroll')->with(array('message' => 'Pay Period Creation Failed', 'alert' => 'danger'));
     }
 
