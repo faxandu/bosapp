@@ -20,7 +20,7 @@ class GrantTimeTracking extends  BaseController{
     */
     public function postCreate(){
 
-        $timeEntry = new TimeTrackingEntry();
+        $timeEntry = new GrantTimeTrackingEntry();
         $timeEntry->user_id = Auth::user()->id;
         $input = Input::all();
 
@@ -92,7 +92,7 @@ class GrantTimeTracking extends  BaseController{
     ->select( 'start_time' , 'end_time' , 'start_date' , 'end_date')->all()->toArray() ); 
 
     }
-    
+
     public function getAllPayDays(){
         return Response::json(TimeTrackingPayPeriod::all()->toArray() );
     }
