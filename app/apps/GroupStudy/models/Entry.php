@@ -6,10 +6,10 @@ use Input, User, Response, Eloquent;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
-class Student extends Eloquent{
+class Entry extends Eloquent{
 
 	protected $table = 'group_study_student';
-	protected $fillable = array('first_name', 'last_name', 'student_num');
+	protected $fillable = array('student_id', 'class', 'start_time', 'end_time', 'facilitator');
 	protected $guarded = array('id');
 	public $timestamps = false;
 
@@ -19,8 +19,8 @@ class Student extends Eloquent{
 	 * @return mixed
 	 */
 
-	public function entry(){
-		return $this -> hasMany('Entry');
+	public function student(){
+		return $this -> belongsTo('Student');
 	}
 
 

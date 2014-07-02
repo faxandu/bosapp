@@ -16,6 +16,10 @@ Route::get('/', function() use($layout) {
 Route::post('login', 'UserController@login');
 Route::get('logout', 'UserController@logout');
 
+Route::post('passwordRecovery', 'UserController@passwordRecovery');
+Route::get('passwordReset/{token}', 'UserController@passwordResetForm');
+Route::post('passwordResetSubmit', 'UserController@passwordReset');
+
 
 /*	Must be Authenticated  - auth grouping
 -----------------------*/
@@ -27,6 +31,13 @@ Route::group(array('before' => 'auth'), function() use($layout){
 	Route::group(array('before' => 'admin'), function() use($layout){
 
 		Route::group(array('prefix' => 'admin/'), function() use($layout){
+
+			Route::get('payroll', 'TimeTracking\controllers\TimeTrackingPayPeriodController@index');
+
+			Route::group(array('prefix' => 'time/'), function() use($layout) {
+				Route::post('createPayPeriod', 'TimeTracking\controllers\TimeTrackingPayPeriodController@postCreatePayPeriod');
+				Route::controller('categories', 'TimeTracking\controllers\TimeTrackingCategories');
+			});
 
 
 			/*	admin user uses user functions
@@ -95,6 +106,7 @@ Route::group(array('before' => 'auth'), function() use($layout){
 
     Route::group(array('prefix' => 'time/'), function() {
         Route::controller('entries', 'TimeTracking\controllers\TimeTrackingController');
+        Route::controller('payperiods', 'TimeTracking\controllers\TimeTrackingPayPeriodController');
     });
 
 
