@@ -53,21 +53,7 @@ class TimeTrackingCategories extends BaseController{
             //return Response::json(array('status' => 401, 'message' => 'category already exists '), 401);
             $this->layout->content = Redirect::to('/admin/payroll')->with(array('message' => 'Category Creation Failed', 'alert' => 'danger'));
     }
-    /*
-    public function postAddCategory(){
-
-        if(!$this->failed($Input::get())){
-              Categories::create(Input::get());
-        }
-    }
-    */
     
-    /*
-    public function postModify(){
-
-        Categories::update(Input::get('id'));
-    }
-    */
     
     /**
     * This function will delete a category based upon a 
