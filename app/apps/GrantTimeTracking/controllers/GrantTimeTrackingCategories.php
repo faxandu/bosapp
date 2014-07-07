@@ -16,29 +16,25 @@ use TimeTracking\models\Categories;
 class GrantTimeTrackingCategories extends BaseController{
 
 
-    public function postAddCategory(){
+    public function postCreate(){
 
-        $input = Input::all();
-        $temp = GrantCategories::validate($input['category'])
-
-        if(!$temp->fails()){
+            $input = Input::all();
 
             $category = new GrantCategories();
             try
             {
                 $category['category'] = $input['category'];
                 $category->save();
-                Response::json(array('status' => 200, 'message' => 'category added'), 200);
+                $this->layout->content =
+                Redirect::to('/admin/payroll')->with(array('message' => 'Category Added', 'alert' => 'success'));
             }
             catch (exception $e)
             {
-                Response::json(
-                    array('status' => 401, 'message' => 'category not saved ' , 'error' => $e), 401);
+              $this->layout->content = 
+              Redirect::to('/admin/payroll')->with(array('message' => 'Category Creation Failed', 'alert' => 'danger'));
             }
         }
-        else
-            Response::json(
-                array('status' => 401, 'message' => 'category already exists '), 401);
+        
     }
 
     public public function postDeleteCategory(){
@@ -72,16 +68,9 @@ class GrantTimeTrackingCategories extends BaseController{
 
     }
 
-    public function getCategories(){
-
-
-        $categories = GrantCategories::all()->toArray();
-
-        if($categories->count() > 0)
-            Response::json($categories,200);
-        else
-            Response::json(
-                array('status'=> 401 , 'message' => 'category does not exist'), 401);
+     public function getCategories(){
+          return  Response::json(
+                array('category'=> GrantCategories::all()->toArray() ));
     }
 
     private function failed($category){
