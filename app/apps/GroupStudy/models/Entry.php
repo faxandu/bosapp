@@ -1,6 +1,5 @@
 <?php
 
-<<<<<<< HEAD
 namespace GroupStudy\models;
 use Input, User, Response, Eloquent;
 
@@ -26,5 +25,3 @@ class Entry extends Eloquent{
 
 
 }
-=======
->>>>>>> 60f1aa33f7cdff914b791f1e833d13ec68ac093d
