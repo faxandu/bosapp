@@ -95,7 +95,7 @@ class EntryController extends BaseController{
 			Entry::where('id', $entry_id) -> update(array('end_time' => date('H:m:s')));  
 		}
 		catch(Exception $e){
-			return Response::json(array('status' => 'out_time_not_created'))
+			return Response::json(array('status' => 'out_time_not_created'));
 		}
 		return Response::json(array('status' => 'created_out_time'));
 	}
