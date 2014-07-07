@@ -46,11 +46,7 @@ class EntryController extends BaseController{
 	 * @param  none
 	 * @return returns json response if user is created or if error occurs
 	 */
-<<<<<<< HEAD
-	public function postAddStudent($student_num, $class){
-=======
 	 public function postAddStudent($student_num, $class){
->>>>>>> 60f1aa33f7cdff914b791f1e833d13ec68ac093d
 	 	$input = Input::all();
 	 	$student_arr = array('first_name' => $input['first_name'], 'last_name' => $input['last_name'], 
 	 					'student_num' => $student_num);
@@ -85,7 +81,6 @@ class EntryController extends BaseController{
 		return Response::json(array('status' => 'created_in_time'));
 	}
 
-<<<<<<< HEAD
 
 	/**
 	 * postEndEntry
@@ -93,8 +88,6 @@ class EntryController extends BaseController{
 	 * @param (int)$student_id: pk for student db, (string)$class, (date) $date: current date
 	 * @return json response to add_student that returns the entry created or not created.
 	 */
-=======
->>>>>>> 60f1aa33f7cdff914b791f1e833d13ec68ac093d
 	public function postEndEntry($entry_id, $date){
 		if(empty($entry_id))
 			return Response::json(array('status' => 'entry_not_found'));
