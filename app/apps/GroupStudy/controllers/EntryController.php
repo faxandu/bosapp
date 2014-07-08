@@ -1,7 +1,7 @@
 <?php
 
 namespace GroupStudy\controllers;
-use BaseController, Input, User, Entry, GroupStudy\models\Student, Response;
+use BaseController, Input, Exception, User, GroupStudy\models\Entry, GroupStudy\models\Student, Response;
 
 class EntryController extends BaseController{
 
@@ -14,11 +14,13 @@ class EntryController extends BaseController{
 	public function postStudentExists(){
 	 	$student_num = substr(Input::get('student_num'), 2, 8);   //used to grab only the student number from the id card.
 	 	$class = Input::get('class');
-	 	$student = Student::where('student_num', $student_num) -> get();  
-		if(empty($student['id'])) 
+	 	try{
+	 		$student = Student::where('student_num', '=', $student_num) -> firstOrFail();
+	 	}
+	 	catch(Exception $e){
 			return Response::json(array('status' => 'student_does_not_exist', 'student_num' => $student_num, 'class' => $class));
-	 	else
-	 		return $this -> checkPunchedIn($student_id);
+		}
+		 	return $this -> checkPunchedIn($student->id, $class);
 	 }
 
 	/**
@@ -27,17 +29,18 @@ class EntryController extends BaseController{
 	 * @param  none
 	 * @return returns json response with successful timestamp for start or end time, or error if it occurs
 	 */
-	 public function checkPunchedIn($student_id){
+	 public function checkPunchedIn($student_id, $class){
 	 	//$entry_id = Entry::where('student_id', $student_id) -> where('date', $date) ->    //checks if a start_time has been created for the user
 		//		whereNotNull('start_time') -> whereNull('end_time') -> pluck('id');		  //if not, goes to start_entry, else goes to end_entry
 	 	$start_date = date('Y-m-d');
-	 	$entry = Entry::leftjoin('group_study_student_entry', 'group_study_student.id', '=', 'group_study_entry.student_id')
-	 				->where('group_study_student.id', $student_id) -> where('start_date', $start_date) 
-	 				->whereNotNull('start_time')-> get();
-		if(empty($entry))
-			 return $this -> start_entry($student_id, $class);
-		else
-			 return $this -> end_entry($entry_id);
+	 	try{
+	 		$entry = Entry::where('student_id', $student_id) -> where('date', $start_date) 
+	 				->whereNotNull('start_time')-> firstOrFail();
+	 	}
+	 	catch(Exception $e){
+			 return $this -> postStartentry($student_id, $class);
+		}
+		return $this -> postEndEntry($entry->id);
 		}
 
 	/**
@@ -66,10 +69,10 @@ class EntryController extends BaseController{
 	 * @return json response to add_student that returns the entry created or not created.
 	 */
 	public function postStartEntry($student_id, $class){
-		$start_date = date('Y-m-d');
 		$entry_arr = array(
+				'student_id' => $student_id,
 				'class' => $class,
-				'date' => $start_date
+				'date' => date("Y-m-d")
 				);
 		try{
 			$entry = Entry::create($entry_arr);
@@ -88,7 +91,7 @@ class EntryController extends BaseController{
 	 * @param (int)$student_id: pk for student db, (string)$class, (date) $date: current date
 	 * @return json response to add_student that returns the entry created or not created.
 	 */
-	public function postEndEntry($entry_id, $date){
+	public function postEndEntry($entry_id){
 		if(empty($entry_id))
 			return Response::json(array('status' => 'entry_not_found'));
 		try{
