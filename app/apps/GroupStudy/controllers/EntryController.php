@@ -124,11 +124,13 @@ class EntryController extends BaseController{
 			return Response::json(array('status' => 'entry_not_found'));
 		try{
 			Entry::where('id', $entry_id) -> update(array('end_time' => date('H:m:s')));  
+			$this->layout->content = View::make('study/checkout');
 		}
 		catch(Exception $e){
-			return Response::json(array('status' => 'out_time_not_created'));
+			//return Response::json(array('status' => 'out_time_not_created'));
+			$this->layout->content = Redirect::to('/group_study')->with(array('message' => 'Failed to sign you out. Please try again', 'alert' => 'warning'));
 		}
-		return Response::json(array('status' => 'created_out_time'));
+		//return Response::json(array('status' => 'created_out_time'));
 	}
 
 	/**

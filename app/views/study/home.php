@@ -55,7 +55,5 @@ $(':radio').on('click', function() {
 	$('#student_id').focus();
 });
 
-var elem = document.body;
-req = elem.requestFullScreen || elem.webkitRequestFullScreen || elem.mozRequestFullScreen;
-req.call(elem);
+
 </script>
