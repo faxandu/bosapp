@@ -1,3 +1,6 @@
+<style>
+#navigation {display: none !important;}
+</style>
 <div class="row">
 	<div class="col-sm-6 col-sm-offset-3">
 		<h2>Signed In</h2>

@@ -1,3 +1,6 @@
+<style>
+#navigation {display: none !important;}
+</style>
 <div class="row">
 	<div class="col-sm-6 col-sm-offset-3">
 		<h3>Group Study Sign In</h3>
@@ -51,4 +54,8 @@ $('#student_id').keydown(function(e) {
 $(':radio').on('click', function() {
 	$('#student_id').focus();
 });
+
+var elem = document.body;
+req = elem.requestFullScreen || elem.webkitRequestFullScreen || elem.mozRequestFullScreen;
+req.call(elem);
 </script>
