@@ -1,7 +1,7 @@
 <?php
 
 namespace GroupStudy\controllers;
-use BaseController, Input, User, Entry, GroupStudy\models\Student, Response;
+use BaseController, Input, User, Entry, GroupStudy\models\Student, Response, View;
 
 class EntryController extends BaseController{
 	/**
@@ -26,6 +26,17 @@ class EntryController extends BaseController{
 		// 		return $this -> end_entry($entry_id, $date);
 	 // 	}
 	 // }
+
+	public function postSwipe() {
+		$student_num = substr(Input::get('student_num'), 2, 8);   //used to grab only the student number from the id card.
+	 	$class = Input::get('class');
+	 	$student = Student::where('student_num', $student_num) -> get();  
+		if(empty($student['id'])) 
+			//return Response::json(array('status' => 'student_does_not_exist', 'student_num' => $student_num, 'class' => $class));
+			$this->layout->content = View::make('study/new', array('student_num' => $student_num, 'class' => $class));
+	 	else
+	 		return $this -> checkPunchedIn($student_id);
+	}
 
 	public function postStudentExists(){
 	 	$student_num = substr(Input::get('student_num'), 2, 8);   //used to grab only the student number from the id card.
@@ -72,12 +83,12 @@ class EntryController extends BaseController{
 
 	 	$input = Input::all();
 	 	$student_arr = array('first_name' => $input['first_name'], 'last_name' => $input['last_name'], 
-	 					'student_num' => $student_num);
+	 					'student_num' => $input['student_num']);
 	 	$student = Student::create($student_arr);
 	 	if(empty($student))
 	 		return Response::json(array('status' => 'user_not_created'));
 	 	else{
-	 		return $this -> start_entry($student['id'], $class);
+	 		return $this -> start_entry($student['id'], $input['class']);
 	 	}
 	 }
 	/**

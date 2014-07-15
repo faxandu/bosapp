@@ -85,6 +85,7 @@
 			   	  	<li><a href="#" class="dropdown-toggle" data-toggle="dropdown">My Profile <b class="caret"></b></a>
 			   	  		<ul class="dropdown-menu">
 			   	  			<li><a href="#">Dashboard</a></li>
+			   	  			<li><a href="<?php echo URL::to('/group_study'); ?>">Group Study</a></li>
 			   	  			<li><a href="#">My Projects</a></li>
 			   	  			<li><a href="<?php echo URL::to('logout'); ?>">Log Out</a></li>
 			   	  		</ul>

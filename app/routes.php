@@ -87,7 +87,11 @@ Route::group(array('before' => 'auth'), function() use($layout){
 
 
 
-	Route::group(array('prefix' => 'group_study/'), function(){
+	Route::group(array('prefix' => 'group_study/'), function() use($layout) {
+
+		Route::get('/', function() use($layout) {
+			return $layout->nest('content', 'study.home');
+		});
 
 		Route::controller('entry', 'GroupStudy\controllers\EntryController');
 		Route::controller('report', 'GroupStudy\controllers\ReportController');
