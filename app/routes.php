@@ -93,8 +93,8 @@ Route::group(array('before' => 'auth'), function() use($layout){
 		Route::controller('report', 'GroupStudy\controllers\ReportController');
 
 
-		Route::match(array('GET', 'POST'), '/checkPunchedIn', 'GroupStudy\controllers\EntryController@checkPunchedIn');
-		Route::match(array('GET', 'POST'), '/StartEntry', 'GroupStudy\controllers\EntryController@StartEntry');
+		//Route::match(array('GET', 'POST'), '/checkPunchedIn', 'GroupStudy\controllers\EntryController@checkPunchedIn');
+		//Route::match(array('GET', 'POST'), '/StartEntry', 'GroupStudy\controllers\EntryController@StartEntry');
 
 	});
 
