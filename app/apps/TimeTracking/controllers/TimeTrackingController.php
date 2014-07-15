@@ -22,7 +22,7 @@ use TimeTracking\models\TimeTrackingEntry;
 class TimeTrackingController extends  BaseController{
 
     public function getIndex($pay_period) {
-        //return Response::json('hi');
+        
         return Response::json(TimeTrackingEntry::where(array('pay_id' => $pay_period, 'user_id' => Auth::user()->id)));
     }
 
@@ -41,7 +41,7 @@ class TimeTrackingController extends  BaseController{
         $timeEntry->user_id = Auth::user()->id;
         $input = Input::all();
 
-        //if($this->validateTime(Input::get('start_time')) && $this->validateTime(Input::get('end_time')) ){
+        
             $this->postAddTime($timeEntry);
             try{
                 $timeEntry->save();
@@ -49,7 +49,7 @@ class TimeTrackingController extends  BaseController{
             }catch (exception $e){
                 return Response::json(array('status' => 401, 'message' => 'time was not saved', 'error' => $e), 401);
             }
-        //}
+    
 
     }
     /*
@@ -118,7 +118,6 @@ class TimeTrackingController extends  BaseController{
     public function getEntries($pay_period) {
         $categories = Categories::all();
         $time = TimeTrackingEntry::user()->period($pay_period)->get();
-        //return Response::json($time);
         $this->layout->content = View::make('time/entries', array('entries' => $time, 'categories' => $categories, 'pay_id' => $pay_period));
          
     }

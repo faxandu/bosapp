@@ -34,20 +34,7 @@ class TimeTrackingPayPeriodController extends BaseController{
     $this->postPayPeriod($pay_period);
       
 	}
-    /*
-    public function postCreatPayPeriod(){
-      
-
-      TimeTrackingPayPeriod::create(Input::all()); 
-    }
-    */
-    
-    /*
-    public function postModifyPeriod(){
-        $period = TimeTrackingPayPeriod::find(Input::get('id'));
-        TimeTrackingPayPeriod::update($period);
-    }
-    */
+   
      
     /**
     * This function @uses TimeTrackingPayPeriod::find(Input::get('id'))
@@ -93,28 +80,24 @@ class TimeTrackingPayPeriodController extends BaseController{
     */
     private function postPayPeriod($pay_period){
 
-		//if(!$this->failed(Input::get('start_pay_period')) 
-    	//	&& !$this->failed(Input::get('end_pay_period'))){
+
         if (!$this->failed(Input::all())) {
-    		$start_date = date("Y-n-j",strtotime(Input::get('start_pay_period')));
-    		$end_date = date("Y-n-j",strtotime(Input::get('end_pay_period')));
-    	    
-    		try
-    		{
+            $start_date = date("Y-n-j",strtotime(Input::get('start_pay_period')));
+            $end_date = date("Y-n-j",strtotime(Input::get('end_pay_period')));
+            
+            try
+            {
                 $pay_period['name'] = Input::get('name');
-    			$pay_period['start_pay_period'] = $start_date;
-    			$pay_period['end_pay_period']   = $end_date;
-    			$pay_period->save();
-	    		//Response::json(array('status' => 200, 'message' => 'pay period saved'), 200);
+                $pay_period['start_pay_period'] = $start_date;
+                $pay_period['end_pay_period']   = $end_date;
+                $pay_period->save();
                 $this->layout->content = Redirect::to('admin/payroll')->with(array('message' => 'Pay Period Created', 'alert' => 'Success'));
-    		}
-    		catch(exception $e){
-        		//return Response::json(array('status' => 401, 'message' => 'pay period not saved' , 'error' => $e ),401);
+            }
+            catch(exception $e){
                 $this->layout->content = Redirect::to('admin/payroll')->with(array('message' => 'Pay Period Creation Failed', 'alert' => 'danger'));
-    		}
-      	}
-       	else
-        	//return Response::json(array('status' => 401, 'message' => 'pay period was not saved '), 401);	
+            }
+        }
+        else
             $this->layout->content = Redirect::to('admin/payroll')->with(array('message' => 'Pay Period Creation Failed', 'alert' => 'danger'));
     }
 

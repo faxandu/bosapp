@@ -1,7 +1,11 @@
 <div class="row">
 	<div class="col-sm-6 col-sm-offset-3">
-		<form method="post" action="<?php echo URL::to('/group_study/entry/swipe'); ?>" id="swipe">
+		<h3>Group Study Sign In</h3>
+		<p>Welcome to the new Group Study sign in application. </p>
+		<form method="post" action="<?php echo URL::to('/group_study/entry/student-exists'); ?>" id="swipe">
 			<div class="form-group">
+				<label>Select the class you are attending group study for</label>
+				<br />
 				<label for="class1" class="btn btn-primary">
 					<input type="radio" id="class1" name="class" value="class1" />
 					Class 1
@@ -44,4 +48,7 @@ $('#student_id').keydown(function(e) {
 	clearTimeout(timer);
 });
 
+$(':radio').on('click', function() {
+	$('#student_id').focus();
+});
 </script>

@@ -3,7 +3,7 @@
 		<h2>Welcome New Student</h2>
 		<p>This is your first time using our new Group Study sign-in system. Please fill out the following form. After you complete this form, you will be able to sign in to group study sessions just by swiping your Student ID</p>
 
-		<form method="post" action="">
+		<form method="post" action="<?php echo URL::to('/group_study/entry/add-student'); ?>">
 			<div class="form-group">
 				<label for="first_name">First Name</label>
 				<input type="text" name="first_name" class="form-control" />
