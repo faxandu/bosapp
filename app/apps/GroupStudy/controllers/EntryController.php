@@ -58,7 +58,7 @@ class EntryController extends BaseController{
 	 	$start_date = date('Y-m-d');
 	 	try{
 	 		$entry = Entry::where('student_id', $student->id) -> where('date', $start_date) 
-	 				->whereNotNull('start_time')-> firstOrFail();
+	 				->whereNull('end_time')-> firstOrFail();
 	 	}
 	 	catch(Exception $e){
 			 return $this -> postStartentry($student, $class);
@@ -84,7 +84,7 @@ class EntryController extends BaseController{
 	 		return Response::json(array('status' => 'user_not_created'));
 
 	 	}
-	 	return $this -> postStartEntry($student['id'], $input['class']);
+	 	return $this -> postStartEntry($student, $input['class']);
 	 }
 
 	/**
