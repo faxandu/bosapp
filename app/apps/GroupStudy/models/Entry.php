@@ -8,8 +8,8 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 
 class Entry extends Eloquent{
 
-	protected $table = 'group_study_student';
-	protected $fillable = array('student_id', 'class', 'start_time', 'end_time', 'facilitator');
+	protected $table = 'group_study_entry';
+	protected $fillable = array('student_id', 'class', 'start_time', 'end_time', 'facilitator', 'date');
 	protected $guarded = array('id');
 	public $timestamps = false;
 
