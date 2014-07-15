@@ -22,7 +22,7 @@
 		?>
 	</head>
 	<body>
-		<nav class="navbar navbar-default navbar-inverse" role="navigation">
+		<nav class="navbar navbar-default navbar-inverse" role="navigation" id="navigation">
 		  <div class="container-fluid">
 		    <!-- Brand and toggle get grouped for better mobile display -->
 		    <div class="navbar-header">
@@ -85,6 +85,7 @@
 			   	  	<li><a href="#" class="dropdown-toggle" data-toggle="dropdown">My Profile <b class="caret"></b></a>
 			   	  		<ul class="dropdown-menu">
 			   	  			<li><a href="#">Dashboard</a></li>
+			   	  			<li><a href="<?php echo URL::to('/group_study'); ?>" target="_blank">Group Study</a></li>
 			   	  			<li><a href="#">My Projects</a></li>
 			   	  			<li><a href="<?php echo URL::to('logout'); ?>">Log Out</a></li>
 			   	  		</ul>

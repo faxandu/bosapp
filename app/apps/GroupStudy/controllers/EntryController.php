@@ -1,7 +1,9 @@
 <?php
 
 namespace GroupStudy\controllers;
-use BaseController, Input, Exception, User, GroupStudy\models\Entry, GroupStudy\models\Student, Response;
+
+use BaseController, Input, Exception, User, GroupStudy\models\Entry, GroupStudy\models\Student, Response, Redirect, View;
+
 
 class EntryController extends BaseController{
 
@@ -11,16 +13,37 @@ class EntryController extends BaseController{
 	 * @param  none
 	 * @return returns json response with error or added entry
 	 */
+
+	 // public function postStudentExists(){
+	 // 	$student_num = substr(Input::get('student_num'), 2, 8);   //used to grab only the student number from the id card.
+	 // 	$class = Input::get('class');
+	 // 	$date = date('Y-m-d');
+	 // 	$student_id = Student::where('student_num', $student_num) -> pluck('id');  
+		// if(empty($student_id)) 
+		// 	return Response::json(array('error' => 'user_does_not_exist', 'student_num' => $student_num, 'class' => $class));
+	 // 	else{
+	 // 		$entry_id = Entry::where('student_id', $student_id) -> where('date', $date) ->    //checks if a start_time has been created for the user
+		// 			whereNotNull('start_time') -> whereNull('end_time') -> pluck('id');		  //if not, goes to start_entry, else goes to end_entry
+		// 	if(empty($entry_id))
+		// 		return $this -> start_entry($student_id, $class, $date);
+		// 	else
+		// 		return $this -> end_entry($entry_id, $date);
+	 // 	}
+	 // }
+
 	public function postStudentExists(){
 	 	$student_num = substr(Input::get('student_num'), 2, 8);   //used to grab only the student number from the id card.
 	 	$class = Input::get('class');
 	 	try{
 	 		$student = Student::where('student_num', '=', $student_num) -> firstOrFail();
+	 		return $this -> checkPunchedIn($student, $class);
 	 	}
 	 	catch(Exception $e){
-			return Response::json(array('status' => 'student_does_not_exist', 'student_num' => $student_num, 'class' => $class));
+			//return Response::json(array('status' => 'student_does_not_exist', 'student_num' => $student_num, 'class' => $class));
+			$this->layout->content = View::make('study/new', array('student_num' => $student_num, 'class' => $class));
+
 		}
-		 	return $this -> checkPunchedIn($student->id, $class);
+		
 	 }
 
 	/**
@@ -29,16 +52,16 @@ class EntryController extends BaseController{
 	 * @param  none
 	 * @return returns json response with successful timestamp for start or end time, or error if it occurs
 	 */
-	 public function checkPunchedIn($student_id, $class){
+	 public function checkPunchedIn($student, $class){
 	 	//$entry_id = Entry::where('student_id', $student_id) -> where('date', $date) ->    //checks if a start_time has been created for the user
 		//		whereNotNull('start_time') -> whereNull('end_time') -> pluck('id');		  //if not, goes to start_entry, else goes to end_entry
 	 	$start_date = date('Y-m-d');
 	 	try{
-	 		$entry = Entry::where('student_id', $student_id) -> where('date', $start_date) 
+	 		$entry = Entry::where('student_id', $student->id) -> where('date', $start_date) 
 	 				->whereNotNull('start_time')-> firstOrFail();
 	 	}
 	 	catch(Exception $e){
-			 return $this -> postStartentry($student_id, $class);
+			 return $this -> postStartentry($student, $class);
 		}
 		return $this -> postEndEntry($entry->id);
 		}
@@ -49,17 +72,19 @@ class EntryController extends BaseController{
 	 * @param  none
 	 * @return returns json response if user is created or if error occurs
 	 */
-	 public function postAddStudent($student_num, $class){
+	 public function postAddStudent(){
 	 	$input = Input::all();
 	 	$student_arr = array('first_name' => $input['first_name'], 'last_name' => $input['last_name'], 
-	 					'student_num' => $student_num);
+
+	 					'student_num' => $input['student_num']);
 	 	try{
 	 		$student = Student::create($student_arr);
 		}
 	 	catch(Exception $e){
 	 		return Response::json(array('status' => 'user_not_created'));
+
 	 	}
-	 	return $this -> start_entry($student['id'], $class);
+	 	return $this -> postStartEntry($student['id'], $input['class']);
 	 }
 
 	/**
@@ -68,20 +93,23 @@ class EntryController extends BaseController{
 	 * @param (int)$student_id: pk for student db, (string)$class, (date) $date: current date
 	 * @return json response to add_student that returns the entry created or not created.
 	 */
-	public function postStartEntry($student_id, $class){
+	public function postStartEntry($student, $class){
 		$entry_arr = array(
-				'student_id' => $student_id,
+				'student_id' => $student->id,
 				'class' => $class,
-				'date' => date("Y-m-d")
+				'date' => date("Y-m-d"),
+				'start_time' => date('H:m:s')
 				);
 		try{
 			$entry = Entry::create($entry_arr);
-			$entry -> update(array('start_time' => date('H:m:s')));
+			$this->layout->content = View::make('study/checkin', array('student' => $student));
 		}
 		catch(Exception $e){
-			return Response::json(array('status' => 'entry_not_created'));
+			//return Response::json(array('status' => 'entry_not_created', 'error' => $e));
+			$this->layout->content =  Redirect::to('/group_study')->with(array('message' => 'You must select a class', 'alert' => 'warning'));
 		}
-		return Response::json(array('status' => 'created_in_time'));
+		//return Response::json(array('status' => 'created_in_time'));
+
 	}
 
 
@@ -96,11 +124,13 @@ class EntryController extends BaseController{
 			return Response::json(array('status' => 'entry_not_found'));
 		try{
 			Entry::where('id', $entry_id) -> update(array('end_time' => date('H:m:s')));  
+			$this->layout->content = View::make('study/checkout');
 		}
 		catch(Exception $e){
-			return Response::json(array('status' => 'out_time_not_created'));
+			//return Response::json(array('status' => 'out_time_not_created'));
+			$this->layout->content = Redirect::to('/group_study')->with(array('message' => 'Failed to sign you out. Please try again', 'alert' => 'warning'));
 		}
-		return Response::json(array('status' => 'created_out_time'));
+		//return Response::json(array('status' => 'created_out_time'));
 	}
 
 	/**
