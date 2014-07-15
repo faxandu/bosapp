@@ -59,11 +59,12 @@ class EntryController extends BaseController{
 	 	try{
 	 		$entry = Entry::where('student_id', $student->id) -> where('date', $start_date) 
 	 				->whereNull('end_time')-> firstOrFail();
+	 		return $this -> postEndEntry($entry->id);
+
 	 	}
 	 	catch(Exception $e){
 			 return $this -> postStartentry($student, $class);
 		}
-		return $this -> postEndEntry($entry->id);
 		}
 
 	/**
