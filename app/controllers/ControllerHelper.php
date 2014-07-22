@@ -1,10 +1,18 @@
 <?php
 
 class ControllerHelper {
+	/*
+		Create function for any model
 
+		An instance of the model must be passed, the input desired, and a place to go after creating (url string)
+
+
+	------------------------- */
 
 	public static function create($model, $input, $route_pass,
 	 $route_fail = null, $attach = null, $attachValue = null){
+
+
 
 		if($route_fail == null)
 			$route_fail = $route_pass;
@@ -22,15 +30,15 @@ class ControllerHelper {
 
 		try{
 
-			$model->update($input);
-			$model->save();
-
+			$model = $model::create($input);
+		
+			/// Errros?
 			if($attach != null){
 
 				if($attachValue != null)
 					$attachValue->$attach()->attach($model);
 				else
-					$model->$attach()->attach($)
+					$model->$attach()->attach($attachValue);
 			}
 
 		} catch(Exception $e){
@@ -44,6 +52,8 @@ class ControllerHelper {
 		return Redirect::to($route_pass)->with(array(
 				'status' => 200
 			));;
+
+	
 
 	}
 

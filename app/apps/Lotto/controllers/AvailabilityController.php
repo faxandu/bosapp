@@ -17,8 +17,6 @@ class AvailabilityController extends BaseController {
 	*/
 
 	/* 
-		REQUIRES: GET
-
 		URL: /schedule/availability/create 
 
 		Sets the content variable inside the layout to be the create view from lotto.availability.
@@ -29,9 +27,7 @@ class AvailabilityController extends BaseController {
 		$this->layout->content = View::make('lotto.availability.create');
 	}
 
-	/*
-		REQUIRES: GET
-		
+	/*		
 		URL: /schedule/availability/my-availability
 
 		Sets the content variable inside the layout to be the home view from lotto.availability.
@@ -60,8 +56,6 @@ class AvailabilityController extends BaseController {
 	*/
 
 	/*
-		REQUIRES: POST
-
 		URL: /schedule/availability/create
 
 
@@ -78,17 +72,18 @@ class AvailabilityController extends BaseController {
 	
 		$input = Input::all();
 		$input = ControllerHelper::convertTimeAndDate($input);
-		$this->layout->content = ControllerHelper::create(
+
+		// $this->layout->content = 
+		return ControllerHelper::create(
 			new Availability, $input,
 			'/schedule/availability/my-availability', '/schedule/availability/create',
 			'availability', Auth::user()
 			);
+
 	}	
 
 
 	/*	
-		REQUIRES: POST
-
 		URL: /schedule/availability/delete
 
 		EXPECTS: id => int
@@ -100,7 +95,7 @@ class AvailabilityController extends BaseController {
 	----------------------------------- */
 	public function postDelete(){
 
-		$this->layout->content = ControllerHelper::delete(
+		return ControllerHelper::delete(
 			new Availability, Input::all(), '/schedule/availability/my-availability');
 	}
 

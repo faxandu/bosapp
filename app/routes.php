@@ -51,6 +51,8 @@ Route::group(array('before' => 'auth'), function() use($layout){
 
 				Route::controller('course', 'Lotto\controllers\CourseController');
 
+				Route::controller('skill', 'Lotto\controllers\SkillController');
+
 			}); // end of schedule management group
 			
 			
@@ -69,7 +71,7 @@ Route::group(array('before' => 'auth'), function() use($layout){
 		-----------------------*/
 		Route::controller('availability', 'Lotto\controllers\AvailabilityController');
 
-	}); // end of schedule group
+	}); // end of schedule group user side
 
 
 

@@ -202,7 +202,7 @@ class CourseController extends BaseController {
 
 		}
 
-		$this->layout->content = Redirect::to('admin/schedule/user/all');	
+		return Redirect::to('admin/schedule/user/all');	
 	}
 
 	/*	Admin: deletes a course.

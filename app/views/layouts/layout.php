@@ -45,8 +45,8 @@
 		         <li class="dropdown">
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Schedule<b class="caret"></b></a>
 		          <ul class="dropdown-menu">
-		            <li><a href="/schedule/user/my-schedule">My Schedule</a></li>
-		            <li><a href="/schedule/availability/my-availability">My Availability</a></li>
+		            <li><a href="<?= URL::to('/schedule/user/my-schedule') ?>">My Schedule</a></li>
+		            <li><a href="<?= URL::to('/schedule/availability/my-availability') ?>">My Availability</a></li>
 		          </ul>
 		        </li>
 

@@ -39,7 +39,16 @@ class SkillController extends BaseController {
 	|--------------------------------------------------------------------------
 	*/
 
+	/*	
+		/////////////URL: /schedule/availability/delete
 
+		EXPECTS: id => int
+
+
+		Skills should not be deleted via this method?
+
+		
+	----------------------------------- */
 	public function postDelete(){
 		
 		$id = Input::get('id');

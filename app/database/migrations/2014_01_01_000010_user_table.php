@@ -12,6 +12,8 @@ class UserTable extends Migration {
 	 */
 	public function up()
 	{
+
+		
 		Schema::create('user', function($table){
 			$table->increments('id');
 
