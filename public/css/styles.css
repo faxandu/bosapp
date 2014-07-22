@@ -1,5 +1,7 @@
 body {color: #fff; background-color: #2B6A47;}
 
+.delete {color: red;}
+.delete:hover {text-decoration: none; color: red;}
 
 
 .modal {color: #000;}

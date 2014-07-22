@@ -8,13 +8,13 @@
 
 namespace TimeTracking\models;
 
-use Eloquent, Validaton, Exception , Validaton;
+use Eloquent, Validator, Exception;
 class Categories extends Eloquent {
 
-    private $table = 'time_tracking_categories';
-    private $fillable = 'category';
-    private $guarded  = array('id');
-    private $timestamps = false;
+    protected $table = 'time_tracking_categories';
+    protected $fillable = array('category');
+    protected $guarded  = array('id');
+    public $timestamps = false;
 
 
     public function entry(){
@@ -29,7 +29,7 @@ class Categories extends Eloquent {
     );
     
     public static function validate($category){
-    	return Validaton::make($category,static::$rules);
+    	return Validator::make($category,static::$rules);
     }
 
 } 

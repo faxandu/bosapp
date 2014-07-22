@@ -7,7 +7,7 @@
 
 namespace GrantTimeTracking\controllers;
 
-use BaseController, Input, User,  Entry ,Response;
+use BaseController, Input, User,  Entry ,Response, View;
 use Illuminate\Support\Facades\Auth;
 use TimeTracking\models\Categories;
 use TimeTracking\models\TimeTrackingEntry;
@@ -18,34 +18,20 @@ class GrantTimeTracking extends  BaseController{
     * This function will allow the user to create a time entry 
     * in the database . 
     */
-    public function postCreateTime()
-    {
+    public function postCreate(){
 
         $timeEntry = new GrantTimeTrackingEntry();
         $timeEntry->user_id = Auth::user()->id;
         $input = Input::all();
 
-        $this->postAddTime($timeEntry,$input);
-    }
+        $this->postAddTime($timeEntry);
+        try{
+                $timeEntry->save();
+                return  Response::json(array('status' => 200, 'message' => 'time was saved '),200 );
+            }catch (exception $e){
+                return Response::json(array('status' => 401, 'message' => 'time was not saved', 'error' => $e), 401);
+            }
     
-    /**
-    * This function will eventually take over the modify time and 
-    * create time functions.   
-    */
-    public function postCreateTimeOrModify(){
-
-        $userTime = GrantTimeTrackingEntry::where('id' , ' = ' , Input::get('id'))->count();
-
-        if ($userTime != 0) 
-        {
-            $this->postAddTime($userTime = new GrantTimeTrackingEntry(), Input::all());
-        }
-        else
-        {    
-            $timeEntry = GrantTimeTrackingEntry::find('id')->get();
-            $this->postAddTime($timeEntry, Input::all() );
-        }
-
 
     }
     
@@ -53,17 +39,18 @@ class GrantTimeTracking extends  BaseController{
     * This function will delete a time entry for the user 
     *
     */
-    public function postDeleteTime()
-    {
+    public function postDeleteTime(){
 
-        $timeEntry = GrantTimeTrackingEntry::find('id');
-        
+        $timeEntry = TimeTrackingEntry::find('id');
+
         try{
             $timeEntry->delete();
-            Response::json('Message', 'deleted');
+            return Response::json(array('status' => 201, 'message' => 'time was deleted '),200 );
         }catch (exception $e){
-            return Response::json('Message' , $e);
+            return Response::json(array( 'status' => 401, 'message' => 'time was not saved' , 'error' => $e), 401);
         }
+
+
 
     }
     
@@ -72,11 +59,26 @@ class GrantTimeTracking extends  BaseController{
     * the pay period . For the reason of mistakes.  
     *
     */
-    public function postModifyTime()
-    {
+    public function postModifyTime(){
 
-        $timeEntry = GrantTimeTrackingEntry::find('id')->get();
-        $this->postAddTime($timeEntry, Input::all() );
+        $timeEntry = TimeTrackingEntry::findOrFail('id')->get();
+
+        if($this->validateTime(Input::get('start_time')) && $this->validateTime(Input::get('end_time')) ){
+            $this->postAddTime($timeEntry);
+            try{
+                $timeEntry->save();
+                return Response::json(array('status' => 200 , 'message' => 'time was saved '), 200);
+            }catch (exception $e){
+                return Response::json(array('status' => 401, 'message' => 'time was not saved ', 'error' => $e),401);
+            }
+        }
+
+    }
+    public function getEntries($pay_period) {
+        $categories = GrantCategories::all();
+        $time = GrantTimeTrackingEntry::user()->period($pay_period)->get();
+        $this->layout->content = View::make('time/entries', array('entries' => $time, 'categories' => $categories, 'pay_id' => $pay_period));
+         
     }
     /**
     * This function will retreive the current pay period and return the 
@@ -86,13 +88,15 @@ class GrantTimeTracking extends  BaseController{
     public function getPayDates()
     {
 
-    $entry = GrantTimeTrackingEntry::where('pay_id' , ' = ' , Input::get('pay_id') )
-    ->select( 'start_time' , 'end_time' , 'start_date' , 'end_date')->get();
-
-    return $entry; 
+    return Response::json(TimeTrackingEntry::where('pay_id' , ' = ' , Input::get('pay_id') )
+    ->select( 'start_time' , 'end_time' , 'start_date' , 'end_date')->all()->toArray() ); 
 
     }
-    
+
+    public function getAllPayDays(){
+        return Response::json(TimeTrackingPayPeriod::all()->toArray() );
+    }
+
     /**
     * The standard miss method function .
     * @return the response of the missig method .
@@ -100,7 +104,17 @@ class GrantTimeTracking extends  BaseController{
     public function missingMethod($parameters = array()){
         return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
     }
-    
+
+    public function getUserTime(){
+         $time = GrantTimeKeeping::find(Auth::user()->id);
+       return  Response::json(array('start_time' => $time['start_time'] , 'end_time' => $time['end_time'], 'category' 
+            => $time['category']));
+         
+    }
+    public function getCategories(){
+          return  Response::json(
+                array('category'=> GrantCategories::all()->toArray() ));
+    }
     /**
     * This is a helper function to provide flexablity through out the class
     * This function will validate the time and then add the time to the 
