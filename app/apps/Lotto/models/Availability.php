@@ -12,7 +12,7 @@ class Availability extends Eloquent {
 	public $timestamps = false;
     protected $softDelete = false;
 
-	protected $fillable = array('end_date', 'end_time', 'start_date', 'start_time', 'notes', 'title');
+	protected $fillable = array('start_time', 'end_time', 'weekday', 'notes', 'title');
 
     protected $guarded = array('id');
     protected $hidden = array('pivot');
