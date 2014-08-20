@@ -16,24 +16,17 @@ class AvailabilityController extends BaseController {
 	|--------------------------------------------------------------------------
 	*/
 
-	public function getCreate(){
-
-		$this->layout->content = View::make('lotto.availability.create');
-	}
-
-
+	/*		
++		URL: /schedule/availability/my-availability
+ 
++		Sets the content variable inside the layout to be the home view from lotto.availability.
++		Also attaches the currently logged in user, that users availabiltiy, and any variables stored
++		in the session (other functions redirect to this function). 
++	
++	*/
 	public function getMyAvailability(){
 
-		/*
-		$this->layout->content = View::make('lotto.availability.home')->with(array(
-
-			'user' => Auth::user(), 
-			'userAvailability' => Auth::user()->availability,
-			Session::all()
-
-			));
-		*/
-		$this->layout->content = View::make('user.availability', array('availability' => Auth::user()->availability));
+		$this->layout->content = View::make('user.availability');
 
 	}
 
