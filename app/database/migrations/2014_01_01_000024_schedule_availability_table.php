@@ -16,8 +16,7 @@ class ScheduleAvailabilityTable extends Migration {
 			$table->increments('id');
 
 			$table->string('title', 50)->nullable();
-			$table->date('start_date', 50);
-			$table->date('end_date', 50);
+			$table->integer('weekday');
 			$table->time('start_time', 50);
 			$table->time('end_time', 50);
 			$table->text('notes')->nullable();
