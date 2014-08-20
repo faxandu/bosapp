@@ -52,9 +52,7 @@ Route::group(array('before' => 'auth'), function() use($layout){
 
 				/*	Schedule Management root
 				-----------------------*/
-				Route::get('/', function() use($layout) {
-					return $layout->nest('content', 'admin.lotto.home');
-				});
+				Route::controller('/', 'Lotto\controllers\AdminController');
 
 				/*	Schedule Management user list
 				-----------------------*/

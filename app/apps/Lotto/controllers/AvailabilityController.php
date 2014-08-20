@@ -3,7 +3,7 @@
 namespace Lotto\controllers;
 
 use BaseController, Lotto\models\Availability, User;
-use Auth;
+use Auth, Date;
 use Input, Response, Exception, Session, Redirect;
 use View;
 
@@ -24,6 +24,7 @@ class AvailabilityController extends BaseController {
 
 	public function getMyAvailability(){
 
+		/*
 		$this->layout->content = View::make('lotto.availability.home')->with(array(
 
 			'user' => Auth::user(), 
@@ -31,10 +32,24 @@ class AvailabilityController extends BaseController {
 			Session::all()
 
 			));
+		*/
+		$this->layout->content = View::make('user.availability', array('availability' => Auth::user()->availability));
 
 	}
 
 
+	public function getAvail() {
+
+		$avail = Auth::user()->availability;
+		$today = date('m/d/Y');
+		$sun = date('m/d/Y', strtotime('last sunday', strtotime($today)));
+
+		foreach ($avail as $item) {
+			$item->start_date = date('m/d/Y', strtotime($sun . ' + ' . $item->weekday . ' days'));
+		}
+
+		return Response::json(Auth::user()->availability);
+	}
 
 	/*
 	|--------------------------------------------------------------------------
@@ -55,10 +70,13 @@ class AvailabilityController extends BaseController {
 
 		if($checkedInput->fails()){
 
+			/*
 			return Redirect::to('/schedule/availability/create')->with(array(
 				'status' => 400,
 				'error' => $checkedInput->messages()->all()
 			));
+			*/
+			return Redirect::to('/schedule/availability/my-availability')->with('message', $checkedInput->messages()->all());
 		
 		}
 
@@ -66,23 +84,25 @@ class AvailabilityController extends BaseController {
 
 			$user = Auth::user();
 
-			$availability = availability::create($input);
+			$availability = Availability::create($input);
 
 			$user->availability()->attach($availability);
 
 
 		} catch(Exception $e){
 
+			/*
 			return Redirect::to('/schedule/availability/create')->with(array(
 				'status' => 400,
 				'error' => $checkedInput->messages()->all()
 			));
-
+			*/
+			return Redirect::to('/schedule/availability/my-availability')->with('message', $checkedInput->messages()->all());
+			
 		}
 
-		return Redirect::to('/schedule/availability/my-availability')->with(array(
-				'status' => 200
-			));;
+		return Redirect::to('/schedule/availability/my-availability');
+		
 	}	
 
 
@@ -91,6 +111,18 @@ class AvailabilityController extends BaseController {
 
 
 	----------------------------------- */
+
+	public function postUpdate() {
+		$item = Availability::find(Input::get('id'));
+		$item->fill(Input::all());
+		$item->save();
+
+		return Response::json(array(
+			'status' => 200,
+			'message' => 'Entry Updated'
+			));
+	}
+
 	public function postDelete(){
 		
 		$id = Input::get('id');
