@@ -81,7 +81,7 @@ class EntryController extends BaseController{
 				'class' => $class,
 				'date' => date("Y-m-d"),
 				'start_time' => date('H:m:s'),
-				'facilitator' => Auth::user()->first_name
+				'facilitator' => Auth::user()->id
 				);
 		try{
 			$entry = Entry::create($entry_arr);
