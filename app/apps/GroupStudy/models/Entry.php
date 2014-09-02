@@ -20,7 +20,11 @@ class Entry extends Eloquent{
 	 */
 
 	public function student(){
-		return $this -> belongsTo('Student');
+		return $this->belongsTo('GroupStudy\models\Student', 'student_id', 'id');
+	}
+
+	public function facil() {
+		return $this->belongsTo('User', 'facilitator', 'id');
 	}
 
 
