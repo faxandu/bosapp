@@ -9,25 +9,104 @@
 			<div class="form-group">
 				<label>Select the class you are attending group study for</label>
 				<br />
-				<label for="class1" class="btn btn-primary">
-					<input type="radio" id="class1" name="class" value="class1" />
-					Class 1
+				<h5>Programming</h5>
+				<label for="CPS120" class="btn btn-primary">
+					<input type="radio" id="CPS120" name="class" value="CPS120" />
+					CPS 120
 				</label>
-				<label for="class2" class="btn btn-primary">
-					<input type="radio" id="class2" name="class" value="class2" />
-					Class 2
+				<label for="CPS161" class="btn btn-primary">
+					<input type="radio" id="CPS161" name="class" value="CPS161" />
+					CPS 161
 				</label>
-				<label for="class3" class="btn btn-primary">
-					<input type="radio" id="class3" name="class" value="class3" />
-					Class 3
+				<label for="CPS171" class="btn btn-primary">
+					<input type="radio" id="CPS171" name="class" value="CPS171" />
+					CPS 171
 				</label>
-				<label for="class4" class="btn btn-primary">
-					<input type="radio" id="class4" name="class" value="class4" />
-					Class 4
+				<label for="CPS261" class="btn btn-primary">
+					<input type="radio" id="CPS261" name="class" value="CPS261" />
+					CPS 261
 				</label>
-				<label for="class5" class="btn btn-primary">
-					<input type="radio" id="class5" name="class" value="class5" />
-					Class 5
+				<label for="CPS271" class="btn btn-primary">
+					<input type="radio" id="CPS271" name="class" value="CPS271" />
+					CPS 271
+				</label>
+				<label for="CPS272" class="btn btn-primary">
+					<input type="radio" id="CPS272" name="class" value="CPS272" />
+					CPS 272
+				</label>
+				<label for="CPS278" class="btn btn-primary">
+					<input type="radio" id="CPS278" name="class" value="CPS278" />
+					CPS 278
+				</label>
+
+				<h5>Windows Networking</h5>
+				<label for="CNT100" class="btn btn-primary">
+					<input type="radio" id="CNT100" name="class" value="CNT100" />
+					CNT 100
+				</label>
+				<label for="CNT201" class="btn btn-primary">
+					<input type="radio" id="CNT201" name="class" value="CNT201" />
+					CNT 201
+				</label>
+				<label for="CNT206" class="btn btn-primary">
+					<input type="radio" id="CNT206" name="class" value="CNT206" />
+					CNT 206
+				</label>
+				<label for="CNT211" class="btn btn-primary">
+					<input type="radio" id="CNT211" name="class" value="CNT211" />
+					CNT 211
+				</label>
+				<label for="CNT216" class="btn btn-primary">
+					<input type="radio" id="CNT216" name="class" value="CNT216" />
+					CNT 216
+				</label>
+				<label for="CNT223" class="btn btn-primary">
+					<input type="radio" id="CNT223" name="class" value="CNT223" />
+					CNT 223
+				</label>
+				<label for="CNT224" class="btn btn-primary">
+					<input type="radio" id="CNT224" name="class" value="CNT224" />
+					CNT 224
+				</label>
+				<label for="CNT226" class="btn btn-primary">
+					<input type="radio" id="CNT226" name="class" value="CNT226" />
+					CNT 226
+				</label>
+				<label for="CNT236" class="btn btn-primary">
+					<input type="radio" id="CNT236" name="class" value="CNT236" />
+					CNT 236
+				</label>
+
+				<h5>Computer Systems Technology</h5>
+				<label for="CST118" class="btn btn-primary">
+					<input type="radio" id="CST118" name="class" value="CST118" />
+					CST 118
+				</label>
+				<label for="CST160" class="btn btn-primary">
+					<input type="radio" id="CST160" name="class" value="CST160" />
+					CST 160
+				</label>
+				<label for="CST165" class="btn btn-primary">
+					<input type="radio" id="CST165" name="class" value="CST165" />
+					CST 165
+				</label>
+				<label for="CST225" class="btn btn-primary">
+					<input type="radio" id="CST225" name="class" value="CST225" />
+					CST 225
+				</label>
+
+				<h5>Unix / Linux</h5>
+				<label for="CIS121" class="btn btn-primary">
+					<input type="radio" id="CIS121" name="class" value="CIS121" />
+					CIS 121
+				</label>
+				<label for="CIS206" class="btn btn-primary">
+					<input type="radio" id="CIS206" name="class" value="CIS206" />
+					CIS 206
+				</label>
+				<label for="CIS221" class="btn btn-primary">
+					<input type="radio" id="CIS221" name="class" value="CIS221" />
+					CIS 221
 				</label>
 			</div>
 			<div class="form-group">
