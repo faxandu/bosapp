@@ -96,6 +96,7 @@
 								<li><a href="<?php echo URL::to('admin/user/home'); ?>">User Management</a></li>
 								<li><a href="<?php echo URL::to('admin/payroll'); ?>">Payroll</a></li>
 								<li><a href="<?php echo URL::to('admin/schedule'); ?>">Schedule Management</a></li>
+								<li><a href="<?php echo URL::to('admin/study'); ?>">Group Study Reports</a></li>
 								<li><a href="#">Project Management</a></li>
 								<li><a href="#">System Configurations</a></li>
 							</ul>
