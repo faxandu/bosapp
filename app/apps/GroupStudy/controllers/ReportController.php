@@ -1,10 +1,16 @@
 <?php
 
 namespace GroupStudy\controllers;
-use BaseController, Input, User, Response;
+use BaseController, Input, User, Response, GroupStudy\models\Entry, GroupStudy\models\Student, View;
 
 class ReportController extends BaseController
 {
+
+	public function getIndex() {
+
+		$this->layout->content = View::make('admin/study/display', array('entries' => Entry::all()));
+
+	}
 	public function get_report()
 	{
 		$input = Input::all();

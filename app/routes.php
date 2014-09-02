@@ -61,6 +61,9 @@ Route::group(array('before' => 'auth'), function() use($layout){
 				Route::controller('course', 'Lotto\controllers\CourseController');
 
 			}); // end of schedule management group
+
+			// Group Study Admin Controller
+			Route::controller('study', 'GroupStudy\controllers\ReportController');
 			
 			
 		}); // end of admin auth
@@ -92,7 +95,7 @@ Route::group(array('before' => 'auth'), function() use($layout){
 		});
 
 		Route::controller('entry', 'GroupStudy\controllers\EntryController');
-		Route::controller('report', 'GroupStudy\controllers\ReportController');
+		
 
 
 		//Route::match(array('GET', 'POST'), '/checkPunchedIn', 'GroupStudy\controllers\EntryController@checkPunchedIn');

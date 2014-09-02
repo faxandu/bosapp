@@ -13,24 +13,6 @@ class EntryController extends BaseController{
 	 * @param  none
 	 * @return returns json response with error or added entry
 	 */
-
-	 // public function postStudentExists(){
-	 // 	$student_num = substr(Input::get('student_num'), 2, 8);   //used to grab only the student number from the id card.
-	 // 	$class = Input::get('class');
-	 // 	$date = date('Y-m-d');
-	 // 	$student_id = Student::where('student_num', $student_num) -> pluck('id');  
-		// if(empty($student_id)) 
-		// 	return Response::json(array('error' => 'user_does_not_exist', 'student_num' => $student_num, 'class' => $class));
-	 // 	else{
-	 // 		$entry_id = Entry::where('student_id', $student_id) -> where('date', $date) ->    //checks if a start_time has been created for the user
-		// 			whereNotNull('start_time') -> whereNull('end_time') -> pluck('id');		  //if not, goes to start_entry, else goes to end_entry
-		// 	if(empty($entry_id))
-		// 		return $this -> start_entry($student_id, $class, $date);
-		// 	else
-		// 		return $this -> end_entry($entry_id, $date);
-	 // 	}
-	 // }
-
 	public function postStudentExists(){
 	 	$student_num = substr(Input::get('student_num'), 2, 8);   //used to grab only the student number from the id card.
 	 	$class = Input::get('class');
@@ -55,17 +37,16 @@ class EntryController extends BaseController{
 	 public function checkPunchedIn($student, $class){
 	 	//$entry_id = Entry::where('student_id', $student_id) -> where('date', $date) ->    //checks if a start_time has been created for the user
 		//		whereNotNull('start_time') -> whereNull('end_time') -> pluck('id');		  //if not, goes to start_entry, else goes to end_entry
-	 	$start_date = date('Y-m-d');
+	 	$date = date('Y-m-d');
 	 	try{
-	 		$entry = Entry::where('student_id', $student->id) -> where('date', $start_date) 
+	 		$entry = Entry::where('student_id', $student->id) -> where('date', $date) 
 	 				->whereNull('end_time')-> firstOrFail();
 	 		return $this -> postEndEntry($entry->id);
-
 	 	}
 	 	catch(Exception $e){
 			 return $this -> postStartentry($student, $class);
 		}
-		}
+	}
 
 	/**
 	 * postAddStudent
@@ -86,7 +67,7 @@ class EntryController extends BaseController{
 
 	 	}
 	 	return $this -> postStartEntry($student, $input['class']);
-	 }
+	}
 
 	/**
 	 * postStartEntry
@@ -99,7 +80,8 @@ class EntryController extends BaseController{
 				'student_id' => $student->id,
 				'class' => $class,
 				'date' => date("Y-m-d"),
-				'start_time' => date('H:m:s')
+				'start_time' => date('H:m:s'),
+				'facilitator' => Auth::user()->id
 				);
 		try{
 			$entry = Entry::create($entry_arr);
@@ -110,7 +92,6 @@ class EntryController extends BaseController{
 			$this->layout->content =  Redirect::to('/group_study')->with(array('message' => 'You must select a class', 'alert' => 'warning'));
 		}
 		//return Response::json(array('status' => 'created_in_time'));
-
 	}
 
 
@@ -163,7 +144,7 @@ class EntryController extends BaseController{
 		$input = Input::all();
 		$entry = Entry::find($id);
 		if(empty($entry))
-			return Response::json(array('status' => 'entry_not found'));
+			return Response::json(array('status' => 'entry_not_found'));
 		else{
 
 		}
