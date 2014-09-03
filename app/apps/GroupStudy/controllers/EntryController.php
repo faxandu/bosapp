@@ -4,6 +4,7 @@ namespace GroupStudy\controllers;
 
 use BaseController, Input, Exception, User, GroupStudy\models\Entry, GroupStudy\models\Student, Response, Redirect, View;
 
+use Illuminate\Support\Facades\Auth;
 
 class EntryController extends BaseController{
 

@@ -5,6 +5,7 @@
 		<table class="table table-striped table-hover">
 			<thead>
 				<tr>
+					<th>Date</th>
 					<th>Student</th>
 					<th>Class</th>
 					<th>In</th>
@@ -13,12 +14,14 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ($entries as $entry) { ?>
+				<?php foreach ($entries as $entry) {
+ ?>
 				<tr>
-					<td><?php $entry->student->first_name . ' ' . $entry->student->last_name; ?></td>
+					<td><?php echo $entry->date; ?></td>
+					<td><?php echo $entry->student->first_name . ' ' . $entry->student->last_name; ?></td>
 					<td><?php echo $entry->class; ?></td>
-					<td><?php echo $entry->start_time; ?></td>
-					<td><?php echo $entry->end_time; ?></td>
+					<td><?php echo date('h:ia', strtotime($entry->start_time. ' -4 hours'));  ?></td>
+					<td><?php echo date('h:ia', strtotime($entry->end_time. ' -4 hours')); ?></td>
 					<td><?php echo $entry->facil->first_name . ' ' . $entry->facil->last_name; ?></td>
 				</tr>
 				<?php } ?>
