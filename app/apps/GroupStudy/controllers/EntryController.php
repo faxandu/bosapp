@@ -135,19 +135,24 @@ class EntryController extends BaseController{
 		return Response::json(array('status' => 'deleted_entry'));
 	}
 
-	/**
-	 * postUpdateEntry
-	 * Check for entry by Pk.  If found, allows for updating of certain fields.
-	 * @param (int) ($id) PK for entry.
-	 * @return (PK) (id) returns json response for error or success
-	 */
-	public function postUpdateEntry($id){
-		$input = Input::all();
-		$entry = Entry::find($id);
-		if(empty($entry))
-			return Response::json(array('status' => 'entry_not_found'));
-		else{
+	public function postGetLoggedInStudents(){
+		try{
+	 		$entry = Entry::whereNull('end_time')->where('facilitator', Auth::user()->id)->get();
+	 	}
+	 	catch(Exception $e){
+	 		return Response::json(array('status' => 'error'));
 
+		}
+		return Response::json(array('entry' => $entry));
+	}
+
+	public function postSetEndTime($entry_id){
+		try{
+			Entry::where('id', $entry_id) -> update(array('end_time' => date('H:m:s'))); 
+			return Response::json(array('message' => 'Successfully logged out')); 
+		}
+		catch(Exception $e){
+			return Response::json(array('message' => 'Failed to sign you out. Please try again', 'alert' => 'warning')));
 		}
 	}
 
