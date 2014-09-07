@@ -86,6 +86,7 @@
 			   	  		<ul class="dropdown-menu">
 			   	  			<li><a href="#">Dashboard</a></li>
 			   	  			<li><a href="<?php echo URL::to('/group_study'); ?>" target="_blank">Group Study</a></li>
+			   	  			<li><a href="<?php echo URL::to('/group_study/entry/monitor'); ?>">Monitor Group Study</a></li>
 			   	  			<li><a href="#">My Projects</a></li>
 			   	  			<li><a href="<?php echo URL::to('logout'); ?>">Log Out</a></li>
 			   	  		</ul>
