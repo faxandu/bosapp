@@ -103,6 +103,9 @@
 							</ul>
 						</li>
 					<?php } ?>
+					<?php if (Auth::user()->department === 'grant') { ?>
+						<li><a href="<?php echo URL::to('admin/study'); ?>">Group Study Reports</a></li>
+					<?php } ?>
 			   	  </ul>
 			   	<?php } ?>
 		    </div><!-- /.navbar-collapse -->
