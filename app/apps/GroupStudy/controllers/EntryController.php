@@ -135,24 +135,28 @@ class EntryController extends BaseController{
 		return Response::json(array('status' => 'deleted_entry'));
 	}
 
-	public function postGetLoggedInStudents(){
+	public function getMonitor(){
 		try{
 	 		$entry = Entry::whereNull('end_time')->where('facilitator', Auth::user()->id)->get();
 	 	}
 	 	catch(Exception $e){
-	 		return Response::json(array('status' => 'error'));
+	 		//return Response::json(array('status' => 'error'));
 
 		}
-		return Response::json(array('entry' => $entry));
+
+		// return Response::json(array('entry' => $entry));
+		$this->layout->content = View::make('study/monitor', array('students' => $entry));
 	}
 
-	public function postSetEndTime($entry_id){
+	public function getSetEndTime($entry_id){
 		try{
 			Entry::where('id', $entry_id) -> update(array('end_time' => date('H:m:s'))); 
-			return Response::json(array('message' => 'Successfully logged out')); 
+			//return Response::json(array('message' => 'Successfully logged out')); 
+			return Redirect::to('group_study/entry/monitor')->with('message', 'Student Logged Out')->with('alert', 'success');
 		}
 		catch(Exception $e){
-			return Response::json(array('message' => 'Failed to sign you out. Please try again', 'alert' => 'warning')));
+			//return Response::json(array('message' => 'Failed to sign you out. Please try again', 'alert' => 'warning'));
+			return Redirect::to('group_study/entry/monitor')->with('message', 'Failed to sign out user')->with('alert', 'warning');
 		}
 	}
 

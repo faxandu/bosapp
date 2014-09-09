@@ -100,6 +100,10 @@
 					<input type="radio" id="CIS121" name="class" value="CIS121" />
 					CIS 121
 				</label>
+				<label for="CIS161" class="btn btn-primary">
+					<input type="radio" id="CIS161" name="class" value="CIS161" />
+					CIS 161
+				</label>
 				<label for="CIS206" class="btn btn-primary">
 					<input type="radio" id="CIS206" name="class" value="CIS206" />
 					CIS 206
