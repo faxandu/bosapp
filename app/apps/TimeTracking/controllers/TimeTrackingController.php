@@ -7,7 +7,7 @@
 
 namespace TimeTracking\controllers;
 
-use BaseController, Input, User,  Entry ,Response, View;
+use BaseController, Input, User,  Entry ,Response, View, Redirect;
 use Illuminate\Support\Facades\Auth;
 use TimeTracking\models\Categories;
 use TimeTracking\models\TimeTrackingEntry;
@@ -45,9 +45,11 @@ class TimeTrackingController extends  BaseController{
             $this->postAddTime($timeEntry);
             try{
                 $timeEntry->save();
-               return  Response::json(array('status' => 200, 'message' => 'time was saved '),200 );
+               //return  Response::json(array('status' => 200, 'message' => 'time was saved '),200 );
+                return Redirect::back()->with('message', 'Time Entry Created')->with('alert', 'success');
             }catch (exception $e){
-                return Response::json(array('status' => 401, 'message' => 'time was not saved', 'error' => $e), 401);
+                //return Response::json(array('status' => 401, 'message' => 'time was not saved', 'error' => $e), 401);
+                return Redirect::back()->with('message', 'Time Entry Creation Failed')->with('alert', 'danger');
             }
     
 
@@ -67,15 +69,17 @@ class TimeTrackingController extends  BaseController{
     * BaseController @link http://laravel.com/docs/eloquent
     * which extends eloquent. If found it will delete the entery
     */
-    public function postDeleteTime(){
+    public function getDelete($id){
 
-        $timeEntry = TimeTrackingEntry::find('id');
+        $timeEntry = TimeTrackingEntry::find($id);
 
         try{
             $timeEntry->delete();
-            return Response::json(array('status' => 201, 'message' => 'time was deleted '),200 );
+            //return Response::json(array('status' => 201, 'message' => 'time was deleted '),200 );
+            return Redirect::back()->with('message', 'Entry Deleted')->with('alert', 'success');
         }catch (exception $e){
-            return Response::json(array( 'status' => 401, 'message' => 'time was not saved' , 'error' => $e), 401);
+            //return Response::json(array( 'status' => 401, 'message' => 'time was not saved' , 'error' => $e), 401);
+            return Redirect::back()->with('message', 'Entry Deletion Failed')->with('alert', 'danger');
         }
 
 

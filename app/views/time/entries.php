@@ -18,7 +18,7 @@
 					<td><?= $entry->startTime; ?></td>
 					<td><?= $entry->endTime; ?></td>
 					<td><?= $entry->endTime - $entry->startTime; ?></td>
-					<td></td>
+					<td><a href="#" class="btn btn-warning">Modify</a> <a href="<?php echo URL::to('/time/entries/delete/' . $entry->id); ?>" class="btn btn-danger">Delete</a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -50,19 +50,19 @@
         </div>
         <div class="form-group">
         	<label for="start_date">Start Date</label>
-        	<input type="date" class="form-control" name="start_date" />
+        	<input type="test" id="start_date" class="form-control" name="start_date" />
         </div>
         <div class="form-group">
         	<label for="start_time">Start Time</label>
-        	<input type="time" class="form-control" name="start_time" />
+        	<input type="test" id="start_time" class="form-control" name="start_time" />
         </div>
         <div class="form-group">
         	<label for="end_date">End Date</label>
-        	<input type="date" class="form-control" name="end_date" />
+        	<input type="test" id="end_date" class="form-control" name="end_date" />
         </div>
         <div class="form-group">
         	<label for="end_time">End Time</label>
-        	<input type="time" class="form-control" name="end_time" />
+        	<input type="test" id="end_time" class="form-control" name="end_time" />
         </div>
         <div class="form-group">
         	<label for="description">Comments</label>
@@ -78,3 +78,26 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<script>
+$(function() {
+  $('#start_date').datetimepicker({
+    timepicker: false,
+    todayButton: true,
+  });
+  $('#start_time').datetimepicker({
+    datepicker: false,
+    step: 5,
+    format: 'H:i',
+  });
+  $('#end_date').datetimepicker({
+    timepicker: false,
+    todayButton: true,
+  });
+  $('#end_time').datetimepicker({
+    datepicker: false,
+    step: 5,
+    format: 'H:i',
+  });
+})
+</script>

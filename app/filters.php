@@ -56,8 +56,7 @@ Route::filter('auth', function()
 Route::filter('admin', function()
 {
 
-
-	if(Auth::user()->department !== 'grant' || !Auth::user()->admin){
+	if (!Auth::user()->admin && Auth::user()->department !== 'grant') {
 		//return Redirect::intended();
 		App::abort(401, "Not authorized");
 	}
