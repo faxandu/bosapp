@@ -15,7 +15,7 @@ use BaseController, User,  Entry ,Response, TimeTracking\models\TimeTrackingPayP
 class TimeTrackingPayPeriodController extends BaseController{
 
     public function getIndex() {
-        $this->layout->content = View::make('time/payperiod', array('pay_periods' => TimeTrackingPayPeriod::all()));
+        $this->layout->content = View::make('time/payperiod', array('pay_periods' => TimeTrackingPayPeriod::orderBy('id', 'desc')->get()));
     }
 
     public function index() {

@@ -10,6 +10,7 @@
 			echo HTML::style('css/fullcalendar.css');
 			echo HTML::style('css/jquery.dataTables.css');
 			echo HTML::style('css/styles.css');
+			echo HTML::style('css/jquery.datetimepicker.css');
 		?>
 		<!-- Scripts go Here -->
 		<?php
@@ -19,6 +20,7 @@
 			echo HTML::script('js/bootstrap.js');
 			echo HTML::script('js/bootstrap-datetimepicker.js');
 			echo HTML::script('js/fullcalendar.js');
+			echo HTML::script('js/jquery.datetimepicker.js');
 		?>
 	</head>
 	<body>
@@ -49,6 +51,7 @@
 		            <li><a href="<?php echo URL::to('/schedule/availability/my-availability') ?>">My Availability</a></li>
 		          </ul>
 		        </li>
+		        <!--
 		        <li class="dropdown">
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Faculty Request <b class="caret"></b></a>
 		          <ul class="dropdown-menu">
@@ -60,7 +63,7 @@
 		            <li class="divider"></li>
 		            <li><a href="#">One more separated link</a></li>
 		          </ul>
-		        </li>
+		        </li> -->
 		        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventory <b class="caret"></b></a>
 		        	<ul class="dropdown-menu">
 		        		<li><a href="<?php echo URL::to('/inventory/equipment'); ?>">View Inventory</a></li>
