@@ -112,6 +112,15 @@
 					<input type="radio" id="CIS221" name="class" value="CIS221" />
 					CIS 221
 				</label>
+				<h5>Accounting</h5>
+				<label for="ACC111" class="btn btn-primary">
+					<input type="radio" id="ACC111" name="class" value="ACC111" />
+					ACC 111
+				</label>
+				<label for="ACC122" class="btn btn-primary">
+					<input type="radio" id="ACC122" name="class" value="ACC122" />
+					ACC 122
+				</label>
 			</div>
 			<div class="form-group">
 				<label for="student_num">Swipe your Student ID</label>
