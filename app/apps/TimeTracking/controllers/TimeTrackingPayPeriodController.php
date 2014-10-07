@@ -1,3 +1,4 @@
+
 <?php
 /**
  * Created by PhpStorm.
@@ -28,12 +29,12 @@ class TimeTrackingPayPeriodController extends BaseController{
     * makes a call to the the helper function and @uses postPayPeriod()
     * create a @see TimeTrackingPayPeriod object and pass it to said function
     */
-	public function postCreatePayPeriod(){
+    public function postCreatePayPeriod(){
    
     $pay_period = new TimeTrackingPayPeriod();
     $this->postPayPeriod($pay_period);
       
-	}
+    }
    
      
     /**
@@ -42,20 +43,20 @@ class TimeTrackingPayPeriodController extends BaseController{
     * it , or if the id was not found it exception 
     * @throws an exception and handels it .   
     */
-	public function postDeletePeriod() {
+    public function postDeletePeriod() {
 
-		$period = TimeTrackingPayPeriod::find(Input::get('id'));
-		try
-		{
+        $period = TimeTrackingPayPeriod::find(Input::get('id'));
+        try
+        {
           $period->delete();
           Response::json(array('status' => 200, 'message' => 'deletion successful'), 200);
-		}
-		catch(exception $e)
-		{
-			Response::json(array('status' => 401, 'message' => 'deletion unsuccessful', 'error' => $e), 401);
-		}
+        }
+        catch(exception $e)
+        {
+            Response::json(array('status' => 401, 'message' => 'deletion unsuccessful', 'error' => $e), 401);
+        }
 
-	}
+    }
     /**
     * This function is like , @see postCreatPayPeriod(), but it will  
     * not create a new object of TimeTrackingPayPeriod
@@ -64,12 +65,12 @@ class TimeTrackingPayPeriodController extends BaseController{
     * that object to the function @uses postPayPeriod($pay_period )
     * for more information on that function please @see postPayPeriod($pay_period)
     */
-	public function postModifyPeriod(){
+    public function postModifyPeriod(){
 
-		$period = TimeTrackingPayPeriod::find(Input::get('id'));
-		$this->postPayPeriod($period);
+        $period = TimeTrackingPayPeriod::find(Input::get('id'));
+        $this->postPayPeriod($period);
 
-	}
+    }
     /**
     * This function is a helper function, @see postModifyPeriod()
     * and @see postCreatPayPeriod(). It will validate time and  
@@ -115,7 +116,7 @@ class TimeTrackingPayPeriodController extends BaseController{
     * @return true if it is unique false other wise.
     */
     private function failed($pay_period){
-    	return TimeTrackingPayPeriod::validate($pay_period)->fails();
+        return TimeTrackingPayPeriod::validate($pay_period)->fails();
     }
 
 } 
