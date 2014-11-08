@@ -1,7 +1,7 @@
 <?php
 
 namespace GroupStudy\controllers;
-use BaseController, Input, User, Response, GroupStudy\models\Entry, GroupStudy\models\Student, View;
+use BaseController, Input, Excel, User, Response, GroupStudy\models\Entry, GroupStudy\models\Student, View;
 
 class ReportController extends BaseController
 {
@@ -11,7 +11,25 @@ class ReportController extends BaseController
 		$this->layout->content = View::make('admin/study/display', array('entries' => Entry::all()));
 
 	}
-	public function get_report()
+
+	// public function getHello(){
+
+	// 	// try{
+	//  // 		$entry = Entry::whereNull('end_time')->where('facilitator', Auth::user()->id)->get();
+	//  // 	}
+	//  // 	catch(Exception $e){
+	//  // 		//return Response::json(array('status' => 'error'));
+
+	// 	// }
+
+	// 	// return Response::json(array('entry' => $entry));
+	// 	//$this->layout->content = View::make('study/monitor', array('students' => $entry));
+	//     $test = 'alsdkjfladsfj';
+	// 	return View::make('hello', array('hello' => $test));
+
+	// }
+
+	public function getReport()
 	{
 		$input = Input::all();
 		$date = $input['year'] . "-" . $input['month'] . "-" . $input['day'];
@@ -19,38 +37,52 @@ class ReportController extends BaseController
 
 		switch($input['type']){
 			case 'date':
-				$report = $this -> date_report($date);
+				$report = $this -> getDateReport($date);
 				break;
 			case 'class':
-				$report = $this -> class_report($input['class']);
+				$report = $this -> getClassReport($input['class']);
 				break;
 			case 'student_id':
-				$report = $this -> student_id_report($input['student_id']);
+				$report = $this -> getStudentIdReport($input['student_id']);
 				break;
 		}
 		return $report;
 	}
 
-	public function date_report($date)
+	public function getDateReport($date)
 	{
 		$report = Entry::join('user', 'entry.user_id', '=', 'user.id') -> where('date', $date) 
 							->  select('user.name', 'user.student_id', 'entry.class', 'entry.date', 'entry.start_time', 'entry.end_time') -> get();
 		return $report;
 	}
 
-	public function class_report($class)
+	public function getClassReport($class)
 	{
 		$report = Entry::join('user', 'entry.user_id', '=', 'user.id') -> where('entry.class', $class) 
 							->  select('user.name', 'user.student_id', 'entry.class', 'entry.date', 'entry.start_time', 'entry.end_time') -> get();
 		return $report;
 	}
 
-	public function student_id_report($student_id)
+	public function getStudentIdReport($student_id)
 	{
 		$report = Entry::join('user', 'entry.user_id', '=', 'user.id') -> where('user.student_id', $student_id) 
 							->  select('user.name', 'user.student_id', 'entry.class', 'entry.date', 'entry.start_time', 'entry.end_time') -> get();
 		//$report = DB::table('entry') -> where('student_id', $student_id) -> get();
 		return $report;
+	}
+
+	public function getExcelExport(){
+		Excel::create('Group_Study_Report', function($excel){
+			$excel->sheet('test', function($sheet){
+				$sheet->fromArray(Entry::all());
+			});
+		})->export('xls');
+
+		// Excel::create('Group_Study_Report', function($excel){
+		// 	$excel->sheet($input['type'], function($sheet){
+		// 		$sheet->fromArray($report);
+		// 	});
+		// })->export('xls');
 	}
 
 	public function missingMethod($parameters = array())

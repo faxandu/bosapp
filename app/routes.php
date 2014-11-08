@@ -95,7 +95,7 @@ Route::group(array('before' => 'auth'), function() use($layout){
 		});
 
 		Route::controller('entry', 'GroupStudy\controllers\EntryController');
-		
+		Route::controller('report', 'GroupStudy\controllers\ReportController');
 
 
 		//Route::match(array('GET', 'POST'), '/checkPunchedIn', 'GroupStudy\controllers\EntryController@checkPunchedIn');
