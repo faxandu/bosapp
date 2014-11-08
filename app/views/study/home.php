@@ -129,6 +129,40 @@
 		</form>
 	</div>
 </div>
+</br></br>
+<div class="row">
+	<div class="col-sm-8 col-sm-offset-3">
+		<button class="btn btn-success" data-toggle="modal" data-target="#groupStudyEntry">Manually Add Entry</button>
+	</div>
+</div>
+
+
+<div class="modal fade" id="groupStudyEntry">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Add Group Study Entry</h4>
+      </div>
+      <form role="form" method="post" action="<?php echo URL::to('group_study/entry/manual-create'); ?>" >
+      <div class="modal-body">
+        <div class="form-group">
+        	<label for="start_date">Student Number</label>
+        	<input type="test" id="student_num" class="form-control" name="student_num" />
+        </div>
+        <div class="form-group">
+        	<label for="start_time">Class</label>
+        	<input type="test" id="class" class="form-control" name="class" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <input type="submit" name="submit" value="Add Entry" class="btn btn-primary" />
+      </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <script>
 var timer;

@@ -29,6 +29,22 @@ class EntryController extends BaseController{
 		
 	 }
 
+	 public function postManualCreate(){
+	 	$student_num = Input::get('student_num');   //used to grab only the student number from the id card.
+	 	$class = str_replace(' ', '', strtoupper(Input::get('class')));
+	 	try{
+	 		$student = Student::where('student_num', '=', $student_num) -> firstOrFail();
+	 		return $this -> checkPunchedIn($student, $class);
+	 	}
+	 	catch(Exception $e){
+			//return Response::json(array('status' => 'student_does_not_exist', 'student_num' => $student_num, 'class' => $class));
+			$this->layout->content = View::make('study/new', array('student_num' => $student_num, 'class' => $class));
+
+		}
+		
+	 }
+
+
 	/**
 	 * checkPunchedIn
 	 * Checks if user exists, if not, calls add_student() and adds the student to the database.
