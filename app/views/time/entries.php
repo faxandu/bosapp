@@ -39,10 +39,9 @@ function Duration($startTime, $endTime) {
 					<td><?= $entry->endTime; ?></td>
 					<td><?= Duration(strtotime($entry->startDate . $entry->startTime), strtotime($entry->endDate . $entry->endTime)); ?></td>
 					<td>
-					    <?php if ($entry->pay_id == $current){ ?>
+					    <?php if ($current){ ?>
 						<button class="btn btn-warning" data-toggle="modal" data-target="#timeModify" onclick='setId(<?= $entry->id . ', "' . $entry->startDate . '", "' . $entry->startTime  . '", "' . $entry->startDate . '", "' . $entry->endTime . '"' ; ?>)'>Modify</button>
 						<a href="<?php echo URL::to('/time/entries/delete/' . $entry->id); ?>" class="btn btn-danger">Delete</a>
-						<input type="hidden" name="id"<?= $entry->id; ?> value="<?= $entry->id; ?>">
 					    <?php } else { ?> Locked <?php } ?>
 					</td>
 				</tr>
@@ -53,7 +52,7 @@ function Duration($startTime, $endTime) {
 </div>
 <div class="row">
 	<div class="col-sm-8 col-sm-offset-2">
-		<button class="btn btn-success" data-toggle="modal" data-target="#timeEntry">Add Time Entry</button>
+		<?php if ($current) { ?> <button class="btn btn-success" data-toggle="modal" data-target="#timeEntry">Add Time Entry</button> <?php } ?>
 	</div>
 </div>
 
@@ -127,19 +126,19 @@ function Duration($startTime, $endTime) {
         </div>
         <div class="form-group">
         	<label for="modify_start_date">Start Date</label>
-        	<input type="test" id="modify_start_date" class="form-control" name="start_date" />
+        	<input type="test" id="modify_start_date" class="form-control" name="modify_start_date" />
         </div>
         <div class="form-group">
         	<label for="modify_start_time">Start Time</label>
-        	<input type="test" id="modify_start_time" class="form-control" name="start_time" />
+        	<input type="test" id="modify_start_time" class="form-control" name="modify_start_time" />
         </div>
         <div class="form-group">
         	<label for="modify_end_date">End Date</label>
-        	<input type="test" id="modify_end_date" class="form-control" name="end_date" />
+        	<input type="test" id="modify_end_date" class="form-control" name="modify_end_date" />
         </div>
         <div class="form-group">
         	<label for="modify_end_time">End Time</label>
-        	<input type="test" id="modify_end_time" class="form-control" name="end_time" />
+        	<input type="test" id="modify_end_time" class="form-control" name="modify_end_time" />
         </div>
         <div class="form-group">
         	<label for="description">Comments</label>
@@ -191,8 +190,8 @@ $(function() {
 
   $('#modify_start_date').datetimepicker({
     timepicker: false,
-    format: 'Y-m-d',
     todayButton: true,
+    format: 'Y-m-d',
   });
   $('#modify_start_time').datetimepicker({
     datepicker: false,

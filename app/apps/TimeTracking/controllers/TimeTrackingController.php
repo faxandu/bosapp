@@ -133,7 +133,11 @@ class TimeTrackingController extends  BaseController{
     public function getEntries($pay_period) {
         $categories = Categories::all();
         $time = TimeTrackingEntry::user()->period($pay_period)->get();
-	$current = TimeTrackingPayPeriod::max('id');
+	$maxid = TimeTrackingPayPeriod::max('id');
+	if ($maxid == $pay_period || $maxid - 1 == $pay_period)
+		$current = 1;
+	else
+		$current = 0;
 //	$current = TimeTrackingPayPeriod::whereRaw('id = (select max(`id`) from TimeTrackingPayPeriod)')->get();
 //	$current = lab_tech::table('time_tracking_pay_period')->max('id');
         $this->layout->content = View::make('time/entries', array('entries' => $time, 'categories' => $categories, 'pay_id' => $pay_period, 'current' => $current));
