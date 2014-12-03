@@ -118,7 +118,7 @@ class EntryController extends BaseController{
 		if(empty($entry_id))
 			return Response::json(array('status' => 'entry_not_found'));
 		try{
-			Entry::where('id', $entry_id) -> update(array('end_time' => date('H:m:s')));  
+			Entry::where('id', $entry_id) -> update(array('end_time' => date('g:ia')));  
 			$this->layout->content = View::make('study/checkout');
 		}
 		catch(Exception $e){
