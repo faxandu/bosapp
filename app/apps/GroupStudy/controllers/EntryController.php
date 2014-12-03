@@ -167,6 +167,49 @@ class EntryController extends BaseController{
 	public function missingMethod($parameters = array()){
 		return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
 	}
+
+
+
+	/*-----------jason addition to code
+	*
+	*  getHistory is a page wherein facilitators can check previous enterys (the last 20)
+	*  and change them in case of errors for the time, it returns all enterys for a given facilitator
+	*still need to have it show names instead of ID nums
+	*
+	*  postModify is for, well, modifying enteries.
+	*
+	*/
+
+	public function getHistory(){
+
+//	$entry = "hello"; //----------------------------------------------------------------------
+//	$this->layout->content = View::make('study/history', array('ent' => $entry));
+
+	$entry = Entry::where('facilitator', Auth::user()->id)->orderby('id', 'DESC')->take(20)->get();
+	foreach ( $entry as $i ) { $i->student_name = Student::find($i->student_id); }
+	$this->layout->content = View::make('study/history', array('ent' => $entry));
+
+	}
+
+
+	public function postModify(){
+	
+		$target = Entry::find(Input::get('id'));
+		
+		$target->start_time = Input::get('start_time');
+		$target->end_time = Input::get('end_time');
+		$target->date = Input::get('date');
+		$target->class = Input::get('class');
+	
+		try{
+		    $target->save();
+		    return Redirect::back()->with('message', 'Entry Modified')->with('alert', 'success');
+		}catch (exception $e){
+		    return Redirect::back()->with('message', 'Modify Failed')->with('alert', 'danger');
+		}
+	
+	} //end of Modify funtion
+
 }
 
 
