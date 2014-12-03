@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class EntryController extends BaseController{
 
+
 	/**
 	 * postStudentExists
 	 * Checks if user exists, if not, calls add_student() and adds the student to the database.
@@ -15,33 +16,35 @@ class EntryController extends BaseController{
 	 * @return returns json response with error or added entry
 	 */
 	public function postStudentExists(){
-	 	$student_num = substr(Input::get('student_num'), 2, 8);   //used to grab only the student number from the id card.
+	 	$student_num = substr(Input::get('student_num'), 0, 8);   //used to grab only the student number from the id card.
+	 	//echo $student_num;
+	 	//exit(0);
 	 	$class = Input::get('class');
 	 	try{
 	 		$student = Student::where('student_num', '=', $student_num) -> firstOrFail();
 	 		return $this -> checkPunchedIn($student, $class);
 	 	}
 	 	catch(Exception $e){
-			//return Response::json(array('status' => 'student_does_not_exist', 'student_num' => $student_num, 'class' => $class));
 			$this->layout->content = View::make('study/new', array('student_num' => $student_num, 'class' => $class));
-
-		}
-		
+		}	
 	 }
 
-	 public function postManualCreate(){
-	 	$student_num = Input::get('student_num');   //used to grab only the student number from the id card.
+	public function postManualCreate(){
+	 	$student_num = Input::get('student_num');
+	 	if(substr($student_num, 0, 1) == '@')
+	 		$student_num = substr($student_num, 1, 9);
 	 	$class = str_replace(' ', '', strtoupper(Input::get('class')));
-	 	try{
-	 		$student = Student::where('student_num', '=', $student_num) -> firstOrFail();
-	 		return $this -> checkPunchedIn($student, $class);
-	 	}
-	 	catch(Exception $e){
-			//return Response::json(array('status' => 'student_does_not_exist', 'student_num' => $student_num, 'class' => $class));
-			$this->layout->content = View::make('study/new', array('student_num' => $student_num, 'class' => $class));
-
+	 	if(strlen($student_num) == 8){
+		 	try{
+		 		$student = Student::where('student_num', '=', $student_num) -> firstOrFail();
+		 		return $this -> checkPunchedIn($student, $class);
+		 	}
+		 	catch(Exception $e){
+				$this->layout->content = View::make('study/new', array('student_num' => $student_num, 'class' => $class));
+			}
 		}
-		
+		else
+			$this->layout->content =  Redirect::to('/group_study')->with(array('message' => 'Please make sure the student ID contains 8 digits', 'alert' => 'warning'));
 	 }
 
 
@@ -52,12 +55,9 @@ class EntryController extends BaseController{
 	 * @return returns json response with successful timestamp for start or end time, or error if it occurs
 	 */
 	 public function checkPunchedIn($student, $class){
-	 	//$entry_id = Entry::where('student_id', $student_id) -> where('date', $date) ->    //checks if a start_time has been created for the user
-		//		whereNotNull('start_time') -> whereNull('end_time') -> pluck('id');		  //if not, goes to start_entry, else goes to end_entry
 	 	$date = date('Y-m-d');
 	 	try{
-	 		$entry = Entry::where('student_id', $student->id) -> where('date', $date) 
-	 				->whereNull('end_time')-> firstOrFail();
+	 		$entry = Entry::where('student_id', $student->id) -> where('date', $date) ->whereNull('end_time')-> firstOrFail();
 	 		return $this -> postEndEntry($entry->id);
 	 	}
 	 	catch(Exception $e){
@@ -73,9 +73,7 @@ class EntryController extends BaseController{
 	 */
 	 public function postAddStudent(){
 	 	$input = Input::all();
-	 	$student_arr = array('first_name' => $input['first_name'], 'last_name' => $input['last_name'], 
-
-	 					'student_num' => $input['student_num']);
+	 	$student_arr = array('first_name' => $input['first_name'], 'last_name' => $input['last_name'], 'student_num' => $input['student_num']);
 	 	try{
 	 		$student = Student::create($student_arr);
 		}
@@ -105,10 +103,8 @@ class EntryController extends BaseController{
 			$this->layout->content = View::make('study/checkin', array('student' => $student));
 		}
 		catch(Exception $e){
-			//return Response::json(array('status' => 'entry_not_created', 'error' => $e));
 			$this->layout->content =  Redirect::to('/group_study')->with(array('message' => 'You must select a class', 'alert' => 'warning'));
 		}
-		//return Response::json(array('status' => 'created_in_time'));
 	}
 
 
@@ -126,10 +122,8 @@ class EntryController extends BaseController{
 			$this->layout->content = View::make('study/checkout');
 		}
 		catch(Exception $e){
-			//return Response::json(array('status' => 'out_time_not_created'));
 			$this->layout->content = Redirect::to('/group_study')->with(array('message' => 'Failed to sign you out. Please try again', 'alert' => 'warning'));
 		}
-		//return Response::json(array('status' => 'created_out_time'));
 	}
 
 	/**
@@ -156,22 +150,16 @@ class EntryController extends BaseController{
 	 		$entry = Entry::whereNull('end_time')->where('facilitator', Auth::user()->id)->get();
 	 	}
 	 	catch(Exception $e){
-	 		//return Response::json(array('status' => 'error'));
-
 		}
-
-		// return Response::json(array('entry' => $entry));
 		$this->layout->content = View::make('study/monitor', array('students' => $entry));
 	}
 
 	public function getSetEndTime($entry_id){
 		try{
 			Entry::where('id', $entry_id) -> update(array('end_time' => date('H:m:s'))); 
-			//return Response::json(array('message' => 'Successfully logged out')); 
 			return Redirect::to('group_study/entry/monitor')->with('message', 'Student Logged Out')->with('alert', 'success');
 		}
 		catch(Exception $e){
-			//return Response::json(array('message' => 'Failed to sign you out. Please try again', 'alert' => 'warning'));
 			return Redirect::to('group_study/entry/monitor')->with('message', 'Failed to sign out user')->with('alert', 'warning');
 		}
 	}

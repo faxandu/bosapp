@@ -42,7 +42,7 @@ function Duration($startTime, $endTime) {
 					    <?php if ($entry->pay_id == $current){ ?>
 						<button class="btn btn-warning" data-toggle="modal" data-target="#timeModify" onclick='setId(<?= $entry->id . ', "' . $entry->startDate . '", "' . $entry->startTime  . '", "' . $entry->startDate . '", "' . $entry->endTime . '"' ; ?>)'>Modify</button>
 						<a href="<?php echo URL::to('/time/entries/delete/' . $entry->id); ?>" class="btn btn-danger">Delete</a>
-						<input type="hidden" name="id<?= $entry->id; ?> value="<?= $entry->id; ?>">
+						<input type="hidden" name="id"<?= $entry->id; ?> value="<?= $entry->id; ?>">
 					    <?php } else { ?> Locked <?php } ?>
 					</td>
 				</tr>
@@ -169,6 +169,7 @@ function setId(id, startDate, startTime, endDate, endTime)
 $(function() {
   $('#start_date').datetimepicker({
     timepicker: false,
+    format: 'Y-m-d',
     todayButton: true,
   });
   $('#start_time').datetimepicker({
@@ -178,6 +179,7 @@ $(function() {
   });
   $('#end_date').datetimepicker({
     timepicker: false,
+    format: 'Y-m-d',
     todayButton: true,
   });
   $('#end_time').datetimepicker({
@@ -189,6 +191,7 @@ $(function() {
 
   $('#modify_start_date').datetimepicker({
     timepicker: false,
+    format: 'Y-m-d',
     todayButton: true,
   });
   $('#modify_start_time').datetimepicker({
@@ -198,6 +201,7 @@ $(function() {
   });
   $('#modify_end_date').datetimepicker({
     timepicker: false,
+    format: 'Y-m-d',
     todayButton: true,
   });
   $('#modify_end_time').datetimepicker({
