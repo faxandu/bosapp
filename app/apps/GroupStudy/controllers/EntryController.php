@@ -16,9 +16,7 @@ class EntryController extends BaseController{
 	 * @return returns json response with error or added entry
 	 */
 	public function postStudentExists(){
-	 	$student_num = substr(Input::get('student_num'), 0, 8);   //used to grab only the student number from the id card.
-	 	//echo $student_num;
-	 	//exit(0);
+	 	$student_num = substr(Input::get('student_num'), 2, 8);   //used to grab only the student number from the id card.
 	 	$class = Input::get('class');
 	 	try{
 	 		$student = Student::where('student_num', '=', $student_num) -> firstOrFail();
