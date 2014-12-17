@@ -64,6 +64,12 @@ class Course extends Eloquent {
 
         Course::updating(function($course){
             ////// UPDATING COURSE - NOTIFY USER?
+
+        });
+
+        Course::updated(function($course){
+            echo "h";
+            exit;
         });
 
 

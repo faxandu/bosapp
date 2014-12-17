@@ -1,18 +1,67 @@
+<div class="row col-sm-6 col-sm-offset-3">
 
-<h2>to do</h2>
-<p>What time format? </p>
-<br><br>
-<?= (Session::get('error') ? print_r(Session::get('error')) : 'no errors') ?><br><br>
+	<h3> Update Availability </h3>
 
-<form method='POST' action='<?= URL::to('/schedule/availability/create'); ?>'>
+	<form method='POST' action='<?= URL::to('/schedule/availability/create'); ?>'>
+
+		<table>
+			<thead>
 
 
-end_date: <input text="text" name="end_date"><br>
-start_date: <input text="text" name="start_date"><br>
-end_time: <input text="text" name="end_time"><br>
-start_time: <input text="text" name="start_time"><br>
-notes: <input text="text" name="notes"><br>
-title: <input text="text" name="title"><br>
+			</thead>
 
-<input type="submit" value="click">
-</form>
+
+			<tbody>
+
+				<tr>
+					<td> Day of Week </td>
+					<td>
+						<select name="day_of_week" class="form-control">
+						<?php
+
+						$selectOptions = array(
+							"M" => "Monday",
+							"Tu" => "Tuesday",
+							"W" => "Wednesday",
+							"Th" => "Thursday",
+							"F" => "Friday",
+							"S" => "Saturday"
+							);
+						foreach($selectOptions as $option => $displayVal){
+
+
+						?>
+						
+							<option value="<?= $option ?>"> <?= $displayVal ?></option>
+
+						<?php
+
+						}
+
+
+						?>
+						</select>
+					</td>
+
+				</tr>
+				
+				<tr>
+					<td> Start Time </td>
+					<td><input text="text" name="start_time" class="form-control" placeholder="24/h format"></td>
+				</tr>
+				
+				<tr>
+					<td> End Time </td>
+					<td><input text="text" name="end_time" class="form-control" placeholder="24/h format"></td>
+				</tr>
+
+			</tbody>
+
+
+		</table>
+
+	<input type="submit" value="Add" class="btn btn-default">
+
+	</form>
+
+</div>

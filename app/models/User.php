@@ -52,6 +52,20 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
     }
 
 
+    public function updateWorkingHours(){
+
+        $courses = $this->courses;
+        $hours = 0;
+        foreach($courses as $course)
+            $hours += $course->credit_hours;
+
+        $this->working_hours = $hours;
+
+        $this->save();
+    }
+    public function getFullNameWithUsername(){
+        return $this->first_name . " " . $this->last_name . " (" . $this->username . ")";
+    }
     public function skills(){
 
         return $this->belongsToMany('Lotto\models\Skill', 'schedule_user_skill');
@@ -65,6 +79,17 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
         return $this->belongsToMany('Lotto\models\Availability', 'schedule_user_availability', 'user_id', 'availability_id');
     }
 
+
+    public function scopeLabaidesWithSkill($query, Lotto\models\Course $course){
+
+        $users = $query->where('type','=','labAide')->get();
+
+        return $query->whereHas('skills', function($query) use ($course){
+                return $query->where('name', '=', $course->course_title);
+            });
+
+
+    }
 
 
     /**

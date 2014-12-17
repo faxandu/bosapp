@@ -16,6 +16,9 @@ class UserController extends BaseController {
 	|--------------------------------------------------------------------------
 	*/
 
+
+
+
 	/* returns the user and their courses.
 	--------- */
 	public function getMySchedule(){

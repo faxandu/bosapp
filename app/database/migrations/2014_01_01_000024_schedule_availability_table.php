@@ -14,13 +14,9 @@ class ScheduleAvailabilityTable extends Migration {
 	{
 		Schema::create('schedule_availability', function($table){
 			$table->increments('id');
-
-			$table->string('title', 50)->nullable();
-			$table->date('start_date', 50);
-			$table->date('end_date', 50);
+			$table->enum('day_of_week', array('M','Tu','W', 'Th', 'F', 'S'));
 			$table->time('start_time', 50);
 			$table->time('end_time', 50);
-			$table->text('notes')->nullable();
 
 		});
 	}

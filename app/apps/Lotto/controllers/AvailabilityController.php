@@ -19,7 +19,7 @@ class AvailabilityController extends BaseController {
 	/* 
 		URL: /schedule/availability/create 
 
-		Sets the content variable inside the layout to be the create view from lotto.availability.
+		Sets the content inside the layout to be the create view from lotto.availability.
 	
 	*/
 	public function getCreate(){
@@ -30,9 +30,7 @@ class AvailabilityController extends BaseController {
 	/*		
 		URL: /schedule/availability/my-availability
 
-		Sets the content variable inside the layout to be the home view from lotto.availability.
-		Also attaches the currently logged in user, that users availabiltiy, and any variables stored
-		in the session (other functions redirect to this function). 
+		
 	
 	*/
 	public function getMyAvailability(){
@@ -48,6 +46,18 @@ class AvailabilityController extends BaseController {
 	}
 
 
+	public function getUpdate(){
+
+
+		$this->layout->content = View::make('lotto.availability.update')->with(array(
+
+			'user' => Auth::user(), 
+			'userAvailability' => Auth::user()->availability->find(input::get('id')),
+			Session::all()
+
+		));
+	}
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -60,28 +70,50 @@ class AvailabilityController extends BaseController {
 
 
 		EXPECTS: 
-			end_date -- date
-			start_date -- date
-			end_time	-- time
-			start_time -- time
-			notes -- text
-			title -- string - 50
 	
+
+			creats an availability 
+	
+		TODO:
+			Start time should be less than end -- data validation
+
 	*/
 	public function postCreate(){
-	
+
+
+
+			
 		$input = Input::all();
 		$input = ControllerHelper::convertTimeAndDate($input);
 
-		// $this->layout->content = 
+
 		return ControllerHelper::create(
-			new Availability, $input,
-			'/schedule/availability/my-availability', '/schedule/availability/create',
-			'availability', Auth::user()
+				new Availability, 
+				$input,
+				'/schedule/availability/my-availability',
+				'/schedule/availability/create',
+				'availability',
+				Auth::user()
 			);
 
 	}	
 
+
+	public function postUpdate(){
+			
+		$input = Input::all();
+		$input = ControllerHelper::convertTimeAndDate($input);
+
+		$route_pass = "/schedule/availability/my-availability";
+		$route_fail = '/schedule/availability/update?id=' . $input['id'];
+		return ControllerHelper::update(
+				new Availability, 
+				$input,
+				$route_pass,
+				$route_fail
+			);
+
+	}
 
 	/*	
 		URL: /schedule/availability/delete
@@ -91,13 +123,24 @@ class AvailabilityController extends BaseController {
 
 		Feature? only if no users attached then delete?
 
+
+		Deletes an availability
 		
 	----------------------------------- */
-	public function postDelete(){
+
+
+
+	public function getDelete(){
 
 		return ControllerHelper::delete(
-			new Availability, Input::all(), '/schedule/availability/my-availability');
+				new Availability,
+				Input::all(),
+				'/schedule/availability/my-availability'
+			);
 	}
+
+
+
 
 }
 

@@ -64,27 +64,27 @@ class ManyTableSeeder extends Seeder{
 
 		// bobs
 		$bobsA1 = Availability::create(array('start_time' => '08:30:00','end_time' => '09:30:00',
-		 'start_date' => '2004/02/01', 'end_date' => '2004/02/01'));
+		 'day_of_week' => 'M'));
 
 		$bobsA2 = Availability::create(array('start_time' => '08:30:00','end_time' => '09:30:00',
-		 'start_date' => '2004/02/02', 'end_date' => '2004/02/02'));
+		 'day_of_week' => 'Tu'));
 
 		$bob->skills()->attach($skill1->id);
 		$bob->skills()->attach($skill3->id);
 		$bob->skills()->attach($skill4->id);
 		$bob->availability()->attach($bobsA1->id);
 		$bob->availability()->attach($bobsA2->id);
-
+		$bob->courses()->attach($course1->id);
 		//daves
 		$davesA1 = Availability::create(array('start_time' => '08:30:00','end_time' => '09:30:00',
-		 'start_date' => '2004/02/01', 'end_date' => '2004/02/01'));
+		 'day_of_week' => 'M'));
 
 
 		$dave->skills()->attach($skill1->id);
 		$dave->availability()->attach($davesA1->id);
 		//robs
 		$robertsA1 = Availability::create(array('start_time' => '10:30:00','end_time' => '11:30:00',
-		 'start_date' => '2004/02/02', 'end_date' => '2004/02/02'));
+		 'day_of_week' => 'Tu'));
 
 		$robert->skills()->attach($skill2->id);
 		$robert->availability()->attach($robertsA1->id);
@@ -99,15 +99,4 @@ class ManyTableSeeder extends Seeder{
 }
 
 
-class AvailabilityTableSeeder extends Seeder{
-
-	public function run(){
-		DB::table('schedule_availability')->delete();
-		Availability::create(array('start_time' => '08:50:00', 
-			'end_time' => '09:50:00', 'start_date' => '2004/02/01',
-			 'end_date' => '2004/02/01'));
-	}
-
-
-}
 

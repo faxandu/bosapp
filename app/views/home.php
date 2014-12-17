@@ -1,2 +1,5 @@
+<h4> bosapp home </h4>
 
-		<h1>hi</h1>
+<p>
+The new and improved bosapp.
+</p>

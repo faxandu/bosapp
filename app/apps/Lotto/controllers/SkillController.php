@@ -121,6 +121,14 @@ class SkillController extends BaseController {
 		return Response::json(array('status' => 200, 'message' => 'userSkill removed'), 200);
 	}
 
+
+	/*
+		attaches a skill to the user.
+
+		takes id for user and id for a skill.
+
+	*/
+
 	public function postSetUserSkill(){
 		$userId = Input::get('user');
 		$skill = Input::get('skill');

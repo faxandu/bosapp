@@ -57,6 +57,43 @@ class ControllerHelper {
 
 	}
 
+	public static function update($model, $input, $route_pass, $route_fail = null){
+
+		if($route_fail == null)
+			$route_fail = $route_pass;
+
+		$checkedInput = $model::validate($input);
+
+		if($checkedInput->fails()){
+
+			return Redirect::to($route_fail)->with(array(
+				'status' => 400,
+				'error' => $checkedInput->messages()->all()
+			));
+		
+		}
+
+		try{
+
+			$model = $model::findorfail($input['id']);
+			$model->update($input);
+	
+
+		} catch(Exception $e){
+
+			return Redirect::to($route_fail)->with(array(
+				'message' => $e->getMessage()
+			));
+
+		}
+
+		return Redirect::to($route_pass)->with(array(
+				'status' => 200
+			));;
+
+	
+	}
+
 	public static function delete($model, $input, $route_pass, $route_fail = null){
 		
 		if($route_fail == null)
@@ -70,7 +107,7 @@ class ControllerHelper {
 
 			return Redirect::to($route_fail)->with(array(
 				'status' => 400,
-				'error' => 'Failed to delete'
+				'message' => 'Failed to delete'
 			));
 			
 		}

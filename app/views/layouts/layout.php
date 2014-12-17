@@ -19,6 +19,7 @@
 			echo HTML::script('js/bootstrap.js');
 			echo HTML::script('js/bootstrap-datetimepicker.js');
 			echo HTML::script('js/fullcalendar.js');
+			echo HTML::script('js/lotto.js');
 		?>
 	</head>
 	<body>
@@ -97,7 +98,7 @@
 							<ul class="dropdown-menu">
 								<li><a href="<?php echo URL::to('admin/user/home'); ?>">User Management</a></li>
 								<li><a href="<?php echo URL::to('admin/payroll'); ?>">Payroll</a></li>
-								<li><a href="<?php echo URL::to('admin/schedule'); ?>">Schedule Management</a></li>
+								<li><a href="<?php echo URL::to('admin/schedule/home'); ?>">Schedule Management</a></li>
 								<li><a href="#">Project Management</a></li>
 								<li><a href="#">System Configurations</a></li>
 							</ul>

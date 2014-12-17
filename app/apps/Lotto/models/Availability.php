@@ -8,14 +8,13 @@ use Exception;
 
 class Availability extends Eloquent {
 
-    /* Migration variables
+    /* Data members
     
-        end_date -- date
-        start_date -- date
-        end_time    -- time
-        start_time -- time
-        notes -- text
-        title -- string - 50
+            $table->increments('id');
+            
+            $table->tinyInteger('day_of_week')
+            $table->time('start_time', 50);
+            $table->time('end_time', 50);
     */
 
 
@@ -23,7 +22,7 @@ class Availability extends Eloquent {
 	public $timestamps = false;
     protected $softDelete = false;
 
-	protected $fillable = array('end_date', 'end_time', 'start_date', 'start_time', 'notes', 'title');
+	protected $fillable = array('end_time', 'start_time', 'day_of_week');
 
     protected $guarded = array('id');
     protected $hidden = array('pivot');
