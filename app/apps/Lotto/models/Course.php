@@ -68,8 +68,7 @@ class Course extends Eloquent {
         });
 
         Course::updated(function($course){
-            echo "h";
-            exit;
+
         });
 
 

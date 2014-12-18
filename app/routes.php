@@ -52,7 +52,7 @@ Route::group(array('before' => 'auth'), function() use($layout){
 			Route::group(array('prefix' => 'schedule'), function() use($layout){
 
 
-
+				Route::controller('/skill', 'Lotto\controllers\SkillController');
 				
 				Route::controller('/course', 'Lotto\controllers\CourseController');
 

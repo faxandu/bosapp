@@ -1,6 +1,9 @@
 <div class="row col-sm-6 col-sm-offset-3">
 
+	
 	<h3> Update <?= $course->course_title . " " . $course->crn ?> </h3>
+
+
 
 
 	<a href = "<?= URL::to('/admin/schedule/home');?>">
@@ -11,49 +14,105 @@
 
 	<br>
 
-	<form method='POST' action='<?= URL::to('/admin/schedule/course/set-labaide'); ?>'>
 
-		<table>
-			<thead>
+	<div>
+		<form method='POST' action='<?= URL::to('/admin/schedule/course/remove-labaide'); ?>'>
 
+			<table class="">
+				<thead>
+					<th>Remove</th>
+					<th></th>
+				</thead>
 
-			</thead>
+				<tbody>			
+					
+					<tr>
+						<td>labAide:</td>
+						<td>				
+							
+							<select name="user" class="form-control">
+							<?php 
+							
+							if($currAide)
+								foreach($currAide as $labaide){
+						
+							?>
+						
+								<option value="<?= $labaide->id ?>" > <?= $labaide->getFullNameWithUsername() ?></option>
 
+							<?php 
 
-			<tbody>
+								}
+								else{
+							?>
 
-				<tr>
-					<td> Labaide </td>
-					<td>
-						<select name="user" class="form-control">
-						<?php
+								<option value="<?= "" ?>" > <?= "" ?></option>
+							<?php
+								}
 
-						foreach($labaides as $labaide){
+							?>
 
+							</select>
+						</td>
+					</tr>
+				
+					<tr>
+						<td></td>
+						<td>
+							<input type="hidden" name="course" value="<?= $course->id ?>">
+							<input type="submit" value="Remove" class="btn btn-default">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
 
-						?>
+	<div>
+		<form method='POST' action='<?= URL::to('/admin/schedule/course/set-labaide'); ?>'>
+
+			<table class="">
+				<thead>
+					<th>Assign</th>
+					<th></th>
+				</thead>
+
+				<tbody>			
+					
+					<tr>
+						<td>labAide:</td>
+						<td>				
+							
+							<select name="user" class="form-control">
+							<?php 
+							
+							foreach($labaides as $labaide){
+						
+							?>
 						
 							<option value="<?= $labaide->id ?>" > <?= $labaide->getFullNameWithUsername() ?></option>
 
-						<?php
+							<?php 
 
-						}
+							}
 
+							?>
 
-						?>
-						</select>
-					</td>
-
-				</tr>
-
-			</tbody>
-
-
-		</table>
-
-		<input type="hidden" name="course" value="<?= $course->id ?>">
-		<input type="submit" value="Update" class="btn btn-default">
-
-	</form>
+							</select>
+						</td>
+					</tr>
+				
+					<tr>
+						<td></td>
+						<td>
+							<input type="hidden" name="course" value="<?= $course->id ?>">
+							<input type="submit" value="Add" class="btn btn-default">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
 
 </div>
+

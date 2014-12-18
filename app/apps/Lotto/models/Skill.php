@@ -1,6 +1,10 @@
 <?php
 namespace Lotto\models;
-use Eloquent;
+
+
+use Eloquent, Validator;
+use Auth;
+use Exception;
 
 class Skill extends Eloquent {
 

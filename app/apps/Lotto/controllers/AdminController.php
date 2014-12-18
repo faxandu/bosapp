@@ -26,7 +26,7 @@ class AdminController extends BaseController {
 	public function getHome(){
 
 		$this->layout->content = View::make('admin.lotto.home', array (
-				 	'courses' => Course::all()->sortBy('labaide')), Session::all()
+				 	'courses' => Course::all()->sortBy('user.id')), Session::all()
 			 );
 	
 	}
@@ -49,15 +49,40 @@ class AdminController extends BaseController {
 
 	public function getManualAssign(){
 
-		$this->layout->content = View::make('admin.lotto.manual-edit-labaide')->with(array(
-			'course' => Course::find(input::get('id')),
-			'labaides' => User::LabaidesWithSkill(Course::find(input::get('id')))->get()
-		));
+
+		try{
+
+			$course = Course::find(input::get('id'));
+			
+			$labaides = User::LabaidesWithSkill($course)->where(function($query) use($course){
+
+				if($course->labaides()->first())
+					$query->where('id', '!=', $course->labaides->first()->id);
+
+			})->get();
+
+		
+			$this->layout->content = View::make('admin.lotto.manual-edit-labaide', array (
+				 	'currAide' => $course->labaides,
+				 	'labaides' => $labaides,
+				 	'course' => $course
+				 	), Session::all()
+			 );
+
+			return;
+		}catch(exception $e){
+
+			return Redirect::to('/admin/schedule/home')->with(array( 
+				'message' => 'unexpected error (admin) e',
+				//'message' => $e->getMessage()
+				));
+
+		}
+
+		return Redirect::to('/admin/schedule/home')->with(array( 
+			'message' => 'unexpected error ()'
+			));
 	}
-
-
-
-	
 
 
 	/*

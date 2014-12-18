@@ -13,10 +13,9 @@
 	</a>
 
 	<br> <br>
-
-	<br> <br>
-
-	<br> <br>
+	<p>
+	Click on course to edit who is the labaide.
+	</p>
 
 
 	<table class="table table-striped table-hover">
