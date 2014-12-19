@@ -62,6 +62,9 @@ Route::group(array('before' => 'auth'), function() use($layout){
 
 
 			}); // end of schedule management group
+
+			// Group Study Admin Controller
+			Route::controller('study', 'GroupStudy\controllers\ReportController');
 			
 			
 		}); // end of admin auth

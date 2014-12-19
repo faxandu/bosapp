@@ -7,10 +7,11 @@
 
 namespace TimeTracking\controllers;
 
-use BaseController, Input, User,  Entry ,Response, View;
+use BaseController, Input, User,  Entry ,Response, View, Redirect;
 use Illuminate\Support\Facades\Auth;
 use TimeTracking\models\Categories;
 use TimeTracking\models\TimeTrackingEntry;
+use TimeTracking\models\TimeTrackingPayPeriod;
 /**
 * This is an implementation of @see 
 * /app/apps/TimeTracking/models/TimeTrackingEntry
@@ -45,9 +46,11 @@ class TimeTrackingController extends  BaseController{
             $this->postAddTime($timeEntry);
             try{
                 $timeEntry->save();
-               return  Response::json(array('status' => 200, 'message' => 'time was saved '),200 );
+               //return  Response::json(array('status' => 200, 'message' => 'time was saved '),200 );
+                return Redirect::back()->with('message', 'Time Entry Created')->with('alert', 'success');
             }catch (exception $e){
-                return Response::json(array('status' => 401, 'message' => 'time was not saved', 'error' => $e), 401);
+                //return Response::json(array('status' => 401, 'message' => 'time was not saved', 'error' => $e), 401);
+                return Redirect::back()->with('message', 'Time Entry Creation Failed')->with('alert', 'danger');
             }
     
 
@@ -67,15 +70,17 @@ class TimeTrackingController extends  BaseController{
     * BaseController @link http://laravel.com/docs/eloquent
     * which extends eloquent. If found it will delete the entery
     */
-    public function postDeleteTime(){
+    public function getDelete($id){
 
-        $timeEntry = TimeTrackingEntry::find('id');
+        $timeEntry = TimeTrackingEntry::find($id);
 
         try{
             $timeEntry->delete();
-            return Response::json(array('status' => 201, 'message' => 'time was deleted '),200 );
+            //return Response::json(array('status' => 201, 'message' => 'time was deleted '),200 );
+            return Redirect::back()->with('message', 'Entry Deleted')->with('alert', 'success');
         }catch (exception $e){
-            return Response::json(array( 'status' => 401, 'message' => 'time was not saved' , 'error' => $e), 401);
+            //return Response::json(array( 'status' => 401, 'message' => 'time was not saved' , 'error' => $e), 401);
+            return Redirect::back()->with('message', 'Entry Deletion Failed')->with('alert', 'danger');
         }
 
 
@@ -89,19 +94,29 @@ class TimeTrackingController extends  BaseController{
     * After the time has been validated @see validateTime() it will add the 
     * time via helper function @see postAddTime(), and then save the time.
     * @throws exception if the time couldn't be saved.
+    *****************Jason Comments************
+    * the find or fail call was universally failing, so replaced with just find. it also needed to be
+    * Input::get('id') instead of just 'id' as shown in the laravel documentation example
+    * the validate time if statement was returning false as well even on good data, which lead to the odd situation where 
+    * this call was not returning content leading to an error, so removed it for the time
+    * also changed the responces to redirect so you would be back on the same page you started
+    * TO DO: check auth, validate time
     */
     public function postModifyTime(){
 
-        $timeEntry = TimeTrackingEntry::findOrFail('id')->get();
-
-        if($this->validateTime(Input::get('start_time')) && $this->validateTime(Input::get('end_time')) ){
+        $timeEntry = TimeTrackingEntry::find(Input::get('id'));  //OrFail('id')->get();
+//        if($this->validateTime(Input::get('start_time')) && $this->validateTime(Input::get('end_time')) ){
             $this->postAddTime($timeEntry);
+
             try{
                 $timeEntry->save();
-                return Response::json(array('status' => 200 , 'message' => 'time was saved '), 200);
+//                return Response::json(array('status' => 200 , 'message' => 'time was saved '), 200);
+                return Redirect::back()->with('message', 'Time Entry Changed')->with('alert', 'success');
             }catch (exception $e){
-                return Response::json(array('status' => 401, 'message' => 'time was not saved ', 'error' => $e),401);
-            }
+
+                return Redirect::back()->with('message', 'Time Change Failed')->with('alert', 'danger');
+//                return Response::json(array('status' => 401, 'message' => 'time was not saved ', 'error' => $e),401);
+// endif            }
         }
 
     }
@@ -118,7 +133,14 @@ class TimeTrackingController extends  BaseController{
     public function getEntries($pay_period) {
         $categories = Categories::all();
         $time = TimeTrackingEntry::user()->period($pay_period)->get();
-        $this->layout->content = View::make('time/entries', array('entries' => $time, 'categories' => $categories, 'pay_id' => $pay_period));
+	$maxid = TimeTrackingPayPeriod::max('id');
+	if ($maxid == $pay_period || $maxid - 1 == $pay_period)
+		$current = 1;
+	else
+		$current = 0;
+//	$current = TimeTrackingPayPeriod::whereRaw('id = (select max(`id`) from TimeTrackingPayPeriod)')->get();
+//	$current = lab_tech::table('time_tracking_pay_period')->max('id');
+        $this->layout->content = View::make('time/entries', array('entries' => $time, 'categories' => $categories, 'pay_id' => $pay_period, 'current' => $current));
          
     }
 
@@ -177,7 +199,7 @@ class TimeTrackingController extends  BaseController{
         $timeExplode = explode(':',$time);
         $hours = $timeExplode[0];
         $minutes = $timeExplode[1];
-        $seconds = $timeExplode[2];
+        $seconds = 0;//$timeExplode[2];
 
         if($hours <= 12 && $minutes < 60 && $seconds < 60)
             return (($hours > 0 &&  $minutes >= 0 && $seconds >= 0));

@@ -12,7 +12,7 @@
 $(function() {
 	setTimeout(function() {
 		window.location.replace("<?php echo URL::to('/group_study'); ?>");
-	}, 10000);
+	}, 5000);
 
 });
 

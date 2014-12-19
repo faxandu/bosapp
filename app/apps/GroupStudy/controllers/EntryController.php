@@ -4,8 +4,10 @@ namespace GroupStudy\controllers;
 
 use BaseController, Input, Exception, User, GroupStudy\models\Entry, GroupStudy\models\Student, Response, Redirect, View;
 
+use Illuminate\Support\Facades\Auth;
 
 class EntryController extends BaseController{
+
 
 	/**
 	 * postStudentExists
@@ -13,24 +15,6 @@ class EntryController extends BaseController{
 	 * @param  none
 	 * @return returns json response with error or added entry
 	 */
-
-	 // public function postStudentExists(){
-	 // 	$student_num = substr(Input::get('student_num'), 2, 8);   //used to grab only the student number from the id card.
-	 // 	$class = Input::get('class');
-	 // 	$date = date('Y-m-d');
-	 // 	$student_id = Student::where('student_num', $student_num) -> pluck('id');  
-		// if(empty($student_id)) 
-		// 	return Response::json(array('error' => 'user_does_not_exist', 'student_num' => $student_num, 'class' => $class));
-	 // 	else{
-	 // 		$entry_id = Entry::where('student_id', $student_id) -> where('date', $date) ->    //checks if a start_time has been created for the user
-		// 			whereNotNull('start_time') -> whereNull('end_time') -> pluck('id');		  //if not, goes to start_entry, else goes to end_entry
-		// 	if(empty($entry_id))
-		// 		return $this -> start_entry($student_id, $class, $date);
-		// 	else
-		// 		return $this -> end_entry($entry_id, $date);
-	 // 	}
-	 // }
-
 	public function postStudentExists(){
 	 	$student_num = substr(Input::get('student_num'), 2, 8);   //used to grab only the student number from the id card.
 	 	$class = Input::get('class');
@@ -39,12 +23,28 @@ class EntryController extends BaseController{
 	 		return $this -> checkPunchedIn($student, $class);
 	 	}
 	 	catch(Exception $e){
-			//return Response::json(array('status' => 'student_does_not_exist', 'student_num' => $student_num, 'class' => $class));
 			$this->layout->content = View::make('study/new', array('student_num' => $student_num, 'class' => $class));
-
-		}
-		
+		}	
 	 }
+
+	public function postManualCreate(){
+	 	$student_num = Input::get('student_num');
+	 	if(substr($student_num, 0, 1) == '@')
+	 		$student_num = substr($student_num, 1, 9);
+	 	$class = str_replace(' ', '', strtoupper(Input::get('class')));
+	 	if(strlen($student_num) == 8){
+		 	try{
+		 		$student = Student::where('student_num', '=', $student_num) -> firstOrFail();
+		 		return $this -> checkPunchedIn($student, $class);
+		 	}
+		 	catch(Exception $e){
+				$this->layout->content = View::make('study/new', array('student_num' => $student_num, 'class' => $class));
+			}
+		}
+		else
+			$this->layout->content =  Redirect::to('/group_study')->with(array('message' => 'Please make sure the student ID contains 8 digits', 'alert' => 'warning'));
+	 }
+
 
 	/**
 	 * checkPunchedIn
@@ -53,19 +53,15 @@ class EntryController extends BaseController{
 	 * @return returns json response with successful timestamp for start or end time, or error if it occurs
 	 */
 	 public function checkPunchedIn($student, $class){
-	 	//$entry_id = Entry::where('student_id', $student_id) -> where('date', $date) ->    //checks if a start_time has been created for the user
-		//		whereNotNull('start_time') -> whereNull('end_time') -> pluck('id');		  //if not, goes to start_entry, else goes to end_entry
-	 	$start_date = date('Y-m-d');
+	 	$date = date('Y-m-d');
 	 	try{
-	 		$entry = Entry::where('student_id', $student->id) -> where('date', $start_date) 
-	 				->whereNull('end_time')-> firstOrFail();
+	 		$entry = Entry::where('student_id', $student->id) -> where('date', $date) ->whereNull('end_time')-> firstOrFail();
 	 		return $this -> postEndEntry($entry->id);
-
 	 	}
 	 	catch(Exception $e){
 			 return $this -> postStartentry($student, $class);
 		}
-		}
+	}
 
 	/**
 	 * postAddStudent
@@ -75,9 +71,7 @@ class EntryController extends BaseController{
 	 */
 	 public function postAddStudent(){
 	 	$input = Input::all();
-	 	$student_arr = array('first_name' => $input['first_name'], 'last_name' => $input['last_name'], 
-
-	 					'student_num' => $input['student_num']);
+	 	$student_arr = array('first_name' => $input['first_name'], 'last_name' => $input['last_name'], 'student_num' => $input['student_num']);
 	 	try{
 	 		$student = Student::create($student_arr);
 		}
@@ -86,7 +80,7 @@ class EntryController extends BaseController{
 
 	 	}
 	 	return $this -> postStartEntry($student, $input['class']);
-	 }
+	}
 
 	/**
 	 * postStartEntry
@@ -99,18 +93,16 @@ class EntryController extends BaseController{
 				'student_id' => $student->id,
 				'class' => $class,
 				'date' => date("Y-m-d"),
-				'start_time' => date('H:m:s')
+				'start_time' => date('g:ia'),
+				'facilitator' => Auth::user()->id
 				);
 		try{
 			$entry = Entry::create($entry_arr);
 			$this->layout->content = View::make('study/checkin', array('student' => $student));
 		}
 		catch(Exception $e){
-			//return Response::json(array('status' => 'entry_not_created', 'error' => $e));
 			$this->layout->content =  Redirect::to('/group_study')->with(array('message' => 'You must select a class', 'alert' => 'warning'));
 		}
-		//return Response::json(array('status' => 'created_in_time'));
-
 	}
 
 
@@ -124,14 +116,12 @@ class EntryController extends BaseController{
 		if(empty($entry_id))
 			return Response::json(array('status' => 'entry_not_found'));
 		try{
-			Entry::where('id', $entry_id) -> update(array('end_time' => date('H:m:s')));  
+			Entry::where('id', $entry_id) -> update(array('end_time' => date('g:ia')));  
 			$this->layout->content = View::make('study/checkout');
 		}
 		catch(Exception $e){
-			//return Response::json(array('status' => 'out_time_not_created'));
 			$this->layout->content = Redirect::to('/group_study')->with(array('message' => 'Failed to sign you out. Please try again', 'alert' => 'warning'));
 		}
-		//return Response::json(array('status' => 'created_out_time'));
 	}
 
 	/**
@@ -153,25 +143,71 @@ class EntryController extends BaseController{
 		return Response::json(array('status' => 'deleted_entry'));
 	}
 
-	/**
-	 * postUpdateEntry
-	 * Check for entry by Pk.  If found, allows for updating of certain fields.
-	 * @param (int) ($id) PK for entry.
-	 * @return (PK) (id) returns json response for error or success
-	 */
-	public function postUpdateEntry($id){
-		$input = Input::all();
-		$entry = Entry::find($id);
-		if(empty($entry))
-			return Response::json(array('status' => 'entry_not found'));
-		else{
+	public function getMonitor(){
+		try{
+	 		$entry = Entry::whereNull('end_time')->where('facilitator', Auth::user()->id)->get();
+	 	}
+	 	catch(Exception $e){
+		}
+		$this->layout->content = View::make('study/monitor', array('students' => $entry));
+	}
 
+	public function getSetEndTime($entry_id){
+		try{
+			Entry::where('id', $entry_id) -> update(array('end_time' => date('H:m:s'))); 
+			return Redirect::to('group_study/entry/monitor')->with('message', 'Student Logged Out')->with('alert', 'success');
+		}
+		catch(Exception $e){
+			return Redirect::to('group_study/entry/monitor')->with('message', 'Failed to sign out user')->with('alert', 'warning');
 		}
 	}
 
 	public function missingMethod($parameters = array()){
 		return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
 	}
+
+
+
+	/*-----------jason addition to code
+	*
+	*  getHistory is a page wherein facilitators can check previous enterys (the last 20)
+	*  and change them in case of errors for the time, it returns all enterys for a given facilitator
+	*still need to have it show names instead of ID nums
+	*
+	*  postModify is for, well, modifying enteries.
+	*
+	*/
+
+	public function getHistory(){
+
+//	$entry = "hello"; //----------------------------------------------------------------------
+//	$this->layout->content = View::make('study/history', array('ent' => $entry));
+
+	$entry = Entry::where('facilitator', Auth::user()->id)->orderby('id', 'DESC')->take(20)->get();
+	foreach ( $entry as $i ) { $i->student_name = Student::find($i->student_id); }
+	$this->layout->content = View::make('study/history', array('ent' => $entry));
+
+	}
+
+
+	public function postModify(){
+	
+		$target = Entry::find(Input::get('id'));
+		
+		$target->start_time = Input::get('start_time');
+		$target->end_time = Input::get('end_time');
+		$target->date = Input::get('date');
+		$target->class = Input::get('class');
+	
+		try{
+		    $target->save();
+		    return Redirect::back()->with('message', 'Entry Modified')->with('alert', 'success');
+		}catch (exception $e){
+		    return Redirect::back()->with('message', 'Modify Failed')->with('alert', 'danger');
+		}
+	
+	} //end of Modify funtion
+
 }
 
 

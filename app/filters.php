@@ -14,14 +14,7 @@
 
 
 App::before(function($request){
-	// User::create(array(
-	// 	'username' => 'bob',
-	// 	'email' => 'asdd',
-	// 	'first_name' => 'fred',
-	// 	'last_name' => 'vvasd',
-	// 	'type' => 'labAide',
-	// 	'password' => '1234'
-	// 	));
+
 });
 
 
@@ -56,9 +49,7 @@ Route::filter('auth', function()
 Route::filter('admin', function()
 {
 
-
-	if(!Auth::user()->admin){
-		//return Redirect::intended();
+	if (!Auth::user()->admin && Auth::user()->department != 'grant') {
 		App::abort(401, "Not authorized");
 	}
 

@@ -1,9 +1,4 @@
 <div class="row">
-	<div class="col-sm-6 col-sm-offset-4">
-		<button class="btn btn-success" data-toggle="modal" data-target="#addPayPeriod">Add Pay Period</button>
-	</div>
-</div>
-<div class="row">
   <div class="col-sm-3 col-sm-offset-1">
     <form role="form" method="post" action="<?php echo URL::to('admin/time/categories/create'); ?>">
         <div class="form-group">

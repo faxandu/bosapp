@@ -11,7 +11,7 @@
 			<tbody>
 				<?php foreach ($pay_periods as $period) { ?>
 				<tr>
-					<td><a href="<?php echo URL::to('time/entries/entries/' . $period->id); ?>" style="display:block; color:#fff;"><?php echo $period->name; ?></a></td>
+					<td><a href="<?php echo URL::to('time/entries/entries/' . $period->id); ?>" style="display:block; color:#fff;"><?php echo $period->id; ?></a></td>
 					<td><?php echo $period->start_pay_period; ?></td>
 					<td><?php echo $period->end_pay_period; ?></td>
 				</tr>

@@ -10,6 +10,7 @@
 			echo HTML::style('css/fullcalendar.css');
 			echo HTML::style('css/jquery.dataTables.css');
 			echo HTML::style('css/styles.css');
+			echo HTML::style('css/jquery.datetimepicker.css');
 		?>
 		<!-- Scripts go Here -->
 		<?php
@@ -20,6 +21,8 @@
 			echo HTML::script('js/bootstrap-datetimepicker.js');
 			echo HTML::script('js/fullcalendar.js');
 			echo HTML::script('js/lotto.js');
+			echo HTML::script('js/jquery.datetimepicker.js');
+
 		?>
 	</head>
 	<body>
@@ -52,6 +55,7 @@
 
 		          </ul>
 		        </li>
+		        <!--
 		        <li class="dropdown">
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Faculty Request <b class="caret"></b></a>
 		          <ul class="dropdown-menu">
@@ -63,7 +67,7 @@
 		            <li class="divider"></li>
 		            <li><a href="#">One more separated link</a></li>
 		          </ul>
-		        </li>
+		        </li> -->
 		        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventory <b class="caret"></b></a>
 		        	<ul class="dropdown-menu">
 		        		<li><a href="<?php echo URL::to('/inventory/equipment'); ?>">View Inventory</a></li>
@@ -89,6 +93,8 @@
 			   	  		<ul class="dropdown-menu">
 			   	  			<li><a href="#">Dashboard</a></li>
 			   	  			<li><a href="<?php echo URL::to('/group_study'); ?>" target="_blank">Group Study</a></li>
+			   	  			<li><a href="<?php echo URL::to('/group_study/entry/monitor'); ?>">Monitor Group Study</a></li>
+							<li><a href="<?php echo URL::to('/group_study/entry/history'); ?>">Group Study History</a></li>
 			   	  			<li><a href="#">My Projects</a></li>
 			   	  			<li><a href="<?php echo URL::to('logout'); ?>">Log Out</a></li>
 			   	  		</ul>
@@ -98,11 +104,16 @@
 							<ul class="dropdown-menu">
 								<li><a href="<?php echo URL::to('admin/user/home'); ?>">User Management</a></li>
 								<li><a href="<?php echo URL::to('admin/payroll'); ?>">Payroll</a></li>
+
 								<li><a href="<?php echo URL::to('admin/schedule/home'); ?>">Schedule Management</a></li>
+								<li><a href="<?php echo URL::to('admin/study'); ?>">Group Study Reports</a></li>
 								<li><a href="#">Project Management</a></li>
 								<li><a href="#">System Configurations</a></li>
 							</ul>
 						</li>
+					<?php } ?>
+					<?php if (Auth::user()->department === 'grant') { ?>
+						<li><a href="<?php echo URL::to('admin/study'); ?>">Group Study Reports</a></li>
 					<?php } ?>
 			   	  </ul>
 			   	<?php } ?>

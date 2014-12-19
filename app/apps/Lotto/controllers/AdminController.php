@@ -4,9 +4,11 @@ namespace Lotto\controllers;
 
 use BaseController, Lotto\models\Course, Lotto\models\Skill, User;
 use Input, Response, Redirect, Session, Exception;
+
 use View;
 
 class AdminController extends BaseController {
+
 
 
 	/*
@@ -274,3 +276,4 @@ class AdminController extends BaseController {
 		return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
 	}
 }
+
