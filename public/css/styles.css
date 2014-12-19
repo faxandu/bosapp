@@ -18,5 +18,8 @@ body {color: #fff; background-color: #2B6A47;}
 
 .filter {margin-top: 100px; padding-left: 25px;width: 225px;}
 
-.stripe{background-color: #2B7A47;}
+.stripe{background-color: #2B9A47;}
 
+.centerTable td, th{
+	text-align: center;
+}

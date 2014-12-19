@@ -8,8 +8,31 @@
 	</a>
 
 	<br>
+	<br>
 
-	<table class="table">
+
+	<p>You may set a number of hours as your prefered max working hours. No more than 20 !!!!.</p>
+	<p>We will try to reach this number if possible.</p>
+	<form method='POST' action='<?= URL::to('/schedule/user/update-prefered-hours'); ?>'>
+		<?php
+
+		?>
+
+		<input type="text" name="hours" value="<?= $user->prefered_hours  ?>">
+
+		<input type="hidden" name="user" value="<?= $user->id ?>">
+		<input type="submit" value="Update" class="btn btn-default">
+
+	</form>
+	
+
+	<br>
+
+
+	<br>
+
+	<p> Below you will find your current availability.</p>
+	<table class="table centerTable">
 
 		<thead>
 			<tr> 
@@ -25,7 +48,7 @@
 
 	<?php
 		
-		foreach(Auth::user()->availability->toarray() as $availability){
+		foreach($user->availability->toarray() as $availability){
 			//print_r($availability);
 	?>
 			<tr>

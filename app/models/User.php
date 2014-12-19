@@ -35,8 +35,14 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
         });
 
         User::updating(function($user){
-            ////// UPDATING COURSE - NOTIFY USER?
+        
         });
+
+
+        User::updated(function($user){
+           
+        });
+
         User::deleting(function($user){
             $user->skills()->detach();
             $user->courses()->detach();
@@ -46,31 +52,103 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
     }
 
 
-
     public static function validate($data){
         return Validator::make($data, static::$rules);
     }
 
 
-    public function updateWorkingHours(){
+
+    /*  Custom Functions
+
+    ---------------------- */
+
+    public function syncWorkingHours(){
 
         $courses = $this->courses;
-        $hours = 0;
-        foreach($courses as $course)
-            $hours += $course->credit_hours;
 
-        $this->working_hours = $hours;
+        foreach($courses as $course)
+            $this->working_hours += $course->credit_hours;
 
         $this->save();
     }
+        
+
+    public function updateAvailability($course){
+
+        if($this->AvailableToLabaide($course)->get()){
+
+            $availabilities = $this->availability->filter(function($availability) use($course){
+
+                    return (stristr($course->days_of_week, $availability->day_of_week) &&
+                    $course->start_time >= $availability->start_time && 
+                    $course->end_time <= $availability->end_time) ? $availability : "" ;
+
+            });
 
 
-    
+            foreach ($availabilities as $a){
+
+        
+                $avail1 = Availability::create(array(
+                    'start_time' => $a->start_time,
+                    'end_time' => $course->start_time,
+                    'day_of_week' => $a->day_of_week
+                )); 
+
+                $avail2 = Availability::create(array(
+                    'start_time' => $course->end_time,
+                    'end_time' => $a->end_time,
+                    'day_of_week' => $a->day_of_week
+                ));
+
+               
+
+                $this->availability()->attach($avail1);
+                $this->availability()->attach($avail2);
+
+                 $a->delete();
+
+           }
+
+          
+
+        }
+
+    }
+
+
+
     public function getFullNameWithUsername(){
         return $this->first_name . " " . $this->last_name . " (" . $this->username . ")";
     }
-    public function skills(){
 
+    // MAX HOURS
+    private static $labAide = 20;
+    private $labTech = 20;
+
+
+    // To labaide, skills, employee type, and time are required.
+    public function checkEligibilityToLabaide($course){
+
+        if($this->type != 'labAide')
+            throw new Exception("Invalid employee type");
+
+        if(!$this->hasSkill($course)->get())
+            throw new Exception("Missing required skill");
+
+        if(!$this->AvailableToLabaide($course)->get())
+            throw new Exception("Insufficient time.");
+
+
+        return true;
+    }
+
+
+
+    /*  Relationships
+
+    ---------------------- */
+    public function skills(){
         return $this->belongsToMany('Lotto\models\Skill', 'schedule_user_skill');
     }
 
@@ -83,16 +161,48 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
     }
 
 
-    public function scopeLabaidesWithSkill($query, Lotto\models\Course $course){
 
-        $users = $query->where('type','=','labAide')->get();
+    /*  Scopes
+
+    ---------------------- */
+
+    public function scopeLabaides($query){
+
+        return $query->where('type','=','labAide');
+
+
+    }
+
+    public function scopeHasSkill($query, Lotto\models\Course $course){
 
         return $query->whereHas('skills', function($query) use ($course){
                 return $query->where('name', '=', $course->course_title);
             });
+    }
 
+    
+    public function scopeAvailableToLabaide($query, Lotto\models\Course $course){
+
+
+        $days = str_split($course->days_of_week);
+        
+        foreach($days as $day)
+            $query->wherehas('availability', function($query) use($day, $course){
+                $query->where('day_of_week', 'LIKE', $day)
+                    ->where('start_time', '<=', $course->start_time)
+                    ->where('end_time', '>=', $course->end_time);
+            });
 
     }
+
+
+
+
+
+
+
+
+
 
 
     /**

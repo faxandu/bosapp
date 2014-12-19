@@ -26,7 +26,39 @@ class CourseController extends BaseController {
 	|--------------------------------------------------------------------------
 	*/
 
+	public function postUpdateCourseNeedsCoverage(){
 
+		$needsCoverage = Input::get('coverage');
+		$courseId = Input::get('course');
+
+
+		try{
+
+			if($needsCoverage == "true")
+				$needsCoverage = true;
+			else
+				$needsCoverage = false;
+
+			$course = Course::findorFail($courseId);
+
+			$course->needs_coverage = $needsCoverage;
+
+			$course->save();
+
+		}catch(exception $e){
+			return Redirect::to('admin/schedule/home')->with( 
+			array( 
+			'message' => 'failed to remove labaide'
+			));
+		}
+
+		return Redirect::to('admin/schedule/home')->with( 
+			array(
+			'message' => 'removed labaide'
+			));
+
+
+	}
 
 
 
@@ -73,26 +105,33 @@ class CourseController extends BaseController {
 			$user = User::findorFail($userId);
 			$course = Course::findorFail($courseId);
 			
-			if(Course::checkUser($user, $course)){
+			if($user->checkEligibilityToLabaide($course)){
 
 				$course->labaides()->detach();
-				$course->labaides()->attach($user);
+				$course->assingLabaide($user);
 			} else
 				throw new Exception("Not able to assign");
 
 		}catch(exception $e){
 
 			return Redirect::to('admin/schedule/home')->with( 
-			array('status' => 200, 
-			'message' => 'failed to assign labaide' . $e->getMessage()
+			array(
+			'message' => 'failed to assign labaide ',
+			'message' => $e->getMessage()
 			));
 		}
 		
 		return Redirect::to('admin/schedule/home')->with( 
-			array('status' => 200, 
+			array(
 			'message' => 'assigned labaide'
 			));
 	 }
+
+
+
+
+
+
 
 
 	public function missingMethod($parameters = array()){

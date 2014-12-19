@@ -54,7 +54,8 @@ class AdminController extends BaseController {
 
 			$course = Course::find(input::get('id'));
 			
-			$labaides = User::LabaidesWithSkill($course)->where(function($query) use($course){
+			// get all labaides that have skills of the course, that are not the current labaide
+			$labaides = User::labAides()->hasSkill($course)->availableToLabaide($course)->where(function($query) use($course){
 
 				if($course->labaides()->first())
 					$query->where('id', '!=', $course->labaides->first()->id);
@@ -62,7 +63,7 @@ class AdminController extends BaseController {
 			})->get();
 
 		
-			$this->layout->content = View::make('admin.lotto.manual-edit-labaide', array (
+			$this->layout->content = View::make('admin.lotto.manual-edit-course', array (
 				 	'currAide' => $course->labaides,
 				 	'labaides' => $labaides,
 				 	'course' => $course
@@ -74,7 +75,7 @@ class AdminController extends BaseController {
 
 			return Redirect::to('/admin/schedule/home')->with(array( 
 				'message' => 'unexpected error (admin) e',
-				//'message' => $e->getMessage()
+				'message' => $e->getMessage()
 				));
 
 		}
@@ -83,6 +84,7 @@ class AdminController extends BaseController {
 			'message' => 'unexpected error ()'
 			));
 	}
+
 
 
 	/*
@@ -107,7 +109,7 @@ class AdminController extends BaseController {
 		echo "import";
 		exit;
 
-		$file = file_get_contents($_ENV['courseLinkTest']);
+		$file = file_get_contents($_ENV['courseLink']);
 		$data = json_decode($file, true);
 
 		$timeFormat = "H:i:s";
@@ -142,10 +144,10 @@ class AdminController extends BaseController {
 
 				$course = Course::where('crn', '=', $parsed['crn'])->firstOrFail();
 				
-				//if(!empty(array_diff_assoc($parsed, $course->toArray()))){
-				//	$course->update($parsed);
-				//1	$updatedCourses++;
-				//}
+				if(!empty(array_diff_assoc($parsed, $course->toArray()))){
+					$course->update($parsed);
+					$updatedCourses++;
+				}
 
 				if($course->status_code == 'X'){
 					$canceledCourses++;
@@ -159,12 +161,12 @@ class AdminController extends BaseController {
 		}
 
 
-		return Redirect::to('admin/schedule/course/all')->with( 
-			array('status' => 200, 
-			'message' => 'Courses Imported Successfully',
-			'created' => $newCourses, 
-		 	'updated' => $updatedCourses, 
-			'canceled' => $canceledCourses));
+		return Redirect::to('admin/schedule/home')->with( 
+			array(
+			'message' => "created: " . $newCourses .
+			 ", updated: " . $updatedCourses . 
+			 ", canceled: " . $canceledCourses,
+			));
 	}
 
 
@@ -193,33 +195,27 @@ class AdminController extends BaseController {
 	------------------------- */
 	public function getScheduler(){
 
-
-		echo "scheduler";
-		exit;
-		//grab course list based off course level. lower -> higher
-		foreach(Course::all()->sortBy('course_number') as $course){
+		// echo "scheduler";
+		// exit;
+		//grab course list based off course level. lower -> higher priority
+		foreach(Course::where('needs_coverage', '=', true)->get()->sortBy('course_number') as $course){
 
 			//for every course - grab all users that can cover it.
 			// 		Required skills
 			// 		and must be able to aide within the time
 
-			$eligibleLabaides = User::where('type','=','labAide')->with('skills')
-			->whereHas('skills', function($query) use ($course){
-				$query->where('name', '=', $course->course_title);
-			})->with('availability')->whereHas('availability', function($query) use($course){
-				$query->where('start_time', '<=', $course->start_time);
-				$query->where('end_time', '>=', $course->end_time);
-				$query->where('start_date', '<=', $course->start_date);
-				$query->where('end_date', '>=', $course->end_date);
-			})->get();
 
+			$eligibleLabaides = User::labAides()->hasSkill($course)
+			->availableToLabaide($course)->get();
+
+			// No labaides - skip and look at next course
 			if($eligibleLabaides->count() == 0){
 				continue;
 			}
 						
 			//if only one labaide - assign as labaide
 			if( $eligibleLabaides->count() == 1){
-				$course->labaides()->attach($eligibleLabaides->first()->id);
+				$course->assignLabaide($eligibleLabaides->first());
 
 				continue;
 			}
@@ -238,16 +234,17 @@ class AdminController extends BaseController {
 
 			});
 
+
 			//if only one - assign as labaide
+			// otherwise randomly decide if all eligible are equal on skill count
 			if($assignList->count() == 1){
-				$course->labaides()->attach($assignList->first()->id);
+				$course->assignLabaide($assignList->first());
 
 				continue;
-			}else if($eligibleLabaides->count() == $assignList->count()){
-				echo $eligibleLabaides->count();
-				print_r($assignList);
-				exit;
-				$course->labaides()->attach($assignList->get(rand(0, $eligibleLabaides->count()-1))->id);
+
+			} else if($eligibleLabaides->count() == $assignList->count()){
+
+				$course->assignLabaide($assignList->get(rand(0, $eligibleLabaides->count()-1)));
 
 				continue;
 			}
@@ -265,11 +262,11 @@ class AdminController extends BaseController {
 			// });
 
 			/// sort based on priority of class. Highest to lowest - first gets. If same then rand
-			$course->labaides()->attach($assignList->get(rand(0, $eligibleLabaides->count()-1)));
+
+			$course->assignLabaide($assignList->get(rand(0, $eligibleLabaides->count()-1)));
 
 		}
-
-		return Redirect::to('admin/schedule/user/all');	
+		return Redirect::to('admin/schedule/home');	
 	}
 
 

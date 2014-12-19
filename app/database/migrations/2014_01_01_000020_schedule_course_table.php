@@ -33,7 +33,8 @@ class ScheduleCourseTable extends Migration {
 			$table->time('start_time');
 			$table->string('subject_code', 10);
 			$table->integer('term_code');
-			
+			$table->boolean('needs_coverage')->default(true);
+
 			$table->softDeletes();
 			$table->timestamps();
 		});

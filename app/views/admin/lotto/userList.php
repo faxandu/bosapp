@@ -9,13 +9,16 @@
 	</a>
 
 	<br>
+	
 	<p>
-	Click on user to edit their skills.
+	Click on a user to edit their skills.
 	</p>
+
+
 	<br>
 
 
-	<table class="table table-hover">
+	<table class="table table-hover centerTable">
 
 		<thead>
 			<tr>
@@ -54,8 +57,8 @@
 
 		<?php
 
-				$courses = $user->courses;
-				$skills = $user->skills;
+				$courses = $user->courses->sortBy('course_title');
+				$skills = $user->skills->sortBy('name');
 
 				$count = 0;
 				while($courses->count() > 0 || $skills->count() > 0){

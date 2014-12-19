@@ -23,7 +23,7 @@
 							"M" => "Monday",
 							"Tu" => "Tuesday",
 							"W" => "Wednesday",
-							"Th" => "Thursday",
+							"R" => "Thursday",
 							"F" => "Friday",
 							"S" => "Saturday"
 							);
@@ -60,8 +60,12 @@
 
 		</table>
 	<input type="hidden" name="id" value="<?= $userAvailability->id ?>">
-	<input type="submit" value="Uppdate" class="btn btn-default">
+	<input type="submit" value="Update" class="btn btn-default">
 
 	</form>
+
+
+
+	<hr>
 
 </div>

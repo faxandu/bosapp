@@ -3,9 +3,11 @@
 
 	<h3> My schedule </h3>
 
+	<p>Below are the classes you will be labaiding in for this semester.</p>
+	<br>
 
-
-	<table class="table table-striped table-hover">
+	
+	<table class="table table-striped table-hover centerTable">
 
 		<thead>
 			<tr>
@@ -14,12 +16,12 @@
 				<th>Start Time</th>
 				<th>End Time</th>
 				<th>Days of Week</th>
+				
 			</tr>
 		</thead>
 
 
 		<tbody>
-
 		<?php
 
 			foreach($userCourses as $course){

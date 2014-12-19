@@ -68,6 +68,7 @@
 		</form>
 	</div>
 
+	<hr>
 	<div>
 		<form method='POST' action='<?= URL::to('/admin/schedule/course/set-labaide'); ?>'>
 
@@ -112,6 +113,62 @@
 				</tbody>
 			</table>
 		</form>
+	</div>
+
+	<hr>
+	<div>
+	<form method='POST' action='<?= URL::to('/admin/schedule/course/update-course-needs-coverage'); ?>'>
+
+			<table class="">
+				<thead>
+					<th>Needs Coverage?</th>
+					<th></th>
+				</thead>
+
+				<tbody>			
+					
+					<tr>
+						<td>Yes/No:</td>
+						<td>				
+							
+							<select name="coverage" class="form-control">
+							
+							<?php 
+							
+							if($course->needs_coverage){
+
+							?>
+								<option value="<?= "true" ?>" > <?= "Yes" ?></option>
+								<option value="<?= "false" ?>" > <?= "No" ?></option>
+							<?php
+							} else {
+							?>
+
+								<option value="<?= "false" ?>" > <?= "No" ?></option>
+								<option value="<?= "true" ?>" > <?= "Yes" ?></option>
+								
+
+							<?php
+							}
+							?>
+							
+							
+							</select>
+						</td>
+					</tr>
+				
+					<tr>
+						<td></td>
+						<td>
+							<input type="hidden" name="course" value="<?= $course->id ?>">
+							<input type="submit" value="Update" class="btn btn-default">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+
+
 	</div>
 
 </div>

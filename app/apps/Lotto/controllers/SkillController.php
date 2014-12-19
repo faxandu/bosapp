@@ -135,6 +135,8 @@ class SkillController extends BaseController {
 			'message' => 'failed to assign skill'
 			));
 		}
+
+		
 		return Redirect::to('admin/schedule/skill/assign-skills?id=' . $userId)->with( 
 			array('status' => 200, 
 			'message' => 'assigned skill'

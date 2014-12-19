@@ -1,5 +1,10 @@
 <div class="row col-sm-6 col-sm-offset-3">
 	
+
+	<h3> Home - course listing </h3>
+		
+	<br>
+
 	<a href = "<?= URL::to('/admin/schedule/scheduler');?>">
 		<button type="button" class="btn btn-primary">Run Scheduler</button>
 	</a>
@@ -14,18 +19,18 @@
 
 	<br> <br>
 	<p>
-	Click on course to edit who is the labaide.
+	Click on a course to set/remove the labaide or edit certain info.
 	</p>
 
 
-	<table class="table table-striped table-hover">
+	<table class="table table-striped table-hover centerTable">
 
 		<thead>
 			<tr>
 				<th>Course</th>
 				<th>Course number</th>
-
 				<th>LabAide</th>
+				<th>Needs Coverage</th>
 			</tr>
 		</thead>
 
@@ -48,6 +53,24 @@
 				<td> <?= $course->course_title ?> </td>
 				<td> <?= $course->course_number ?> </td>
 				<td> <?= $labaide ?> </td>
+				<td> 
+
+				<?php
+
+					if($course->needs_coverage){
+
+
+
+				?>
+
+					<span class="glyphicon glyphicon-ok"></span>
+
+				<?php
+
+					}
+				?>
+
+				</td>
 			</tr>
 			
 		<?php
