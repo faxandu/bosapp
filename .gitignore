@@ -1,3 +1,5 @@
+*.sql
+
 /bootstrap/compiled.php
 /vendor
 .idea/

@@ -1,18 +1,73 @@
+<div class="row col-sm-6 col-sm-offset-3">
 
-<h2>to do</h2>
-<p>What time format? </p>
-<br><br>
-<?= (Session::get('error') ? print_r(Session::get('error')) : 'no errors') ?><br><br>
-
-<form method='POST' action='<?= URL::to('/schedule/availability/create'); ?>'>
+	<h3> Update Availability </h3>
 
 
-end_date: <input text="text" name="end_date"><br>
-start_date: <input text="text" name="start_date"><br>
-end_time: <input text="text" name="end_time"><br>
-start_time: <input text="text" name="start_time"><br>
-notes: <input text="text" name="notes"><br>
-title: <input text="text" name="title"><br>
+	<br>
 
-<input type="submit" value="click">
-</form>
+		<p> Fill out the following feilds to add to your availability. This is for the time you are able work.</p>
+
+	<br>
+	<form method='POST' action='<?= URL::to('/schedule/availability/create'); ?>'>
+
+		<table>
+			<thead>
+
+
+			</thead>
+
+
+			<tbody>
+
+				<tr>
+					<td>Pick the Day of Week: </td>
+					<td>
+						<select name="day_of_week" class="form-control">
+						<?php
+
+						$selectOptions = array(
+							"M" => "Monday",
+							"Tu" => "Tuesday",
+							"W" => "Wednesday",
+							"Th" => "Thursday",
+							"F" => "Friday",
+							"S" => "Saturday"
+							);
+						foreach($selectOptions as $option => $displayVal){
+
+
+						?>
+						
+							<option value="<?= $option ?>"> <?= $displayVal ?></option>
+
+						<?php
+
+						}
+
+
+						?>
+						</select>
+					</td>
+
+				</tr>
+				
+				<tr>
+					<td>Enter the start Time: </td>
+					<td><input text="text" name="start_time" class="form-control" placeholder="ie: 17:45 or 5:45pm"></td>
+				</tr>
+				
+				<tr>
+					<td>Enter the end Time: </td>
+					<td><input text="text" name="end_time" class="form-control" placeholder="ie: 18:45 or 6:45pm"></td>
+				</tr>
+
+			</tbody>
+
+
+		</table>
+
+	<input type="submit" value="Add" class="btn btn-default">
+
+	</form>
+
+</div>

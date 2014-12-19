@@ -1,144 +1,115 @@
 <?php 
-
 namespace Lotto\controllers;
-
 use BaseController, Lotto\models\Availability, User;
-use Auth, Date;
+use Auth, ControllerHelper;
 use Input, Response, Exception, Session, Redirect;
 use View;
-
 class AvailabilityController extends BaseController {
-
-
 	/*
 	|--------------------------------------------------------------------------
 	| Controller Views
 	|--------------------------------------------------------------------------
 	*/
-
+	/* 
+		URL: /schedule/availability/create 
+		Sets the content inside the layout to be the create view from lotto.availability.
+	
+	*/
+	public function getCreate(){
+		$this->layout->content = View::make('lotto.availability.create');
+	}
 	/*		
-+		URL: /schedule/availability/my-availability
- 
-+		Sets the content variable inside the layout to be the home view from lotto.availability.
-+		Also attaches the currently logged in user, that users availabiltiy, and any variables stored
-+		in the session (other functions redirect to this function). 
-+	
-+	*/
+		URL: /schedule/availability/my-availability
+		
+	
+	*/
 	public function getMyAvailability(){
-
-		$this->layout->content = View::make('user.availability');
-
+		$this->layout->content = View::make('lotto.availability.home')->with(array(
+			'user' => Auth::user(), 
+			'userAvailability' => Auth::user()->availability,
+			Session::all()
+		));
 	}
-
-
-	public function getAvail() {
-
-		$avail = Auth::user()->availability;
-		$today = date('m/d/Y');
-		$sun = date('m/d/Y', strtotime('last sunday', strtotime($today)));
-
-		foreach ($avail as $item) {
-			$item->start_date = date('m/d/Y', strtotime($sun . ' + ' . $item->weekday . ' days'));
-		}
-
-		return Response::json(Auth::user()->availability);
+	public function getUpdate(){
+		$this->layout->content = View::make('lotto.availability.update')->with(array(
+			'user' => Auth::user(), 
+			'userAvailability' => Auth::user()->availability->find(input::get('id')),
+			Session::all()
+		));
 	}
-
 	/*
 	|--------------------------------------------------------------------------
 	| Controller Posts
 	|--------------------------------------------------------------------------
 	*/
-
-	/*	
-		Feature? If a time already exists just add a link to user?
-
-
-	----------------------------------- */
-	public function postCreate(){
+	/*
+		URL: /schedule/availability/create
+		EXPECTS: 
 	
-		$input = Input::all();
-
-		$checkedInput = Availability::validate($input);
-
-		if($checkedInput->fails()){
-
-			/*
-			return Redirect::to('/schedule/availability/create')->with(array(
-				'status' => 400,
-				'error' => $checkedInput->messages()->all()
-			));
-			*/
-			return Redirect::to('/schedule/availability/my-availability')->with('message', $checkedInput->messages()->all());
-		
-		}
-
-		try{
-
-			$user = Auth::user();
-
-			$availability = Availability::create($input);
-
-			$user->availability()->attach($availability);
-
-
-		} catch(Exception $e){
-
-			/*
-			return Redirect::to('/schedule/availability/create')->with(array(
-				'status' => 400,
-				'error' => $checkedInput->messages()->all()
-			));
-			*/
-			return Redirect::to('/schedule/availability/my-availability')->with('message', $checkedInput->messages()->all());
+			creats an availability 
+	
+		TODO:
+			Start time should be less than end -- data validation
+	*/
+	public function postCreate(){
 			
-		}
+		$input = Input::all();
+		$input = ControllerHelper::convertTimeAndDate($input);
 
-		return Redirect::to('/schedule/availability/my-availability');
-		
+
+		return ControllerHelper::create(
+				new Availability, 
+				$input,
+				'/schedule/availability/my-availability',
+				'/schedule/availability/create',
+				'availability',
+				Auth::user()
+			);
+
+
+
 	}	
+	public function postUpdate(){
+			
+		$input = Input::all();
+		$input = ControllerHelper::convertTimeAndDate($input);
+		$route_pass = "/schedule/availability/my-availability";
+		$route_fail = '/schedule/availability/update?id=' . $input['id'];
+		
+
+		return ControllerHelper::update(
+				new Availability, 
+				$input,
+				$route_pass,
+				$route_fail
+			);
+	
+
+	}
+	
 
 
 	/*	
+		URL: /schedule/availability/delete
+		EXPECTS: id => int
 		Feature? only if no users attached then delete?
-
-
+		Deletes an availability
+		
 	----------------------------------- */
+	public function getDelete(){
 
-	public function postUpdate() {
-		$item = Availability::find(Input::get('id'));
-		$item->fill(Input::all());
-		$item->save();
 
-		return Response::json(array(
-			'status' => 200,
-			'message' => 'Entry Updated'
-			));
+		return ControllerHelper::delete(
+				new Availability,
+				Input::all(),
+				'/schedule/availability/my-availability'
+			);
 	}
 
-	public function postDelete(){
-		
-		$id = Input::get('id');
 
-		try{ 
-			
-
-			$availability = Availability::findOrFail($id);
-			
-			$availability->delete();
-
-		}catch(exception $e){
-			
-			return Redirect::to('/schedule/availability/my-availability')->with(array(
-				'status' => 400,
-				'error' => $checkedInput->messages()->all()
-			));
-		}
-		
-			return Redirect::to('/schedule/availability/my-availability')->with(array(
-				'status' => 200
-			));;
+	
+	public function missingMethod($parameters = array()){
+		return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
 	}
-
 }
 

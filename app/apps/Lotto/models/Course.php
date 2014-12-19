@@ -63,7 +63,13 @@ class Course extends Eloquent {
         });
 
         Course::updating(function($course){
-            ////// UPDATING COURSE - NOTIFY USER?
+
+
+
+        });
+
+        Course::updated(function($course){
+
         });
 
 
@@ -75,29 +81,17 @@ class Course extends Eloquent {
 
         Course::deleted(function($course){
 
-
-
-            // Delete skill when no courses left?
-            // currently failing because of skill linked to user on delete
-            // try{
-
-            //     $count = Course::where('course_title' ,'=' , $course->course_title)->count();
-
-            //     if($count == 0){
-            //         $skill = Skill::where('name' ,'=' , $course->course_title)->firstOrFail();
-                    
-            //         print_r($skill);
-            //         exit;
-
-            //         $skill->delete();
-            //     }
-            
-            // }catch (Exception $e){
-            
-            //     // do nothing on fail
-            
-            // }
         });
+
+    }
+
+
+    public function assignLabaide($user){
+
+        $user->syncWorkingHours();
+        $user->updateAvailability($this);
+        $this->labaides()->detach();
+        $this->labaides()->attach($user->id);
 
     }
 
@@ -110,47 +104,6 @@ class Course extends Eloquent {
         $this->labaides()->sync(array($user->id));
     }
 
-    protected static function checkSkills($user, $course){
-       
-
-        if(in_array($course->course_title, $user->skills->fetch('name')->toarray()))
-
-            return true;
-
-    	throw new Exception("Missing required skill");
-    }
-
-    private static $labAide = 20;
-    private $labTech = 20;
-
-    protected static function checkTime($user, $course){
-    	
-        $time = $course->creditHour;
-
-        if(!empty($user->courses->toarray())){
-        	foreach ($user->courses as $anotherCourse){
-        		$time += $anotherCourse['creditHour'];
-        	}
-        }
-           
-		switch($user->type){
-
-			case 'labAide': if($time < Course::$labAide) return true;
-		}
-
-
-		throw new Exception("Insufficient time.");
-    }
-
-	public static function checkUser($user, $course){
-
-        if(!('labAide' == $user->type))
-            throw new Exception("Invalid employee type");
-		course::checkSkills($user, $course);		
-		course::checkTime($user, $course);
-		
-		return true;
-	}
 
 }
 

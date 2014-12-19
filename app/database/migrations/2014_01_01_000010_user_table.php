@@ -12,6 +12,8 @@ class UserTable extends Migration {
 	 */
 	public function up()
 	{
+
+		
 		Schema::create('user', function($table){
 			$table->increments('id');
 
@@ -27,6 +29,7 @@ class UserTable extends Migration {
 			$table->string('username', 40)->unique();
 			$table->string('reset_token', 40)->nullable();
 			$table->string('remember_token', 100)->nullable();
+
 			$table->timestamps();
 			
 		});

@@ -13,6 +13,7 @@ Route::get('/', function() use($layout) {
 	return $layout->nest('content', 'home');
 });
 
+
 Route::post('login', 'UserController@login');
 Route::get('logout', 'UserController@logout');
 
@@ -40,7 +41,7 @@ Route::group(array('before' => 'auth'), function() use($layout){
 			});
 
 
-			/*	admin user uses user functions
+			/*	admin USER
 			-----------------------*/
 			Route::controller('user', 'UserController');
 
@@ -50,15 +51,15 @@ Route::group(array('before' => 'auth'), function() use($layout){
 			-----------------------*/
 			Route::group(array('prefix' => 'schedule'), function() use($layout){
 
+
+				Route::controller('/skill', 'Lotto\controllers\SkillController');
+				
+				Route::controller('/course', 'Lotto\controllers\CourseController');
+
 				/*	Schedule Management root
-				-----------------------*/
+				-----------------------*/	
 				Route::controller('/', 'Lotto\controllers\AdminController');
 
-				/*	Schedule Management user list
-				-----------------------*/
-				Route::controller('user', 'Lotto\controllers\UserController');
-
-				Route::controller('course', 'Lotto\controllers\CourseController');
 
 			}); // end of schedule management group
 
@@ -81,7 +82,7 @@ Route::group(array('before' => 'auth'), function() use($layout){
 		-----------------------*/
 		Route::controller('availability', 'Lotto\controllers\AvailabilityController');
 
-	}); // end of schedule group
+	}); // end of schedule group user side
 
 
 

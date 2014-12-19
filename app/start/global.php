@@ -62,6 +62,10 @@ App::error(function(Exception $exception, $code)
 	Log::error($exception);
 });
 
+
+
+
+
 /*
 App::fatal(function($exception)
 {

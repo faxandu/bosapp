@@ -20,7 +20,9 @@
 			echo HTML::script('js/bootstrap.js');
 			echo HTML::script('js/bootstrap-datetimepicker.js');
 			echo HTML::script('js/fullcalendar.js');
+			echo HTML::script('js/lotto.js');
 			echo HTML::script('js/jquery.datetimepicker.js');
+
 		?>
 	</head>
 	<body>
@@ -47,8 +49,10 @@
 		         <li class="dropdown">
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Schedule<b class="caret"></b></a>
 		          <ul class="dropdown-menu">
-		            <li><a href="<?php echo URL::to('/schedule/user/my-schedule'); ?>">My Schedule</a></li>
-		            <li><a href="<?php echo URL::to('/schedule/availability/my-availability') ?>">My Availability</a></li>
+
+		            <li><a href="<?= URL::to('/schedule/user/my-schedule') ?>">My Schedule</a></li>
+		            <li><a href="<?= URL::to('/schedule/availability/my-availability') ?>">My Availability</a></li>
+
 		          </ul>
 		        </li>
 		        <!--
@@ -100,7 +104,8 @@
 							<ul class="dropdown-menu">
 								<li><a href="<?php echo URL::to('admin/user/home'); ?>">User Management</a></li>
 								<li><a href="<?php echo URL::to('admin/payroll'); ?>">Payroll</a></li>
-								<li><a href="<?php echo URL::to('admin/schedule'); ?>">Schedule Management</a></li>
+
+								<li><a href="<?php echo URL::to('admin/schedule/home'); ?>">Schedule Management</a></li>
 								<li><a href="<?php echo URL::to('admin/study'); ?>">Group Study Reports</a></li>
 								<li><a href="#">Project Management</a></li>
 								<li><a href="#">System Configurations</a></li>

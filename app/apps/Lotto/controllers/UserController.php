@@ -16,14 +16,12 @@ class UserController extends BaseController {
 	|--------------------------------------------------------------------------
 	*/
 
+
+
+
 	/* returns the user and their courses.
 	--------- */
 	public function getMySchedule(){
-
-		// give the user schedule.
-
-		// each course they have.
-
 
 		$this->layout->content = View::make('lotto.schedule.home')->with(array(
 
@@ -59,33 +57,67 @@ class UserController extends BaseController {
 	*/
 
 
-	public function postSetSkills(){
 
-		$user = Input::get('user');
-		$skill = Input::get('skill');
+
+	public function postUpdatePreferedHours(){
+
+		$userId = Input::get('user');
+		$hours = Input::get('hours');
 
 		try{
 
-			$user = User::findorFail($user);
-			$skill = Skill::findorFail($skill);
+			if($hours > 20)
+				throw new exception("Must be below 20 hours");
 
-			$user->skills()->attach($skill);
+			$user =	User::findOrFail($userId);
 
-			$this->layout->content = Redirect::to('admin/schedule/user/all')->with(array(
-				'status' => 200,
-				
-				));
+			$user->prefered_hours = $hours;
+			$user->save();
 
-		}catch(Exception $e){
 
-			$this->layout->content = Redirect::to('admin/schedule/user/set-skills')->with(array(
-				'status' => 400,
-				'error' => 'deletion failed'
-				));
-
+		} catch(exception $e){
+			return Redirect::to('/schedule/availability/my-availability')->with( 
+			array( 
+				'message' => 'failed to update hours () e',
+				//'message' => $e->getMessage()
+			));
 		}
 
-		return $this->layout->content;
-	
+		
+		return Redirect::to('/schedule/availability/my-availability')->with( 
+			array(
+				'message' => 'updated prefered hours'
+			));
+
 	}
+
+	// public function postSetSkills(){
+
+	// 	$user = Input::get('user');
+	// 	$skill = Input::get('skill');
+
+	// 	try{
+
+	// 		$user = User::findorFail($user);
+	// 		$skill = Skill::findorFail($skill);
+
+	// 		$user->skills()->attach($skill);
+
+	// 		$this->layout->content = Redirect::to('admin/schedule/user/all')->with(array(
+	// 			'status' => 200,
+				
+	// 			));
+
+	// 	}catch(Exception $e){
+
+	// 		$this->layout->content = Redirect::to('admin/schedule/user/set-skills')->with(array(
+	// 			'status' => 400,
+	// 			'error' => 'deletion failed'
+	// 			));
+
+	// 	}
+
+	// 	return $this->layout->content;
+	
+	// }
 }

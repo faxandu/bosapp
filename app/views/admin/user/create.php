@@ -7,6 +7,7 @@ Validation not yet set<br><br>
 <form method ="POST" action="<?= URL::to('admin/user/create');?>">
 
 username<input type="text" name="username"><br>
+email<input type="text" name="email"><br>
 password<input type="password" name="password"><br>
 <input type="submit">
 
