@@ -83,14 +83,14 @@ class AdminController extends BaseController {
 			return;
 		}catch(exception $e){
 
-			return Redirect::to('/admin/schedule/home')->with(array( 
+			return Redirect::to('/admin/schedule/course-summary')->with(array( 
 				'message' => 'unexpected error (admin) e',
 				'message' => $e->getMessage()
 				));
 
 		}
 
-		return Redirect::to('/admin/schedule/home')->with(array( 
+		return Redirect::to('/admin/schedule/course-summary')->with(array( 
 			'message' => 'unexpected error ()'
 			));
 	}
@@ -157,14 +157,14 @@ class AdminController extends BaseController {
 			}
 
 		}catch(exception $e){
-			return Redirect::to('admin/schedule/home')->with( 
+			return Redirect::to('admin/schedule/course-summary')->with( 
 			array( 
 			'message' => 'failed to reset semester',
 			'message' => $e->getMessage()
 			));
 		}
 
-		return Redirect::to('admin/schedule/home')->with( 
+		return Redirect::to('admin/schedule/course-summary')->with( 
 			array(
 			'message' => 'reset semester'
 			));
