@@ -88,12 +88,22 @@ class Course extends Eloquent {
 
     public function assignLabaide($user){
 
-        $user->syncWorkingHours();
-        $user->updateAvailability($this);
+        
+        $user->updateAvailability($this, 'remove');
         $this->labaides()->detach();
         $this->labaides()->attach($user->id);
+        $user->syncWorkingHours();
 
     }
+
+    public function removeLabaide($user){
+
+       
+        $user->updateAvailability($this, 'add');
+        $this->labaides()->detach();
+        $user->syncWorkingHours();
+    }
+
 
 
 	public function labaides(){

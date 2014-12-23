@@ -37,44 +37,7 @@ class SkillController extends BaseController {
 	*/
 
 
-	public function getAssignSkills(){
-
-
-		try{
-
-			$user = User::findorFail(input::get('id'));
-
-			$skills = Skill::where(function($query) use ($user){
-
-				 		foreach($user->skills as $skill)
-				 			$query->where('id', '!=', $skill->id);
-
-				 
-				 	})->get();
-
-
-			$this->layout->content = View::make('admin.lotto.assign-skills', array (
-				 	'availSkills' => $skills,
-				 	'userSkills' => $user->skills,
-				 	'user' => $user
-				 	), Session::all()
-			 );
-
-			return;
-		}catch(exception $e){
-
-			return Redirect::to('admin/schedule/home')->with(array( 
-				'message' => 'unexpected error (skill) e'
-				));
-
-		}
-
-		return Redirect::to('admin/schedule/home')->with(array( 
-			'message' => 'unexpected error (skill)'
-			));
-		
 	
-	}
 
 
 
@@ -95,7 +58,7 @@ class SkillController extends BaseController {
 
 	
 		} catch(exception $e){
-			return Redirect::to('admin/schedule/skill/assign-skills?id=' . $userId)->with( 
+			return Redirect::to('admin/schedule/modify-user?id=' . $userId)->with( 
 			array( 
 			'message' => 'failed to remove skill',
 			//'message' => $e->getMessage()
@@ -103,7 +66,7 @@ class SkillController extends BaseController {
 		}
 
 
-		return Redirect::to('admin/schedule/skill/assign-skills?id=' . $userId)->with( 
+		return Redirect::to('admin/schedule/modify-user?id=' . $userId)->with( 
 			array(
 			'message' => 'removed skill'
 			));
@@ -130,14 +93,14 @@ class SkillController extends BaseController {
 
 
 		} catch(exception $e){
-			return Redirect::to('admin/schedule/skill/assign-skills?id=' . $userId)->with( 
+			return Redirect::to('admin/schedule/modify-user?id=' . $userId)->with( 
 			array( 
 			'message' => 'failed to assign skill'
 			));
 		}
 
 		
-		return Redirect::to('admin/schedule/skill/assign-skills?id=' . $userId)->with( 
+		return Redirect::to('admin/schedule/modify-user?id=' . $userId)->with( 
 			array('status' => 200, 
 			'message' => 'assigned skill'
 			));

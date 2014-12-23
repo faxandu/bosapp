@@ -22,8 +22,7 @@ class ControllerHelper {
 		if($checkedInput->fails()){
 
 			return Redirect::to($route_fail)->with(array(
-				'status' => 400,
-				'error' => $checkedInput->messages()->all()
+				'message' => 'Failed to create: Invalid input',
 			));
 		
 		}
@@ -44,13 +43,13 @@ class ControllerHelper {
 		} catch(Exception $e){
 
 			return Redirect::to($route_fail)->with(array(
-				'error' => $e->getMessage()
+				'message' => 'Failed to create: error',
 			));
 
 		}
 
 		return Redirect::to($route_pass)->with(array(
-				'status' => 200
+				'message' => 'created',
 			));;
 
 	
@@ -67,8 +66,7 @@ class ControllerHelper {
 		if($checkedInput->fails()){
 
 			return Redirect::to($route_fail)->with(array(
-				'status' => 400,
-				'error' => $checkedInput->messages()->all()
+				'message' => 'Failed to update: Invalid input',
 			));
 		
 		}
@@ -82,13 +80,13 @@ class ControllerHelper {
 		} catch(Exception $e){
 
 			return Redirect::to($route_fail)->with(array(
-				'message' => $e->getMessage()
+				'message' => 'Failed to update: error',
 			));
 
 		}
 
 		return Redirect::to($route_pass)->with(array(
-				'status' => 200
+				'message' => 'updated',
 			));;
 
 	
@@ -106,14 +104,13 @@ class ControllerHelper {
 		}catch(exception $e){
 
 			return Redirect::to($route_fail)->with(array(
-				'status' => 400,
-				'message' => 'Failed to delete'
+				'message' => 'Failed to delete',
 			));
 			
 		}
 
 		return Redirect::to($route_pass)->with(array(
-				'status' => 200
+				'message' => 'deleted',
 			));;
 	}
 

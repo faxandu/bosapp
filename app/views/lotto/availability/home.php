@@ -1,3 +1,9 @@
+<?php
+
+
+?>
+
+
 <div class="row col-sm-6 col-sm-offset-3">
 
 	<h3> My availability </h3>

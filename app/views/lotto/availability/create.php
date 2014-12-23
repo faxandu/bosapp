@@ -65,7 +65,7 @@
 
 
 		</table>
-
+	<input type="hidden" name="user_id" value="<?= Auth::user()->id ?>">
 	<input type="submit" value="Add" class="btn btn-default">
 
 	</form>

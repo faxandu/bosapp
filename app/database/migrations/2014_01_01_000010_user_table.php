@@ -33,10 +33,7 @@ class UserTable extends Migration {
 			$table->timestamps();
 			
 		});
-		// Schema::table('global_user',  function($table){
-		// 			$table->enum('department', array('bos', 'none'))->default('none');
-		// 	$table->enum('admin', array('bos', 'none'))->default('none');
-		// 	});
+
 	}
 
 	/**

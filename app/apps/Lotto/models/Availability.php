@@ -14,7 +14,7 @@ class Availability extends Eloquent {
     protected $softDelete = false;
 
 
-	protected $fillable = array('end_time', 'start_time', 'day_of_week');
+	protected $fillable = array('end_time', 'start_time', 'day_of_week', 'user_id');
 
 
     protected $guarded = array('id');
@@ -35,45 +35,6 @@ class Availability extends Eloquent {
 
     public static function boot(){
         parent::boot();
-
-        Availability::created(function($v){ });
-
-        Availability::creating(function($v){
-            return true;
-         });
-
-        Availability::updating(function($v){ 
-
-
-        });
-
-        /*
-            Upon deleting an ojbect of this model.
-            This function is called before it is actually deleted.
-            Detaches its self from any user - for allowing it to be deleted. 
-        */
-
-
-        Availability::deleted(function($availability){
-
-
-        });
-
-        Availability::deleting(function($availability){
-
-            try{
-
-                // echo $availability->user->first()->first_name;
-                // exit;
-
-                $availability->user->first()->availability()->detach($availability->id);
-            }catch(Exception $e){
-        
-            }
-           
-            return true;
-        });
-
 
     }
 
@@ -101,7 +62,7 @@ class Availability extends Eloquent {
     ---------------------- */
 
     public function user(){
-        return $this->belongsToMany('User', 'schedule_user_availability', 'availability_id', 'user_id');
+        return $this->belongsTo('User');
     }
 	
 
