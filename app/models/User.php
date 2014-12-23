@@ -66,6 +66,8 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
 
         $courses = $this->courses;
 
+        $this->working_hours = 0;
+
         foreach($courses as $course)
             $this->working_hours += $course->credit_hours;
 
@@ -73,44 +75,81 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
     }
         
 
-    public function updateAvailability($course){
+    public function updateAvailability($course, $type){
 
-        if($this->AvailableToLabaide($course)->get()){
 
-            $availabilities = $this->availability->filter(function($availability) use($course){
+        if($type == "remove"){
+            if($this->AvailableToLabaide($course)->get()){
 
-                    return (stristr($course->days_of_week, $availability->day_of_week) &&
-                    $course->start_time >= $availability->start_time && 
-                    $course->end_time <= $availability->end_time) ? $availability : "" ;
+                $availabilities = $this->availability->filter(function($availability) use($course){
 
+                    if( stristr($course->days_of_week, $availability->day_of_week) &&
+                        $course->start_time > $availability->start_time &&
+                        $course->end_time < $availability->end_time)
+                        
+                        return $availability;
+                        
+                });
+
+
+                foreach ($availabilities as $a){
+
+            
+                    Availability::create(array(
+                        'start_time' => $a->start_time,
+                        'end_time' => $course->start_time,
+                        'day_of_week' => $a->day_of_week,
+                        'user_id' => $this->id
+                    )); 
+
+                    Availability::create(array(
+                        'start_time' => $course->end_time,
+                        'end_time' => $a->end_time,
+                        'day_of_week' => $a->day_of_week,
+                        'user_id' => $this->id
+                    ));
+
+
+                     $a->delete();
+
+               }
+            }
+        } else {
+
+
+
+
+            $availabilitiesToCombine = $this->availability->filter(function($availability) use($course){
+                if(stristr($course->days_of_week, $availability->day_of_week) &&
+                   ($course->end_time == $availability->start_time ||
+                    $course->start_time == $availability->end_time) ||
+                   ($course->start_time == $availability->start_time ||
+                    $course->start_time == $availability->start_time))
+                    
+                    return $availability;
             });
 
+            $count = 0;
+            $prevA = "";
+            foreach($availabilitiesToCombine as $currA){
 
-            foreach ($availabilities as $a){
+                if($count++ == 0){
+                    $prevA = $currA;
+                    continue;
+                }
 
-        
-                $avail1 = Availability::create(array(
-                    'start_time' => $a->start_time,
-                    'end_time' => $course->start_time,
-                    'day_of_week' => $a->day_of_week
-                )); 
 
-                $avail2 = Availability::create(array(
-                    'start_time' => $course->end_time,
-                    'end_time' => $a->end_time,
-                    'day_of_week' => $a->day_of_week
-                ));
+                if($prevA->end_time == $course->start_time &&
+                    $course->end_time == $currA->start_time &&
+                    $currA->day_of_week == $prevA->day_of_week){
 
-               
+                    $prevA->end_time = $currA->end_time;
+                    $currA->delete();
+                    $prevA->save();
+                }
 
-                $this->availability()->attach($avail1);
-                $this->availability()->attach($avail2);
-
-                 $a->delete();
-
-           }
-
-          
+                $prevA = $currA;
+            }
 
         }
 
@@ -118,8 +157,12 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
 
 
 
-    public function getFullNameWithUsername(){
+    public function fullNameWithUsername(){
         return $this->first_name . " " . $this->last_name . " (" . $this->username . ")";
+    }
+
+    public function fullName(){
+        return $this->first_name . " " . $this->last_name;
     }
 
     // MAX HOURS
@@ -157,7 +200,7 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
     }
 
     public function availability(){
-        return $this->belongsToMany('Lotto\models\Availability', 'schedule_user_availability', 'user_id', 'availability_id');
+        return $this->hasMany('Lotto\models\Availability', 'user_id');
     }
 
 
@@ -193,6 +236,8 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
                     ->where('end_time', '>=', $course->end_time);
             });
 
+        $query->where('working_hours', '<=', ($this->working_hours + $course->credit_hours));
+        $query->where('prefered_hours', '>=', ($this->working_hours + $course->credit_hours));
     }
 
 

@@ -20,6 +20,7 @@ class CourseController extends BaseController {
 
 
 
+
 	/*
 	|--------------------------------------------------------------------------
 	| Controller Posts
@@ -46,19 +47,20 @@ class CourseController extends BaseController {
 			$course->save();
 
 		}catch(exception $e){
-			return Redirect::to('admin/schedule/home')->with( 
+			return Redirect::to('admin/schedule/course-summary')->with( 
 			array( 
 			'message' => 'failed to remove labaide'
 			));
 		}
 
-		return Redirect::to('admin/schedule/home')->with( 
+		return Redirect::to('admin/schedule/course-summary')->with( 
 			array(
 			'message' => 'removed labaide'
 			));
 
 
 	}
+
 
 
 
@@ -70,16 +72,20 @@ class CourseController extends BaseController {
 		$courseId = Input::get('course');
 
 		try{		
-			Course::findorFail($courseId)->labaides()->detach($userId);
+
+			$user = User::findorFail($userId);
+
+			Course::findorFail($courseId)->removeLabaide($user);
 
 		}catch(exception $e){
-			return Redirect::to('admin/schedule/home')->with( 
+			return Redirect::to('admin/schedule/course-summary')->with( 
 			array( 
-			'message' => 'failed to remove labaide'
+			'message' => 'failed to remove labaide',
+			'message' => $e->getMessage()
 			));
 		}
 
-		return Redirect::to('admin/schedule/home')->with( 
+		return Redirect::to('admin/schedule/course-summary')->with( 
 			array(
 			'message' => 'removed labaide'
 			));
@@ -108,20 +114,20 @@ class CourseController extends BaseController {
 			if($user->checkEligibilityToLabaide($course)){
 
 				$course->labaides()->detach();
-				$course->assingLabaide($user);
+				$course->assignLabaide($user);
 			} else
 				throw new Exception("Not able to assign");
 
 		}catch(exception $e){
 
-			return Redirect::to('admin/schedule/home')->with( 
+			return Redirect::to('admin/schedule/course-summary')->with( 
 			array(
 			'message' => 'failed to assign labaide ',
 			'message' => $e->getMessage()
 			));
 		}
 		
-		return Redirect::to('admin/schedule/home')->with( 
+		return Redirect::to('admin/schedule/course-summary')->with( 
 			array(
 			'message' => 'assigned labaide'
 			));

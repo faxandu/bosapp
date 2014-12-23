@@ -15,11 +15,15 @@ class ScheduleAvailabilityTable extends Migration {
 		Schema::create('schedule_availability', function($table){
 			$table->increments('id');
 
+			$table->unsignedInteger('user_id');
+			
 			$table->enum('day_of_week', array('M','Tu','W', 'R', 'F', 'S'));
-
 			$table->time('start_time', 50);
 			$table->time('end_time', 50);
 
+
+
+			$table->foreign('user_id')->references('id')->on('user');
 		});
 	}
 

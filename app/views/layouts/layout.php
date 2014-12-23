@@ -55,19 +55,6 @@
 
 		          </ul>
 		        </li>
-		        <!--
-		        <li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Faculty Request <b class="caret"></b></a>
-		          <ul class="dropdown-menu">
-		            <li><a href="#">Action</a></li>
-		            <li><a href="#">Another action</a></li>
-		            <li><a href="#">Something else here</a></li>
-		            <li class="divider"></li>
-		            <li><a href="#">Separated link</a></li>
-		            <li class="divider"></li>
-		            <li><a href="#">One more separated link</a></li>
-		          </ul>
-		        </li> -->
 		        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventory <b class="caret"></b></a>
 		        	<ul class="dropdown-menu">
 		        		<li><a href="<?php echo URL::to('/inventory/equipment'); ?>">View Inventory</a></li>
@@ -105,7 +92,7 @@
 								<li><a href="<?php echo URL::to('admin/user/home'); ?>">User Management</a></li>
 								<li><a href="<?php echo URL::to('admin/payroll'); ?>">Payroll</a></li>
 
-								<li><a href="<?php echo URL::to('admin/schedule/home'); ?>">Schedule Management</a></li>
+								<li><a href="<?php echo URL::to('admin/schedule/course-summary'); ?>">Schedule Management</a></li>
 								<li><a href="<?php echo URL::to('admin/study'); ?>">Group Study Reports</a></li>
 								<li><a href="#">Project Management</a></li>
 								<li><a href="#">System Configurations</a></li>

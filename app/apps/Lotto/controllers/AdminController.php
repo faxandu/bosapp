@@ -2,7 +2,7 @@
 
 namespace Lotto\controllers;
 
-use BaseController, Lotto\models\Course, Lotto\models\Skill, User;
+use BaseController, Lotto\models\Course, Lotto\models\Skill, User, Lotto\models\Availability;
 use Input, Response, Redirect, Session, Exception;
 
 use View;
@@ -17,7 +17,10 @@ class AdminController extends BaseController {
 	|--------------------------------------------------------------------------
 	*/
 
+	public function getResetSemester(){
 
+		$this->layout->content = View::make('admin.lotto.reset-semester');
+	}
 	/*
 		
 		schedule management - home page
@@ -25,9 +28,9 @@ class AdminController extends BaseController {
 		list all courses and aides with course.
 
 	*/
-	public function getHome(){
+	public function getCourseSummary(){
 
-		$this->layout->content = View::make('admin.lotto.home', array (
+		$this->layout->content = View::make('admin.lotto.course-summary', array (
 				 	'courses' => Course::all()->sortBy('user.id')), Session::all()
 			 );
 	
@@ -40,14 +43,17 @@ class AdminController extends BaseController {
 		list all labaides. 
 
 	*/
-	public function getUserList(){
+	public function getUserSummary(){
 
 		$users = User::where('type','=','labAide')->get();
 
-		$this->layout->content = View::make('admin.lotto.userList')->with(array(
+		$this->layout->content = View::make('admin.lotto.user-summary')->with(array(
 			'users' => $users
 		));
 	}
+
+
+
 
 	public function getManualAssign(){
 
@@ -64,10 +70,12 @@ class AdminController extends BaseController {
 
 			})->get();
 
+			$allLabaides = User::where('type','=','labAide')->get();	
 		
 			$this->layout->content = View::make('admin.lotto.manual-edit-course', array (
 				 	'currAide' => $course->labaides,
 				 	'labaides' => $labaides,
+				 	'allLabaides' => $allLabaides,
 				 	'course' => $course
 				 	), Session::all()
 			 );
@@ -87,13 +95,80 @@ class AdminController extends BaseController {
 			));
 	}
 
+	public function getModifyUser(){
 
+
+		try{
+
+			$user = User::findorFail(input::get('id'));
+
+			$skills = Skill::where(function($query) use ($user){
+
+				 		foreach($user->skills as $skill)
+				 			$query->where('id', '!=', $skill->id);
+
+				 
+				 	})->get();
+
+
+			$this->layout->content = View::make('admin.lotto.modify-user', array (
+				 	'availSkills' => $skills,
+				 	'userSkills' => $user->skills,
+				 	'user' => $user
+				 	), Session::all()
+			 );
+
+			return;
+		}catch(exception $e){
+
+			return Redirect::to('admin/schedule/course-summary')->with(array( 
+				'message' => 'unexpected error (skill) e',
+				//'message' => $e->getMessage()
+				));
+
+		}
+
+		return Redirect::to('admin/schedule/course-summary')->with(array( 
+			'message' => 'unexpected error (skill)'
+			));
+		
+	
+	}
 
 	/*
 	|--------------------------------------------------------------------------
 	| Controller logic
 	|--------------------------------------------------------------------------
 	*/
+
+
+	public function postResetSemester(){
+
+		$answer = Input::get('delete');
+		
+		try{
+
+			if($answer == 'yes'){
+				foreach(Course::all() as $course)
+					$course->delete();
+
+				foreach(User::all() as $user)
+					$user->availability()->delete();
+			}
+
+		}catch(exception $e){
+			return Redirect::to('admin/schedule/home')->with( 
+			array( 
+			'message' => 'failed to reset semester',
+			'message' => $e->getMessage()
+			));
+		}
+
+		return Redirect::to('admin/schedule/home')->with( 
+			array(
+			'message' => 'reset semester'
+			));
+	}
 
 
 	/*
@@ -202,6 +277,8 @@ class AdminController extends BaseController {
 		//grab course list based off course level. lower -> higher priority
 		foreach(Course::where('needs_coverage', '=', true)->get()->sortBy('course_number') as $course){
 
+			if($course->labaides->count() > 0)
+				continue;
 			//for every course - grab all users that can cover it.
 			// 		Required skills
 			// 		and must be able to aide within the time
@@ -268,7 +345,7 @@ class AdminController extends BaseController {
 			$course->assignLabaide($assignList->get(rand(0, $eligibleLabaides->count()-1)));
 
 		}
-		return Redirect::to('admin/schedule/home');	
+		return Redirect::to('admin/schedule/course-summary');	
 	}
 
 

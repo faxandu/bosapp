@@ -24,9 +24,10 @@ class AvailabilityController extends BaseController {
 	
 	*/
 	public function getMyAvailability(){
+
 		$this->layout->content = View::make('lotto.availability.home')->with(array(
 			'user' => Auth::user(), 
-			'userAvailability' => Auth::user()->availability,
+			'userAvailability' => Auth::user()->availability->sortBy('day_of_week'),
 			Session::all()
 		));
 	}
@@ -56,14 +57,11 @@ class AvailabilityController extends BaseController {
 		$input = Input::all();
 		$input = ControllerHelper::convertTimeAndDate($input);
 
-
 		return ControllerHelper::create(
 				new Availability, 
 				$input,
 				'/schedule/availability/my-availability',
-				'/schedule/availability/create',
-				'availability',
-				Auth::user()
+				'/schedule/availability/create'
 			);
 
 

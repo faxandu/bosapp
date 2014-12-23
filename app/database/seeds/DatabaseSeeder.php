@@ -100,53 +100,73 @@ class ManyTableSeeder extends Seeder{
 		"credit_hours" => 6,
 		));
 
-
-
-
-		// User::find(1)->skills()->attach(Skill::find(1));
+		$course5 = Course::create(array(
+		'course_title' => 'CPS 171',
+		'course_number' => '5',
+		'crn' => '100C',
+		'start_time' => '10:30:00', 
+		'end_time' => '11:30:00',
+		"days_of_week" => "R",
+		"credit_hours" => 6,
+		));
 
 		$skill1 = Skill::where('name', '=', $course1->course_title)->firstOrFail();
 		$skill2 = Skill::where('name', '=', $course2->course_title)->firstOrFail();
-		$skill3 = Skill::where('name', '=', $course3->course_title)->firstOrFail();
 		$skill4 = Skill::where('name', '=', $course4->course_title)->firstOrFail();
 
 		// bobs
-		$bobsA1 = Availability::create(array(
+		Availability::create(array(
 			'start_time' => '13:30:00',
 			'end_time' => '22:30:00',
-		 	'day_of_week' => 'M'
-		 	));
+		 	'day_of_week' => 'M',
+		 	'user_id' => $bob->id
+		 ));
 
-		$bobsA2 = Availability::create(array(
+		Availability::create(array(
 			'start_time' => '13:30:00',
 			'end_time' => '22:30:00',
-		 	'day_of_week' => 'W'
-		 	));
+		 	'day_of_week' => 'W',
+		 	'user_id' => $bob->id
+		 ));
+
+		Availability::create(array(
+			'start_time' => '11:00:00',
+			'end_time' => '13:00:00',
+		 	'day_of_week' => 'F',
+		 	'user_id' => $bob->id
+		 ));
 
 
 		$bob->skills()->attach($skill1->id);
 		$bob->skills()->attach($skill2->id);
 
 		$bob->skills()->attach($skill4->id);
-		$bob->availability()->attach($bobsA1->id);
-		$bob->availability()->attach($bobsA2->id);
-		$bob->courses()->attach($course1->id);
+
+		//$bob->courses()->attach($course1->id);
 		//daves
-		$davesA1 = Availability::create(array(
+		Availability::create(array(
 			'start_time' => '08:30:00',
 			'end_time' => '21:30:00',
-		 	'day_of_week' => 'M'
+		 	'day_of_week' => 'M',
+		 	'user_id' => $dave->id
 		 	));
 
-		$davesA2 = Availability::create(array(
+		Availability::create(array(
 			'start_time' => '08:30:00',
 			'end_time' => '21:30:00',
-		 	'day_of_week' => 'W'
+		 	'day_of_week' => 'W',
+		 	'user_id' => $dave->id
+		 	));
+
+		Availability::create(array(
+			'start_time' => '08:30:00',
+			'end_time' => '11:30:00',
+		 	'day_of_week' => 'R',
+		 	'user_id' => $dave->id
 		 	));
 
 		$dave->skills()->attach($skill1->id);
-		$dave->availability()->attach($davesA1->id);
-		$dave->availability()->attach($davesA2->id);
+
 		//robs
 		// $robertsA1 = Availability::create(array('start_time' => '10:30:00','end_time' => '11:30:00',
 		//  'day_of_week' => 'Tu'));
