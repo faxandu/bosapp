@@ -236,7 +236,7 @@ class AdminController extends BaseController {
 		}
 
 
-		return Redirect::to('admin/schedule/home')->with( 
+		return Redirect::to('admin/schedule/course-summary')->with( 
 			array(
 			'message' => "created: " . $newCourses .
 			 ", updated: " . $updatedCourses . 
