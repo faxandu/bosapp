@@ -183,8 +183,6 @@ class AdminController extends BaseController {
 	------------------------- */
 	public function getImport(){
 		
-		echo "import";
-		exit;
 
 		$file = file_get_contents($_ENV['courseLink']);
 		$data = json_decode($file, true);
