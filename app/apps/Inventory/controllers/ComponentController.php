@@ -9,11 +9,11 @@ class ComponentController extends BaseController{
 	public function postCreate(){
 		$input = Input::all();
 		$input['equipment_id'] = Equipment::where('id', $input['equipment_id']) -> pluck('id');
-		$validate = Component::validate($input);
-		if($validate -> fails()){
-			return Redirect::to('inventory/equipment')->with(array('status' => 400, 'message' => 'Component Form Validation Failed', 'error' => $validate -> messages()));
-		}
-		else{
+//		$validate = Component::validate($input);
+//		if($validate -> fails()){
+//			return Redirect::to('inventory/equipment')->with(array('status' => 400, 'message' => 'Component Form Validation Failed', 'error' => $validate -> messages()));
+//		}
+//		else{
 			try{
 				$component = Component::create($input);
 				//return Response::json(array('status' => 201, 'message' => 'created component'), 201);
@@ -23,7 +23,7 @@ class ComponentController extends BaseController{
 				//return Response::json(array('status' => 400, 'message' => 'failed to create component', 'error' => $e), 400);
 				return Redirect::to('inventory/equipment')->with(array('status' => 400, 'message' => 'Failed to add Component', 'error' => $e));
 			}
-		}
+//		}
 	}
 
 	public function postDelete(){

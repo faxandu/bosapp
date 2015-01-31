@@ -1,7 +1,7 @@
 <?php
 
 namespace Inventory\controllers;
-use BaseController, Input, User, Entry, Inventory\models\Equipment, Response, View;
+use BaseController, Input, User, Entry,  Inventory\models\Contract, Inventory\models\Component, Inventory\models\Equipment, Response, Redirect, View;
 
 
 class EquipmentController extends BaseController{
@@ -26,17 +26,27 @@ class EquipmentController extends BaseController{
 		}
 	}
 
-	public function postDelete(){
-		$id = Input::get('id');
+	public function getDelete($id){
 		try{
-			$equipment = Equipment::findOrFail($id);
+			$equipment = Equipment::find($id);
+			$contracts = Contract::where('equipment_id', '=', $id);
+				foreach ($contracts as $i){
+				$i -> delete();
+			}
+			$componets = Component::where('equipment_id', '=', $id);
+			foreach ($componets as $i){
+				$i -> delete();
+			}
 			$equipment -> delete();
+			
 		}
 		catch(Exception $e){
-			return Response::json(array('status' => 400, 'message' => 'equipment not found', 'error' => $e), 400);
+			//return Response::json(array('status' => 400, 'message' => 'equipment not found', 'error' => $e), 400);
+			return Redirect::back()->with('message', 'Entry Not Found')->with('alert', 'danger');
 		}
 
-		return Response::json(array('status' => 201, 'message' => 'equipment deleted'), 201);
+		//return Response::json(array('status' => 201, 'message' => 'equipment deleted'), 201);
+		return Redirect::back()->with('message', 'Entry Deleted')->with('alert', 'success');
 	}
 
 	public function postUpdate(){

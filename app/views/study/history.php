@@ -31,7 +31,7 @@
 					<td><?php echo $i->end_time; ?></td>
 					<td><?php echo $i->student_name->first_name . ' ' . $i->student_name->last_name; ?></td>
 					<td><button class="btn btn-warning" data-toggle="modal" data-target="#entryModify" onclick='setId(<?= $i->id . ', "' . $i->class . '", "' . $i->date . '", "' . $i->start_time . '", "' . $i->end_time . '"'; ?>)'>Modify</button>
-					    <a href="<?php echo URL::to('/group_study/entry/delete-entry/' . $i->id); ?>" class="btn btn-danger">Delete</a>
+					    <a href="<?php echo URL::to('/group_study/entry/delete-entry/' . $i->id); ?>" class="btn btn-danger">Delete</a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -46,7 +46,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">Modify Student Entry</h4>
       </div>
-      <form role="form" method="post" action="<?php echo URL::to('group_study/entry/modify'); ?>" >
+      <form role="form" method="post" action="<?php echo URL::to('/group_study/entry/delete-entry/' . $i->id); ?>" >
         <input type="hidden" id="id" name="id" value="" />
       <div class="modal-body">
         <div class="form-group">

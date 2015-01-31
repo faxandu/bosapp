@@ -40,7 +40,7 @@ function Duration($startTime, $endTime) {
 					<td><?= Duration(strtotime($entry->startDate . $entry->startTime), strtotime($entry->endDate . $entry->endTime)); ?></td>
 					<td>
 					    <?php if ($current){ ?>
-						<button class="btn btn-warning" data-toggle="modal" data-target="#timeModify" onclick='setId(<?= $entry->id . ', "' . $entry->startDate . '", "' . $entry->startTime  . '", "' . $entry->startDate . '", "' . $entry->endTime . '"' ; ?>)'>Modify</button>
+						<button class="btn btn-warning" data-toggle="modal" data-target="#timeModify" onclick='setId(<?= $entry->id . ', "' . $entry->startDate . '", "' . $entry->startTime  . '", "' . $entry->startDate . '", "' . $entry->endTime . '", "' . $entry->description . '"' ; ?>)'>Modify</button>
 						<a href="<?php echo URL::to('/time/entries/delete/' . $entry->id); ?>" class="btn btn-danger">Delete</a>
 					    <?php } else { ?> Locked <?php } ?>
 					</td>
@@ -150,7 +150,7 @@ function Duration($startTime, $endTime) {
         </div>
         <div class="form-group">
         	<label for="description">Comments</label>
-        	<textarea class="form-control" name="description"></textarea>
+        	<textarea class="form-control" id="modify_description" name="description"></textarea>
         </div>
         <input type="hidden" name="pay_id" value="<?php echo $pay_id; ?>" />
       </div>
@@ -164,13 +164,14 @@ function Duration($startTime, $endTime) {
 </div><!-- /.modal -->
 
 <script>
-function setId(id, startDate, startTime, endDate, endTime)
+function setId(id, startDate, startTime, endDate, endTime, comment)
 {
   document.getElementById("ModifyId").value = id;
   document.getElementById("modify_start_date").value = startDate;
-  document.getElementById("modify_start_time").value = startTime;
+  document.getElementById("modify_start_time").value = startTime.substring(0,5);
   document.getElementById("modify_end_date").value = endDate;
-  document.getElementById("modify_end_time").value = endTime;
+  document.getElementById("modify_end_time").value = endTime.substring(0,5);
+  document.getElementById("modify_description").value = comment;
 }
 
 $(function() {

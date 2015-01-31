@@ -16,7 +16,13 @@ class EntryController extends BaseController{
 	 * @return returns json response with error or added entry
 	 */
 	public function postStudentExists(){
-	 	$student_num = substr(Input::get('student_num'), 2, 8);   //used to grab only the student number from the id card.
+		$test = 0;
+	 	$student_num = preg_replace("/^.*@([0-9]{8}).*$/", "\\1", Input::get('student_num'), -1, $test);   //used to grab only the student number from the id card. //replaced statement with some regex
+
+		if (!$test){
+	 		return Response::json(array('status' => $student_num . ' ' . $test));
+			return Redirect::back()->with('message', 'ID Not Valid')->with('alert', 'Danger');
+		}
 	 	$class = Input::get('class');
 	 	try{
 	 		$student = Student::where('student_num', '=', $student_num) -> firstOrFail();
@@ -129,8 +135,8 @@ class EntryController extends BaseController{
 	 * Checks for entry by PK.  If found, deletes the entry.
 	 * @param (int) ($id) PK for entry.
 	 * @return (PK) (id) returns json response for error or success
-	 */
-	public function postDeleteEntry($id){
+	 and shit */
+	public function getDeleteEntry($id){
 		$entry = Entry::find($id);
 		if(empty($entry)) 
 			return Response::json(array('status' => 'entry_not_found'));
@@ -138,9 +144,9 @@ class EntryController extends BaseController{
 			$entry -> delete();
 		}
 		catch(Exception $e){
-			return Response::json(array('status' => 'entry_not_deleted'));
+			return Response::json(array('status' => 'error, entry_not_deleted'));
 		}
-		return Response::json(array('status' => 'deleted_entry'));
+		return Redirect::back()->with('message', 'Entry Deleted')->with('alert', 'success');
 	}
 
 	public function getMonitor(){

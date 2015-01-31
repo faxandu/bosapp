@@ -30,7 +30,8 @@
 							<p>Serial Number: <?php echo $item['serial_number']; ?></p>
 							<p>Obtained On: <?php echo $item['obtained']; ?></p>
 							<p>Warrant Expires On: <?php echo $item['warranty']; ?></p>
-							<p>Location: <?php echo $item['location']; ?></p>		
+							<p>Location: <?php echo $item['location']; ?></p>
+							<p><a href="/inventory/equipment/delete/<?php echo $item['id']?>" class='btn btn-danger'>Delete</a></p>		
 						</td>
 						<td class="details">
 							<div class="components">
@@ -100,7 +101,7 @@
 <div class="modal fade" id="componentsForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-    	<form method="post" action="<?php echo URL::to('/inventory/components/create'); ?>">
+    	<form method="post" action="<?php echo URL::to('/inventory/component/create'); ?>">
       		<div class="modal-header">
         		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         		<h4 class="modal-title" id="myModalLabel">Add Component</h4>
@@ -141,7 +142,7 @@
 <div class="modal fade" id="contractForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-    	<form method="post" action="<?php echo URL::to('/inventory/contracts/create'); ?>">
+    	<form method="post" action="<?php echo URL::to('/inventory/contract/create'); ?>">
       		<div class="modal-header">
         		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         		<h4 class="modal-title" id="myModalLabel">Add Service Contract</h4>
@@ -153,6 +154,7 @@
         		</div>
         		<div class="form-group">
         			<label for="expiration">Expiration Date</label>
+				YYYY-MM-DD
         			<input type="text" class="form-control" name="expiration" />
         		</div>
         		<div class="form-group">
