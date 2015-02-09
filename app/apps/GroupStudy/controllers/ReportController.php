@@ -14,8 +14,7 @@ class ReportController extends BaseController
 		$input = Input::all();
 		$query = Entry::join('group_study_student', 'group_study_entry.student_id', '=', 'group_study_student.id')
 						-> join('user', 'group_study_entry.facilitator', '=', 'user.id') 
-						-> select('group_study_entry.date', 'group_study_student.first_name as student_first_name', 'group_study_student.last_name as student_last_name', 'group_study_entry.class', 
-									'group_study_entry.start_time', 'group_study_entry.end_time', 'user.first_name', 'user.last_name');
+						-> select('group_study_entry.date', 'group_study_student.first_name as student_first_name', 'group_study_student.last_name as student_last_name', 'group_study_student.student_num as student_num', 'group_study_entry.class', 'group_study_entry.start_time', 'group_study_entry.end_time', 'user.first_name', 'user.last_name');
 		switch($input['type']){
 			case 'date':
 				$data = $this -> getDateReport($input['start_date'], $input['end_date'], $query);
@@ -56,7 +55,7 @@ class ReportController extends BaseController
 				$sheet->fromArray($data);
 				$sheet->mergeCells('B1:C1');
 				$sheet->mergeCellS('G1:H1');
-				$sheet->row(1, array('Date', 'Student Name', '', 'Course Number', 'Time In', 'Time Out', 'Facilitator Name'));
+				$sheet->row(1, array('Date', 'Student Name', '', 'Student ID', 'Course Number', 'Time In', 'Time Out', 'Facilitator Name'));
 				$sheet->setAutoSize(true);
 			});
 		})->export('xls');
