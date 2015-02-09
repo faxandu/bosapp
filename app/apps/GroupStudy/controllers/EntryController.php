@@ -20,8 +20,7 @@ class EntryController extends BaseController{
 	 	$student_num = preg_replace("/^.*@([0-9]{8}).*$/", "\\1", Input::get('student_num'), -1, $test);   //used to grab only the student number from the id card. //replaced statement with some regex
 
 		if (!$test){
-	 		return Response::json(array('status' => $student_num . ' ' . $test));
-			return Redirect::back()->with('message', 'ID Not Valid')->with('alert', 'Danger');
+			return Redirect::back()->with('message', 'ID Not Valid')->with('alert', 'danger');
 		}
 	 	$class = Input::get('class');
 	 	try{
@@ -99,7 +98,7 @@ class EntryController extends BaseController{
 				'student_id' => $student->id,
 				'class' => $class,
 				'date' => date("Y-m-d"),
-				'start_time' => date('g:ia'),
+				'start_time' => date('H:i:s'),
 				'facilitator' => Auth::user()->id
 				);
 		try{
@@ -122,7 +121,7 @@ class EntryController extends BaseController{
 		if(empty($entry_id))
 			return Response::json(array('status' => 'entry_not_found'));
 		try{
-			Entry::where('id', $entry_id) -> update(array('end_time' => date('g:ia')));  
+			Entry::where('id', $entry_id) -> update(array('end_time' => date('H:i:s')));  
 			$this->layout->content = View::make('study/checkout');
 		}
 		catch(Exception $e){
