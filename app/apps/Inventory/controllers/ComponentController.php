@@ -26,17 +26,17 @@ class ComponentController extends BaseController{
 //		}
 	}
 
-	public function postDelete(){
-		$input = Input::get('id');
+	public function getDelete($id){
+//		$input = Input::get('id');
 		try{
-			$component = Component::findOrFail($id);
+			$component = Component::find($id);
 			$component -> delete();
 		}
 		catch(Exception $e){
-			return Response::json(array('status' => 400, 'message' => 'component_not_found', 'error' => $e), 400);
+		return Redirect::back()->with('message', 'Component Not Found')->with('alert', 'danger');
 		}
-
-		return Response::json(array('status' => 201, 'message' => 'component deleted'), 201);
+		return Redirect::back()->with('message', 'Component Deleted')->with('alert', 'success');
+//		return Response::json(array('status' => 201, 'message' => 'component deleted'), 201);
 	}
 
 	public function postUpdate(){

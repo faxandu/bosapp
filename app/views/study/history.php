@@ -46,7 +46,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">Modify Student Entry</h4>
       </div>
-      <form role="form" method="post" action="<?php echo URL::to('/group_study/entry/delete-entry/' . $i->id); ?>" >
+      <form role="form" method="post" action="<?php echo URL::to('/group_study/entry/modify/' . $i->id); ?>" >
         <input type="hidden" id="id" name="id" value="" />
       <div class="modal-body">
         <div class="form-group">

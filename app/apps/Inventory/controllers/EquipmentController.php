@@ -51,7 +51,7 @@ class EquipmentController extends BaseController{
 
 	public function postUpdate(){
 		$input = Input::all();
-		$id = $input::get('id');
+		$id = Input::get('id');
 		$validate = Equipment::validate($input);
 		if($validate -> fails()){
 			return Response::json(array('status' => 400, 'messages' => 'input validation failed', 'error' => $validate -> messages()), 400);

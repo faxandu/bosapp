@@ -67,11 +67,6 @@
 	</div>
 </div>
 </br></br>
-<div class="row">
-	<div class="col-sm-8 col-sm-offset-1">
-		<a href="<?php echo URL::to('/group_study/report/report'); ?>" class="btn btn-success">Download Excel Spreadsheet</a>
-	</div>
-</div>
 
 <script>
 $(function() {

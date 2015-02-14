@@ -31,7 +31,7 @@
 							<p>Obtained On: <?php echo $item['obtained']; ?></p>
 							<p>Warrant Expires On: <?php echo $item['warranty']; ?></p>
 							<p>Location: <?php echo $item['location']; ?></p>
-							<p><a href="/inventory/equipment/delete/<?php echo $item['id']?>" class='btn btn-danger'>Delete</a></p>		
+							<p><a href="/inventory/equipment/delete/<?php echo $item['id']?>" class='btn btn-danger'>Delete</a><button class="btn btn-warning" data-toggle="modal" data-target="#ModifyForm" onclick='setId(<?php echo $item['id'] . ', "' . $item['manufacturer'] . '", "' . $item['model'] . '", "' . $item['serial_number'] . '", "' . $item['obtained'] . '", "' . $item['warranty'] . '", "' . $item['location'] . '"'; ?>)'>Modify</button></p>
 						</td>
 						<td class="details">
 							<div class="components">
@@ -44,6 +44,7 @@
 											<th>Location</th>
 											<th>Storage</th>
 											<th>Memory</th>
+											<th></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -54,6 +55,7 @@
 											<td><?php echo $component['location']; ?></td>
 											<td><?php echo $component['storage']; ?></td>
 											<td><?php echo $component['memory']; ?></td>
+											<td><a href="/inventory/component/delete/ <?php echo $component['id']; ?>" class="btn btn-danger">Delete Component</a></td>
 										</tr>
 									<?php }); ?>
 									</tbody>
@@ -72,6 +74,7 @@
 											<th>Expiration Date</th>
 											<th>Contract Number</th>
 											<th>Vendor</th>
+											<th></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -81,6 +84,7 @@
 											<td><?php echo $contract['expiration']; ?></td>
 											<td><?php echo $contract['contract_number']; ?></td>
 											<td><?php echo $contract['vendor']; ?></td>
+											<td><a href="/inventory/contract/delete/<?php echo $contract['id'];?>" class="btn btn-danger">Delete Contract</a></td>
 										</tr>
 										<?php }); ?>
 									</tbody>
@@ -95,6 +99,61 @@
 			</tbody>
 		</table>
 	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ModifyForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    	<form method="post" action="<?php echo URL::to('/inventory/equipment/update'); ?>">
+      		<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        		<h4 class="modal-title" id="myModalLabel">Add Component</h4>
+      		</div>
+		<div class="modal-body">
+                        <div class="form-group">
+                                <label for="type">Equipment Type</label>
+                                <select name="type" class="form-control">
+                                        <option value="computer">Computer</option>
+                                        <option value="router">Router</option>
+                                        <option value="firewall">Firewall</option>
+                                        <option value="switch">Switch</option>
+                                        <option value="server">Server</option>
+                                </select>
+                        </div>
+			<div class="form-group">
+                                <label for="model">Model Number</label>
+                                <input type="text" id="modify_model" class="form-control" name="model" />
+                        </div>
+                        <div class="form-group">
+                                <label for="manufacturer">Manufacturer</label>
+                                <input type="text" id="modify_manufacturer" class="form-control" name="manufacturer" />
+                        </div>
+                        <div class="form-group">
+                                <label for="serial_number">Serial Number</label>
+                                <input type="text" id="modify_serial_number" class="form-control" name="serial_number" />
+                        </div>
+                        <div class="form-group">
+                                <label for="location">Location</label>
+                                <input type="text" id="modify_location" class="form-control" name="location" />
+                        </div>
+                        <div class="form-group">
+                                <label for="obtained">Obtained Date</label>
+                                <input type="text" id="modify_obtained" class="form-control" name="obtained" />
+                        </div>
+                        <div class="form-group">
+                                <label for="warranty">Warranty Expiration</label>
+				<input type="text" id="modify_warranty" class="form-control" name="warranty" />
+                        </div>
+		</div>
+     		<div class="modal-footer">
+			<input type="hidden" id="modify_id" value ="" name="id"/>
+        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        		<input type="submit" class="btn btn-primary" name="submit" value="Modify Equipment" />
+      		</div>
+      	</form>
+    </div>
+  </div>
 </div>
 
 <!-- Modal -->
@@ -177,6 +236,18 @@
 </div>
 
 <script>
+
+function setId(id, manufacturer, model, serial_number, obtained, warrenty, location)
+{
+  document.getElementById("modify_id").value = id;
+  document.getElementById("modify_manufacturer").value = manufacturer;
+  document.getElementById("modify_model").value = model;
+  document.getElementById("modify_serial_number").value = serial_number;
+  document.getElementById("modify_obtained").value = obtained;
+  document.getElementById("modify_warranty").value = warrenty;
+  document.getElementById("modify_location").value = location;
+}
+
 
 $(document).ready(function() {
     $('#inventory').dataTable();

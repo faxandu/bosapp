@@ -14,3 +14,4 @@ composer.lock
 Thumbs.db
 sftp-config.json
 /app/config/mail.php
+/app/config/app.php

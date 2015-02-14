@@ -34,9 +34,9 @@
 					<input type="radio" id="CPS272" name="class" value="CPS272" />
 					CPS 272
 				</label>
-				<label for="CPS278" class="btn btn-primary">
-					<input type="radio" id="CPS278" name="class" value="CPS278" />
-					CPS 278
+				<label for="CPS276" class="btn btn-primary">
+					<input type="radio" id="CPS276" name="class" value="CPS276" />
+					CPS 276
 				</label>
 
 				<h5>Windows Networking</h5>
@@ -152,7 +152,7 @@
         	<label for="start_date">Student Number</label>
         	<input type="test" id="student_num" class="form-control" name="student_num" />
         </div>
-        <div class="form-group">
+        <div class="form-group"><p>Student number should be entered like 0055555</p>
         	<label for="start_time">Class</label>
         	<input type="test" id="class" class="form-control" name="class" />
         </div>

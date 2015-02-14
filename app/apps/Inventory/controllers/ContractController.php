@@ -26,17 +26,16 @@ class ContractController extends BaseController{
 //		}
 	}
 
-	public function postDelete(){
-		$id = Input::get('id');
+	public function getDelete($id){
+//		$id = Input::get('id');
 		try{
-			$contract = Contract::findOrFail($id);
+			$contract = Contract::find($id);
 			$contract -> delete();
 		}
 		catch(Exception $e){
-			return Response::json(array('status' => 400, 'message' => 'contract not found'), 400);
+	                return Redirect::back()->with('message', 'Contract Not Found')->with('alert', 'danger');
 		}
-
-		return Response::json(array('status' => 201, 'message' => 'contract deleted'), 201);
+                return Redirect::back()->with('message', 'Contract Deleted')->with('alert', 'success');
 	}
 
 	public function postUpdate(){
