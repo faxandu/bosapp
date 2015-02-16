@@ -36,7 +36,12 @@ class EntryController extends BaseController{
 	 	$student_num = Input::get('student_num');
 	 	if(substr($student_num, 0, 1) == '@')
 	 		$student_num = substr($student_num, 1, 9);
+
 	 	$class = str_replace(' ', '', strtoupper(Input::get('class')));
+
+		if (strlen($class) < 6)
+			return Redirect::back()->with('message', 'Manual Entries still require a Class')->with('alert', 'danger');
+
 	 	if(strlen($student_num) == 8){
 		 	try{
 		 		$student = Student::where('student_num', '=', $student_num) -> firstOrFail();
