@@ -11,6 +11,11 @@
 <?php
 }
 ?>
+<table align='center'>
+	<tr>
+		<td><a href='<?php echo URL::to('/inventory/equipment/report'); ?>' class='btn btn-success'>Full Report</a></td>
+	</tr>
+</table>
 <div class="row">
 	<div class="col-sm-8 col-sm-offset-2">
 		<table id="inventory" class="table inventory">

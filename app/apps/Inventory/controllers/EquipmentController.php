@@ -1,7 +1,7 @@
 <?php
-
+//return Response::json(array('status' => 400, 'messages' => 'input validation failed', 'error' => $validate -> messages()), 400);
 namespace Inventory\controllers;
-use BaseController, Input, User, Entry,  Inventory\models\Contract, Inventory\models\Component, Inventory\models\Equipment, Response, Redirect, View;
+use BaseController, Input, User, Entry,  Inventory\models\Contract, Inventory\models\Component, Inventory\models\Equipment, Response, Redirect, View, Excel;
 
 
 class EquipmentController extends BaseController{
@@ -41,11 +41,9 @@ class EquipmentController extends BaseController{
 			
 		}
 		catch(Exception $e){
-			//return Response::json(array('status' => 400, 'message' => 'equipment not found', 'error' => $e), 400);
 			return Redirect::back()->with('message', 'Entry Not Found')->with('alert', 'danger');
 		}
 
-		//return Response::json(array('status' => 201, 'message' => 'equipment deleted'), 201);
 		return Redirect::back()->with('message', 'Entry Deleted')->with('alert', 'success');
 	}
 
@@ -54,7 +52,7 @@ class EquipmentController extends BaseController{
 		$id = Input::get('id');
 		$validate = Equipment::validate($input);
 		if($validate -> fails()){
-			return Response::json(array('status' => 400, 'messages' => 'input validation failed', 'error' => $validate -> messages()), 400);
+			return Redirect::back()->with('message', 'Input Error')->with('alert', 'danger');
 		}
 		else{
 			try{
@@ -62,10 +60,10 @@ class EquipmentController extends BaseController{
 				$equipment -> update($input);
 			}
 			catch(Exception $e){
-				return Response::json(array('status' => 400, 'messages' => 'equipment not updated', 'error' => $e), 400);
+				return Redirect::back()->with('message', 'Equipment not Found')->with('alert', 'danger');
 			}
 		}
-		return Response::json(array('status' => 201, 'messages' => 'equipment updated successfully'), 201);
+		return Redirect::back()->with('message', 'Entry Update')->with('alert', 'sucess');
 	}
 
 	public function getIndex(){
@@ -76,6 +74,40 @@ class EquipmentController extends BaseController{
 	public function getForm() {
 		$this->layout->content = View::make('inventory.equipmentForm');
 
+	}
+
+	public function getReport()
+	{
+		$queryComp = Equipment::Where('type', '=', 'computer')->OrderBy('location')->OrderBy('manufacturer')->OrderBy('model')->get();
+		$queryRout = Equipment::Where('type', '=', 'router')->OrderBy('location')->OrderBy('manufacturer')->OrderBy('model')->get();
+		$querySwit = Equipment::Where('type', '=', 'switch')->OrderBy('location')->OrderBy('manufacturer')->OrderBy('model')->get();
+		$queryServ = Equipment::Where('type', '=', 'server')->OrderBy('location')->OrderBy('manufacturer')->OrderBy('model')->get();
+		$queryFire = Equipment::Where('type', '=', 'firewall')->OrderBy('location')->OrderBy('manufacturer')->OrderBy('model')->get();
+
+		$title = "Inventory_Report_" . date('Y-m-d');
+
+		Excel::create($title, function($excel) use ($queryComp, $queryRout, $querySwit, $queryServ, $queryFire) {
+			$excel->sheet('Computers', function($sheet) use ($queryComp){
+				$sheet->fromArray($queryComp);
+				$sheet->setAutoSize(true);
+			});
+			$excel->sheet('Routers', function($sheet) use ($queryRout){
+				$sheet->fromArray($queryRout);
+				$sheet->setAutoSize(true);
+			});
+			$excel->sheet('Switches', function($sheet) use ($querySwit){
+				$sheet->fromArray($querySwit);
+				$sheet->setAutoSize(true);
+			});
+			$excel->sheet('Servers', function($sheet) use ($queryServ){
+				$sheet->fromArray($queryServ);
+				$sheet->setAutoSize(true);
+			});
+			$excel->sheet('Firewalls', function($sheet) use ($queryFire){
+				$sheet->fromArray($queryFire);
+				$sheet->setAutoSize(true);
+			});
+		})->export('xls');	
 	}
 
 	public function missingMethod($parameters = array())
