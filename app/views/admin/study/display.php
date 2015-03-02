@@ -55,7 +55,7 @@
  ?>
 				<tr>
 					<td><?php echo $entry->date; ?></td>
-					<td><?php echo $entry->student->first_name . ' ' . $entry->student->last_name; ?></td>
+					<td><?php echo $entry['student']['first_name'] . ' ' . $entry['student']['last_name']; ?></td>
 					<td><?php echo $entry->class; ?></td>
 					<td><?php echo date('h:ia', strtotime($entry->start_time. ' -4 hours'));  ?></td>
 					<td><?php echo date('h:ia', strtotime($entry->end_time. ' -4 hours')); ?></td>
