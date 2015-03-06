@@ -13,10 +13,10 @@
 *
 */ ?>
 <?php //takes in unix timestamps, divides out to minutes and hours.
-function Duration($startTime, $endTime) {
-  $minute = $endTime - $startTime;
+$totalHours=0;
+function Duration($minute) {
   $hours = floor( $minute / 3600 );
-  $minute = floor(($minute - $hours * 3600) / 60);
+  $minute = str_pad(floor(($minute - $hours * 3600) / 60), 2, "0", STR_PAD_LEFT);
   return $hours . ':' . $minute;
 } ?>
 <div class="row">
@@ -35,9 +35,11 @@ function Duration($startTime, $endTime) {
 				<?php foreach ($entries as $entry) { ?> 
 				<tr>
 					<td><?= $entry->startDate; ?></td>
-					<td><?= $entry->startTime; ?></td>
-					<td><?= $entry->endTime; ?></td>
-					<td><?= Duration(strtotime($entry->startDate . $entry->startTime), strtotime($entry->endDate . $entry->endTime)); ?></td>
+					<td><?= substr($entry->startTime, 0, 5); ?></td>
+					<td><?= substr($entry->endTime, 0, 5); ?></td>
+					<?php $totalTime = strtotime($entry->endDate . $entry->endTime) - strtotime($entry->startDate . $entry->startTime);
+					  $totalHours = $totalHours + $totalTime; ?>
+					<td><?= Duration($totalTime); ?></td>
 					<td>
 					    <?php if ($current){ ?>
 						<button class="btn btn-warning" data-toggle="modal" data-target="#timeModify" onclick='setId(<?= $entry->id . ', "' . $entry->startDate . '", "' . $entry->startTime  . '", "' . $entry->startDate . '", "' . $entry->endTime . '", "' . $entry->description . '"' ; ?>)'>Modify</button>
@@ -46,6 +48,9 @@ function Duration($startTime, $endTime) {
 					</td>
 				</tr>
 				<?php } ?>
+				<tr>
+					<td rowspan="5">Total Hours: <?php echo Duration($totalHours); ?></td>
+				</tr>
 			</tbody>
 		</table>
 	</div>

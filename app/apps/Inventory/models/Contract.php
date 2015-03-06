@@ -10,7 +10,7 @@ class Contract extends Eloquent{
 
 	protected $table = 'inventory_contract';
 
-	protected $fillable = array('equipment_id', 'type', 'expiration', 'contract_number', 'vendor', 'contact_info');
+	protected $fillable = array('equipment_id', 'type', 'expiration', 'contract_number', 'vendor', 'contact_info', 'notes');
 	protected $guarded = array('id');
 	public $timestamps = false;
 
@@ -26,12 +26,12 @@ class Contract extends Eloquent{
 
 	private static $rules = array(
 		'equipment_id' => 'required|numeric',
-
 		'type' =>	'required|alpha_num_spaces',
 		'expiration' =>	'required|date',
 		'contract_number' =>	'required|alpha_num',
 		'vendor' =>	'required|alpha_num_spaces',
-		'contact_info' => 'alpha_num_spaces'
+		'contact_info' => 'alpha_num_spaces',
+		'notes' => 'alpha_num_spaces'
 		);
 
 	public static function validate($data){

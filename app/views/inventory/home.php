@@ -79,6 +79,7 @@
 											<th>Expiration Date</th>
 											<th>Contract Number</th>
 											<th>Vendor</th>
+											<th>Contract Info</th>
 											<th></th>
 										</tr>
 									</thead>
@@ -89,7 +90,12 @@
 											<td><?php echo $contract['expiration']; ?></td>
 											<td><?php echo $contract['contract_number']; ?></td>
 											<td><?php echo $contract['vendor']; ?></td>
-											<td><a href="/inventory/contract/delete/<?php echo $contract['id'];?>" class="btn btn-danger">Delete Contract</a></td>
+											<td><?php echo $contract['contact_info']; ?></td>
+											<td rowspan="2"><a href="/inventory/contract/delete/<?php echo $contract['id'];?>" class="btn btn-danger">Delete Contract</a></td>
+										</tr>
+										<tr>
+											<th>Contract Notes</th>
+											<td colspan="4"><?php echo $contract['notes']; ?></td>
 										</tr>
 										<?php }); ?>
 									</tbody>
@@ -224,10 +230,18 @@
         		<div class="form-group">
         			<label for="contract_number">Contract Number</label>
         			<input type="text" class="form-control" name="contract_number" />
-        		</div>
+          		</div>
         		<div class="form-group">
         			<label for="vendor">Vendor</label>
         			<input type="text" class="form-control" name="vendor" />
+        		</div>
+        		<div class="form-group">
+        			<label for="contact_info">Contact Information</label>
+        			<input type="text" class="form-control" name="contact_info" />
+        		</div>
+        		<div class="form-group">
+        			<label for="notes">Additional Notes</label>&nbsp&nbsp&nbsp&nbsp&nbspLimit 255 Characters
+        			<input type="text" class="form-control" name="notes" />
         		</div>
       		</div>
       		<div class="modal-footer">
