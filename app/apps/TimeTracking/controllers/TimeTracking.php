@@ -11,6 +11,7 @@ use BaseController, Input, User,  Entry ,Response;
 use Illuminate\Support\Facades\Auth;
 use TimeTracking\models\Categories;
 use TimeTracking\models\TimeTrackingEntry;
+use TimeTracking\models\TimeTrackingPayPeriod;
 
 class TimeTracking extends  BaseController{
     
@@ -20,12 +21,14 @@ class TimeTracking extends  BaseController{
     */
     public function postCreateTime()
     {
-
+	//$pay = TimeTrackingPayPeriod::
         $timeEntry = new TimeTrackingEntry();
         $timeEntry->user_id = Auth::user()->id;
-        $input = Input::all();
+//        $input = Input::all();
+return json($Input::all());
 
-        $this->postAddTime($timeEntry,$input);
+
+//        $this->postAddTime($timeEntry,$input);
     }
     
     /**

@@ -118,9 +118,26 @@ class TimeTrackingPayPeriodController extends BaseController{
         return TimeTrackingPayPeriod::validate($pay_period)->fails();
     }
 
+    //used to sort payroll entries
+    public static function cmp($a, $b)
+    {
+      return $a['name'] > $b['name'];
+    }
+
     public function getViewPay($id){
-//variables
+
+        //making sure $id is a number to reduce chance of sql injection
+        if (!is_numeric($id))
+          return Response::json(array('status' => 400, 'message' => 'Only IDs are perrmitted'), 400);
+
+	//variables
         $query = TimeTrackingEntry::where('pay_id', '=', $id)->orderBy('user_id')-> orderBy('startDate')->get(); //inital query
+
+        //grabbing eveyone who has NOT submitted anything to bosapp, had to be raw sql as eloquent does not have a way of doing exclusive joins
+	$noentry = \DB::select('select user.last_name, user.first_name, user.email from user where not exists (select * from time_tracking_entry where user.id = time_tracking_entry.user_id and time_tracking_entry.pay_id =' . $id . ') order by user.last_name');
+
+//return Response::json($noentry );
+
         $usrcount = 0; //count is just used generally as a counter
         $current = 0; //current and prev are used in seperating out users in the data array
         $prev = 0;
@@ -131,7 +148,6 @@ class TimeTrackingPayPeriodController extends BaseController{
         $entrystart = 0; //these are for individual stamp entrys
         $entrystop = 0;
         $strvar = ''; //used as one off strings here and there so there's not 50 of them
-
 	$clocked = 0;
         $comment = 0;
         $sat1 = 0;
@@ -157,7 +173,7 @@ class TimeTrackingPayPeriodController extends BaseController{
             $prev = $current;
             $usrcount++;
             $strvar = User::find($i['user_id']); //get there name and email
-            $data[$usrcount]['name'] = $strvar['first_name'] . ' ' . $strvar['last_name'];
+            $data[$usrcount]['name'] = $strvar['last_name'] . ', ' . $strvar['first_name'];
             $data[$usrcount]['email'] = $strvar['email'];
             $comment = 0;
             $sat1 = 0; //and reset day counts for that user
@@ -281,8 +297,9 @@ class TimeTrackingPayPeriodController extends BaseController{
             $comment++;
           }//end of if comment 
         } //end of foreach query as i
-
-        $this->layout->content = View::make('admin/time/viewpay', array('entrys' => $data))->with('dates', array(0 => $startstamp, 1 => $midstamp));
+        //sorts the array by name
+        usort($data, array($this, "cmp"));
+        $this->layout->content = View::make('admin/time/viewpay', array('entrys' => $data))->with('dates', array(0 => $startstamp, 1 => $midstamp))->with('noentry', $noentry);
     }
 
 } 

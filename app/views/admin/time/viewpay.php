@@ -160,6 +160,18 @@
 			  <?php } ?>
                         </tbody>
                 </table>
+		<hr>
+		<table class='table'>
+			<tr>
+				<th colspawn=2>Users that have not Entered Anything</th>
+			</tr>
+			<?php foreach ($noentry as $i) { ?>
+			<tr>
+				<td><?php echo $i->last_name . ', ' . $i->first_name; ?></td>
+				<td><a href='mailto:<?php echo $i->email . "'>" . $i->email; ?></a></td>
+			</tr>
+			<?php } ?>
+		</table>
         </div>
 </div>
 

@@ -38,6 +38,13 @@ class TimeTrackingController extends  BaseController{
     */
     public function postCreate(){
 
+	$inputPay = strtotime(Input::get('start_date'));
+	$currentPay = TimeTrackingPayPeriod::find(Input::get('pay_id'));
+	$startPay = strtotime($currentPay['start_pay_period']);
+	$endPay = strtotime($currentPay['end_pay_period']);
+	if ($inputPay < $startPay || $inputPay > $endPay)
+                return Redirect::back()->with('message', 'Date must be withing Pay Period')->with('alert', 'danger');
+
         $timeEntry = new TimeTrackingEntry();
         $timeEntry->user_id = Auth::user()->id;
         $input = Input::all();
@@ -90,8 +97,14 @@ class TimeTrackingController extends  BaseController{
     public function postModifyTime(){
 
         $timeEntry = TimeTrackingEntry::find(Input::get('id'));  //OrFail('id')->get();
-//        if($this->validateTime(Input::get('start_time')) && $this->validateTime(Input::get('end_time')) ){
 
+	$inputPay = strtotime(Input::get('modify_start_date'));
+	$currentPay = TimeTrackingPayPeriod::find(Input::get('pay_id'));
+	$startPay = strtotime($currentPay['start_pay_period']);
+	$endPay = strtotime($currentPay['end_pay_period']);
+
+	if ($inputPay < $startPay || $inputPay > $endPay)
+                return Redirect::back()->with('message', 'Date must be withing Pay Period')->with('alert', 'danger');
         if ($timeEntry['user_id'] != Auth::user()->id) {
           return Response::json(array('status' => 401, 'message' => 'You can only delete your own Entrys'), 401);
         }

@@ -110,8 +110,61 @@ class EquipmentController extends BaseController{
 		})->export('xls');	
 	}
 
+	public function getWithContract()
+	{
+		//$query = Contract::join('inventory_equipment', 'inventory_contract.equipment_id', '=', 'inventory_equipment.id')->select('inventory_equipment.*')->get();
+		$query = Equipment::join('inventory_contract', 'inventory_equipment.id', '=', 'inventory_contract.equipment_id')->select('inventory_equipment.*')->distinct()->get();
+		//$query = Equipment::all();
+		$this->layout->content = View::make('inventory.home', array('equipment' => $query));
+		//return Response::json($query);
+	}
+
 	public function missingMethod($parameters = array())
 	{
 		return Response::json(array('status' => 404, 'message' => 'Not found'), 404);
 	}
+
+	public function getReportContract()
+	{
+		$queryComp = Equipment::join('inventory_contract', 'inventory_equipment.id', '=', 'inventory_contract.equipment_id')->Where('inventory_equipment.type', '=', 'computer')->OrderBy('location')->OrderBy('manufacturer')->OrderBy('model')->get();
+		$queryRout = Equipment::join('inventory_contract', 'inventory_equipment.id', '=', 'inventory_contract.equipment_id')->Where('inventory_equipment.type', '=', 'router')->OrderBy('location')->OrderBy('manufacturer')->OrderBy('model')->get();
+		$querySwit = Equipment::join('inventory_contract', 'inventory_equipment.id', '=', 'inventory_contract.equipment_id')->Where('inventory_equipment.type', '=', 'switch')->OrderBy('location')->OrderBy('manufacturer')->OrderBy('model')->get();
+		$queryServ = Equipment::join('inventory_contract', 'inventory_equipment.id', '=', 'inventory_contract.equipment_id')->Where('inventory_equipment.type', '=', 'server')->OrderBy('location')->OrderBy('manufacturer')->OrderBy('model')->get();
+		$queryFire = Equipment::join('inventory_contract', 'inventory_equipment.id', '=', 'inventory_contract.equipment_id')->Where('inventory_equipment.type', '=', 'firewall')->OrderBy('location')->OrderBy('manufacturer')->OrderBy('model')->get();
+
+
+
+//		$queryRout = Equipment::Where('type', '=', 'router')->OrderBy('location')->OrderBy('manufacturer')->OrderBy('model')->get();
+//		$querySwit = Equipment::Where('type', '=', 'switch')->OrderBy('location')->OrderBy('manufacturer')->OrderBy('model')->get();
+//		$queryServ = Equipment::Where('type', '=', 'server')->OrderBy('location')->OrderBy('manufacturer')->OrderBy('model')->get();
+//		$queryFire = Equipment::Where('type', '=', 'firewall')->OrderBy('location')->OrderBy('manufacturer')->OrderBy('model')->get();
+
+		$title = "Inventory_Report_Contracts_" . date('Y-m-d');
+
+		Excel::create($title, function($excel) use ($queryComp, $queryRout, $querySwit, $queryServ, $queryFire) {
+			$excel->sheet('Computers', function($sheet) use ($queryComp){
+				$sheet->fromArray($queryComp);
+				$sheet->setAutoSize(true);
+			});
+			$excel->sheet('Routers', function($sheet) use ($queryRout){
+				$sheet->fromArray($queryRout);
+				$sheet->setAutoSize(true);
+			});
+			$excel->sheet('Switches', function($sheet) use ($querySwit){
+				$sheet->fromArray($querySwit);
+				$sheet->setAutoSize(true);
+			});
+			$excel->sheet('Servers', function($sheet) use ($queryServ){
+				$sheet->fromArray($queryServ);
+				$sheet->setAutoSize(true);
+			});
+			$excel->sheet('Firewalls', function($sheet) use ($queryFire){
+				$sheet->fromArray($queryFire);
+				$sheet->setAutoSize(true);
+			});
+		})->export('xls');	
+	}
+
+
+
 }

@@ -145,6 +145,9 @@ class EntryController extends BaseController{
 		if(empty($entry)) 
 			return Response::json(array('status' => 'entry_not_found'));
 		try{
+		        if ($entry['facilitator'] != Auth::user()->id) {
+			          return Response::json(array('status' => 401, 'message' => 'You can only delete your own Entrys'), 401);
+		        }
 			$entry -> delete();
 		}
 		catch(Exception $e){

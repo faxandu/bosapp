@@ -41,11 +41,11 @@
 				<label for="location">Location</label>
 				<input type="text" class="form-control" name="location" />
 			</div>
-			<div class="form-group">
+			<div class="form-group">YYYY-MM-DD
 				<label for="obtained">Obtained Date</label>
 				<input type="text" class="form-control" name="obtained" />
 			</div>
-			<div class="form-group">
+			<div class="form-group">YYYY-MM-DD
 				<label for="warranty">Warranty Expiration</label>
 				<input type="text" class="form-control" name="warranty" />
 			</div>
