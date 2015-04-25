@@ -14,6 +14,7 @@
 <table align='center'>
 	<tr>
 		<td><a href='<?php echo URL::to('/inventory/equipment/report'); ?>' class='btn btn-success'>Full Report</a></td>
+		<td><a href='<?php echo URL::to('/inventory/equipment/report-contract'); ?>' class='btn btn-success'>Report Contracts</a></td>
 	</tr>
 </table>
 <div class="row">
