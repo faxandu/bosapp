@@ -125,3 +125,8 @@ Route::group(array('before' => 'auth'), function() use($layout){
 	});
 
 }); // end of auth group
+
+//garrots scheduleing routes
+	Route::get('/garrot', function() use($layout) {
+			return $layout->nest('content', 'garrot.home');
+	});

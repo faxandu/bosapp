@@ -5,6 +5,8 @@ use Auth, ControllerHelper;
 use Input, Response, Exception, Session, Redirect;
 use View;
 class AvailabilityController extends BaseController {
+
+//debugging by Jason McKeen, comments where changes were made, also: WHY HARRISION, WHY!
 	/*
 	|--------------------------------------------------------------------------
 	| Controller Views
@@ -27,7 +29,7 @@ class AvailabilityController extends BaseController {
 
 		$this->layout->content = View::make('lotto.availability.home')->with(array(
 			'user' => Auth::user(), 
-			'userAvailability' => Auth::user()->availability->sortBy('day_of_week'),
+			'userAvailability' => Auth::user()->user_availability->sortBy('day_of_week'),//changed  availability to user_availability
 			Session::all()
 		));
 	}
