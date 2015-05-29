@@ -38,7 +38,10 @@
 					<input type="radio" id="CPS276" name="class" value="CPS276" />
 					CPS 276
 				</label>
-
+				<label for="CPS278" class="btn btn-primary">
+					<input type="radio" id="CPS278" name="class" value="CPS278" />
+					CPS 278
+				</label>
 				<h5>Windows Networking</h5>
 				<label for="CNT100" class="btn btn-primary">
 					<input type="radio" id="CNT100" name="class" value="CNT100" />
@@ -114,6 +117,10 @@
 				</label>
 
 				<h5>Accounting</h5>
+				<label for="ACC110" class="btn btn-primary">
+					<input type="radio" id="ACC110" name="class" value="ACC110" />
+					ACC 110
+				</label>
 				<label for="ACC111" class="btn btn-primary">
 					<input type="radio" id="ACC111" name="class" value="ACC111" />
 					ACC 111

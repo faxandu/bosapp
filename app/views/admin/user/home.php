@@ -48,7 +48,7 @@
 					<td><?php echo $user->last_name; ?></td>
 					<td><?php echo $user->username; ?></td>
 					<td><?php echo "<a href='mailto:" . $user->email . "'>" . $user->email . "</a>"; ?></td>
-					<td><a href="<?= URL::to('admin/user/delete/'.$user->id.'')?>"<b class="glyphicon glyphicon-remove delete nohover"></b></a></td>
+					<td><a href="<?= URL::to('admin/user/delete/'.$user->id.'')?>"><b class="glyphicon glyphicon-remove delete nohover"></b></a></td>
 				</tr>
 			<?php } ?>
 			</tbody>

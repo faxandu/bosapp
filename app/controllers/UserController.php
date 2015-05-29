@@ -53,7 +53,8 @@ class UserController extends BaseController {
 
 		try{
 
-			User::findOrFail($id)->delete();
+
+			$person = User::findOrFail($id)->delete();
 
 			$this->layout->content = Redirect::to('admin/user/home')->with(array(
 				'status' => 200,

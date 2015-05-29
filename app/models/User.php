@@ -42,11 +42,11 @@ class User extends Eloquent  implements UserInterface, RemindableInterface {
         User::updated(function($user){
            
         });
-
+//---------------------------------------MAY NEED REVAMPING FOR LATTO SYSTEM, COMMENTED OUT FOR NOW DUE TO BUG--------------------
         User::deleting(function($user){
-            $user->skills()->detach();
-            $user->courses()->detach();
-            $user->availability()->detach();
+//            $user->skills()->detach();
+//            $user->courses()->detach();
+//            $user->availability()->detach();
         });
 
     }

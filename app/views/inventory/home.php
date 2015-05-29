@@ -1,4 +1,5 @@
 <?php if(null !== Session::get('status')) { ?>
+
 	<div class="row">
 		<div class="col-sm-8 col-sm-offset-2">
 	<?php if (Session::get('status') === 201) { ?>
@@ -104,6 +105,30 @@
 								<div class="button">
 									<button class="btn btn-xs btn-primary addContracts" data-id="<?php echo $item['id']; ?>">Add Service Contracts</button>
 								</div>
+<?php //--------------------------------------------work on file fields here------------------------------------------- ?>
+
+							<div class="contracts">
+								<h4>Attached Files</h4>
+								<table class="table">
+									<tbody>
+										<?php $item->contract->each(function($contract) { ?>
+										<tr>
+											<td><?php echo "filename/download"; ?></td>
+											<td><?php echo "notes"; ?></td>
+											<td rowspan="2"><a href="/inventory/fileadd/delete/<?php echo $contract['id'];?>" class="btn btn-danger">Delete File</a></td>
+										</tr>
+										<?php }); ?>
+									</tbody>
+								</table>
+								<div class="button">
+									<?php echo Form::open(array('url' => 'inventory/fileadd/fileup', 'files' => true, 'method' => 'post')) ?>
+									<?php echo Form::file('file'); ?>
+									<input type='submit' value='Add File' />
+									</form>
+								</div>
+
+
+
 							</div>
 						</td>
 					</tr>

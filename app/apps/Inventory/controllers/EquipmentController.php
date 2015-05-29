@@ -164,7 +164,10 @@ class EquipmentController extends BaseController{
 			});
 		})->export('xls');	
 	}
+	
+	public function getFileadd()
+	{
 
-
+	}
 
 }
