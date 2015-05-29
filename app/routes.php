@@ -122,7 +122,7 @@ Route::group(array('before' => 'auth'), function() use($layout){
 		Route::controller('equipment', 'Inventory\controllers\EquipmentController');
 		Route::controller('component', 'Inventory\controllers\ComponentController');
 		Route::controller('contract', 'Inventory\controllers\ContractController');
-		Route::controller('fileadd', 'Inventory\controllers\FileaddController');
+//		Route::controller('fileadd', 'Inventory\controllers\FileaddController');
 	});
 
 }); // end of auth group
