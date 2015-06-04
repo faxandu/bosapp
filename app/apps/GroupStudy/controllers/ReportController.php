@@ -1,13 +1,24 @@
 <?php
 
 namespace GroupStudy\controllers;
-use BaseController, Input, Excel, User, Response, GroupStudy\models\Entry, GroupStudy\models\Student, View;
+use BaseController, Input, Excel, User, Response, Redirect, GroupStudy\models\Entry, GroupStudy\models\Student, View;
 
 class ReportController extends BaseController
 {
 
 	public function getIndex() {
 		$this->layout->content = View::make('admin/study/display', array('entries' => Entry::all()));
+	}
+
+	public function postFileup() {
+	  $file = Input::file('file');
+	  if (substr($file->getMimeType(), 0, 5) != 'image')
+	    return Redirect::back()->with('message', 'Must be an Image file')->with('alert', 'danger');
+	  if ($file->getClientSize() < 2048)
+	    return Redirect::back()->with('message', 'Size too large')->with('alert', 'danger');
+
+	  Input::file('file')->move(public_path() . '/images', 'gs.jpg');
+	  return Redirect::back()->with('message', 'Schedule Uploaded')->with('alert', 'success');
 	}
 
 	public function getReport(){
