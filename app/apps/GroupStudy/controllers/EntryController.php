@@ -167,7 +167,7 @@ class EntryController extends BaseController{
 
 	public function getSetEndTime($entry_id){
 		try{
-			Entry::where('id', $entry_id) -> update(array('end_time' => date('H:m:s'))); 
+			Entry::where('id', $entry_id) -> update(array('end_time' => date('H:i:s'))); 
 			return Redirect::to('group_study/entry/monitor')->with('message', 'Student Logged Out')->with('alert', 'success');
 		}
 		catch(Exception $e){
