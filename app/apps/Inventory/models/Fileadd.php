@@ -10,7 +10,7 @@ class Fileadd extends Eloquent{
 
 	protected $table = 'inventory_fileadd';
 
-	protected $fillable = array('equipment_id', 'name', 'notes');
+	protected $fillable = array('equipment_id', 'path', 'name', 'notes');
 	protected $guarded = array('id');
 	public $timestamps = false;
 
@@ -27,7 +27,8 @@ class Fileadd extends Eloquent{
 	private static $rules = array(
 		'equipment_id' => 'required|numeric',
 		'name' => 'alpha_num_spaces',
-		'notes' => 'alpha_num_spaces'
+		'notes' => 'alpha_num_spaces',
+		'path' => 'alpha_num_spaces'
 		);
 
 	public static function validate($data){

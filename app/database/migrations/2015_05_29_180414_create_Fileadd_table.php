@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateInventoryContractTable extends Migration {
+class CreateFileaddTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,11 @@ class CreateInventoryContractTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('inventory_contract', function($table){
+		Schema::create('inventory_fileadd', function($table)
+		{
 			$table->increments('id');
 			$table->integer('equipment_id') -> unsigned();
-			$table->string('type');
-			$table->date('expiration');
-			$table->string('contract_number');
-			$table->string('vendor');
-			$table->string('contact_info');
+			$table->string('path');
 			$table->string('notes')->nullable();
 			$table->foreign('equipment_id')->references('id')->on('inventory_equipment');
 		});
@@ -32,7 +29,7 @@ class CreateInventoryContractTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('inventory_contract');
+		Schema::drop('inventory_fileadd');
 	}
 
 }

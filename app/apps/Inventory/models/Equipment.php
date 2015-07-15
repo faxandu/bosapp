@@ -27,6 +27,10 @@ class Equipment extends Eloquent{
 		return $this -> hasMany('Inventory\models\Component');
 	}
 
+	public function fileadd(){
+		return $this -> hasMany('Inventory\models\Fileadd');
+	}
+
 	private static $rules = array(
 		'serial_number' => 'required|alpha_num',
 		'manufacturer' =>	'required|alpha_num_spaces',

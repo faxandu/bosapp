@@ -111,18 +111,20 @@
 								<h4>Attached Files</h4>
 								<table class="table">
 									<tbody>
-										<?php $item->contract->each(function($contract) { ?>
+										<?php $item->fileadd->each(function($fileadd) { ?>
 										<tr>
-											<td><?php echo "filename/download"; ?></td>
-											<td><?php echo "notes"; ?></td>
-											<td rowspan="2"><a href="/inventory/fileadd/delete/<?php echo $contract['id'];?>" class="btn btn-danger">Delete File</a></td>
+											<td><a href="<?php echo url($fileadd->path)?>"><?php echo substr($fileadd->path, 12, 255); ?></td>
+											<td><?php echo $fileadd->notes; ?></td>
+											<td rowspan="2"><a href="/inventory/fileadd/delete/<?php echo $fileadd['id'];?>">Delete File</a></td>
 										</tr>
 										<?php }); ?>
 									</tbody>
 								</table>
 								<div class="button">
 									<?php echo Form::open(array('url' => 'inventory/fileadd/fileup', 'files' => true, 'method' => 'post')) ?>
+									<input type='hidden' name='equipment_id' id='equipment_id' value='<?php echo $item['id']; ?>'/>
 									<?php echo Form::file('file'); ?>
+									Notes: <input type='text' name='notes' id='notes' />
 									<input type='submit' value='Add File' />
 									</form>
 								</div>

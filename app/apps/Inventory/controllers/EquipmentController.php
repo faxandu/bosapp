@@ -1,7 +1,7 @@
 <?php
 //return Response::json(array('status' => 400, 'messages' => 'input validation failed', 'error' => $validate -> messages()), 400);
 namespace Inventory\controllers;
-use BaseController, Input, User, Entry,  Inventory\models\Contract, Inventory\models\Component, Inventory\models\Equipment, Response, Redirect, View, Excel;
+use BaseController, Input, User, Entry,  Inventory\models\Contract, Inventory\models\Component, Inventory\models\Fileadd, Inventory\models\Equipment, Response, Redirect, View, Excel;
 
 
 class EquipmentController extends BaseController{
@@ -27,6 +27,10 @@ class EquipmentController extends BaseController{
 	}
 
 	public function getDelete($id){
+			$Fileadd = Fileadd::where('equipment_id', '=', $id)->get();
+			if (!($Fileadd->isEmpty())) 
+				return Redirect::back()->with('message', 'Can not delete entries with files')->with('alert', 'danger');
+
 		try{
 			$equipment = Equipment::find($id);
 			$contracts = Contract::where('equipment_id', '=', $id);
@@ -36,7 +40,10 @@ class EquipmentController extends BaseController{
 			$componets = Component::where('equipment_id', '=', $id);
 			foreach ($componets as $i){
 				$i -> delete();
-			}
+			}			
+//			foreach ($Fileadd as $i){
+//				FileaddController::Delete($i->id);
+//			}
 			$equipment -> delete();
 			
 		}
@@ -163,11 +170,6 @@ class EquipmentController extends BaseController{
 				$sheet->setAutoSize(true);
 			});
 		})->export('xls');	
-	}
-	
-	public function getFileadd()
-	{
-
 	}
 
 }
