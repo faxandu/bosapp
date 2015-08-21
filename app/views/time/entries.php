@@ -87,7 +87,7 @@ function Duration($minute) {
         	<input type="test" id="start_time" class="form-control" name="start_time" />
         </div>
         <div class="form-group">
-        	<label for="end_date">End Date</label>
+        	<label for="end_date">End Date (Optional, if left blank uses Start Date)</label>
         	<input type="test" id="end_date" class="form-control" name="end_date" />
         </div>
         <div class="form-group">

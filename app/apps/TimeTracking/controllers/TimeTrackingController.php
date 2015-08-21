@@ -37,7 +37,6 @@ class TimeTrackingController extends  BaseController{
     * @throws an exception if the obect can't be saved.
     */
     public function postCreate(){
-
 	$inputPay = strtotime(Input::get('start_date'));
 	$currentPay = TimeTrackingPayPeriod::find(Input::get('pay_id'));
 	$startPay = strtotime($currentPay['start_pay_period']);
@@ -48,7 +47,7 @@ class TimeTrackingController extends  BaseController{
         $timeEntry = new TimeTrackingEntry();
         $timeEntry->user_id = Auth::user()->id;
         $input = Input::all();
-        
+
             $this->postAddTime($timeEntry);
             try{
                 $timeEntry->save();
@@ -192,6 +191,8 @@ class TimeTrackingController extends  BaseController{
         $timeEntry->startTime = Input::get('start_time');
         $timeEntry->startDate = Input::get('start_date');
         $timeEntry->endDate = Input::get('end_date');
+        if ($timeEntry->endDate == '')
+		$timeEntry->endDate = $timeEntry->startDate;
         $timeEntry->endTime   = Input::get('end_time');
         $timeEntry->description = Input::get('description');
         $timeEntry->pay_id = Input::get('pay_id');

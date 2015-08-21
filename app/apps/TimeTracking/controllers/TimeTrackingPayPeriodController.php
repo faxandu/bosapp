@@ -207,7 +207,7 @@ class TimeTrackingPayPeriodController extends BaseController{
             if ( date('D', $entrystart) == 'Sun') {
               $data[$usrcount]['week1']['sun'][$sun1]['start'] = $entrystart;
               $data[$usrcount]['week1']['sun'][$sun1]['end'] = $entrystop;
-              $data[$usrcount]['week1']['sun'][$sun2]['clock'] = $clocked;
+              $data[$usrcount]['week1']['sun'][$sun1]['clock'] = $clocked;
               $sun1++;
             }         
             if ( date('D', $entrystart) == 'Mon') {
