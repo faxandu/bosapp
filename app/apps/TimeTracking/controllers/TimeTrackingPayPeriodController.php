@@ -19,7 +19,7 @@ class TimeTrackingPayPeriodController extends BaseController{
     }
 
     public function index() {
-        $this->layout->content = View::make('admin/time/payperiod', array('pay_periods' => TimeTrackingPayPeriod::orderBy('id', 'DESC')->all()));
+        $this->layout->content = View::make('admin/time/payperiod', array('pay_periods' => TimeTrackingPayPeriod::orderBy('id', 'DESC')->get()));
     }
 
     /**

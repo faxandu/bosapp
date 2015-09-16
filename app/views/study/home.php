@@ -79,7 +79,10 @@
 					<input type="radio" id="CNT236" name="class" value="CNT236" />
 					CNT 236
 				</label>
-
+				<label for="CIS161" class="btn btn-primary">
+					<input type="radio" id="CIS161" name="class" value="CIS161" />
+					CIS 161
+				</label>
 				<h5>Computer Systems Technology</h5>
 				<label for="CST118" class="btn btn-primary">
 					<input type="radio" id="CST118" name="class" value="CST118" />
@@ -103,10 +106,7 @@
 					<input type="radio" id="CIS121" name="class" value="CIS121" />
 					CIS 121
 				</label>
-				<label for="CIS161" class="btn btn-primary">
-					<input type="radio" id="CIS161" name="class" value="CIS161" />
-					CIS 161
-				</label>
+
 				<label for="CIS208" class="btn btn-primary">
 					<input type="radio" id="CIS208" name="class" value="CIS208" />
 					CIS 208
