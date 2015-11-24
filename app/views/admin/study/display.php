@@ -62,7 +62,7 @@
 					<td><?php echo $entry->class; ?></td>
 					<td><?php echo date('h:ia', strtotime($entry->start_time));  ?></td>
 					<td><?php echo date('h:ia', strtotime($entry->end_time)); ?></td>
-					<td><?php echo $entry->facil->first_name . ' ' . $entry->facil->last_name; ?></td>
+					<td><?php echo $entry['facil']['first_name'] . ' ' . $entry['facil']['last_name']; ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
