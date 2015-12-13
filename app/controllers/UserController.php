@@ -76,6 +76,25 @@ class UserController extends BaseController {
 
 	}
 
+	//function to enable or disable a user
+	public function getDisable($id){
+
+		$user = User::find($id);
+
+		if ($user->active == '1')
+		{
+			$user->active = 0;
+			$message = "Account Disabled";
+		}
+		else
+		{
+			$user->active = 1;
+			$message = "Account Enabled";
+		}
+		$user->save();
+		return Redirect::back()->with('message',$message);
+		
+	}
 
 	public function login() {
 
@@ -83,7 +102,12 @@ class UserController extends BaseController {
 			'username' => Input::get('username'),
 			'password' => Input::get('password')
 		);
-		
+		$allow = User::where('username', '=', Input::get('username'))->get();
+
+		if ($allow[0]['active'] == 0)
+			return Redirect::back()->with('message','Account is Disabled');
+
+		//echo '<pre>' . $allow[0]['active']; exit; //print_r($allow); exit;
 		try{
 
 

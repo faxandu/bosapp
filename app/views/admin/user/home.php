@@ -38,7 +38,8 @@
 					<th>Last Name</th>
 					<th>Username</th>
 					<th>Email Address</th>
-					<th>Manage</th>
+					<th>Enabled</th>
+					<th>Delete</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -48,7 +49,10 @@
 					<td><?php echo $user->last_name; ?></td>
 					<td><?php echo $user->username; ?></td>
 					<td><?php echo "<a href='mailto:" . $user->email . "'>" . $user->email . "</a>"; ?></td>
-					<td><a href="<?= URL::to('admin/user/delete/'.$user->id.'')?>"><b class="glyphicon glyphicon-remove delete nohover"></b></a></td>
+					<td><a href="<?= URL::to('admin/user/disable/'.$user->id.'')?>"><b 
+					class=<?php if ($user->active == '0') echo '"glyphicon glyphicon-remove delete nohover"> Enable'; else echo '"glyphicon glyphicon-ok delete nohover"> Disable'; ?> 
+					</b></a></td>
+					<td><a href="<?= URL::to('admin/user/delete/' . $user->id); ?>">Delete</a></td>
 				</tr>
 			<?php } ?>
 			</tbody>
