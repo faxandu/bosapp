@@ -131,7 +131,7 @@ Route::group(array('before' => 'auth'), function() use($layout){
 
 }); // end of auth group
 
-Route::controller('test', 'TestController');
+//Route::controller('test', 'TestController');
 
 //garrots scheduleing routes
 //	Route::get('/garrot', function() use($layout) {
