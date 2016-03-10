@@ -13,5 +13,9 @@ composer.lock
 .DS_Store
 Thumbs.db
 sftp-config.json
-/app/config/mail.php
-/app/config/app.php
+app/config/mail.php
+app/config/app.php
+public/images/gs.jpg
+app/views/time/entries.php
+public/css/bootstrap.css
+public/css/fullcalendar.css

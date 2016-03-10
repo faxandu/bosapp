@@ -1,0 +1,45 @@
+.red-primary{
+  color: #ffffff;
+  background-color: #CD5C5C;
+  border-color: #db8a8a;
+}
+
+.red-primary:hover,
+.red-primary:focus,
+.red-primary:active,
+.red-primary.active,
+.open .dropdown-toggle.red-primary {
+  color: #ffffff;
+  background-color: #b03636;
+  border-color: #752424;
+}
+
+.red-primary:active,
+.red-primary.active,
+.open .dropdown-toggle.red-primary {
+  background-image: none;
+}
+
+.red-primary.disabled,
+.red-primary[disabled],
+fieldset[disabled] .red-primary,
+.red-primary.disabled:hover,
+.red-primary[disabled]:hover,
+fieldset[disabled] .red-primary:hover,
+.red-primary.disabled:focus,
+.red-primary[disabled]:focus,
+fieldset[disabled] .red-primary:focus,
+.red-primary.disabled:active,
+.red-primary[disabled]:active,
+fieldset[disabled] .red-primary:active,
+.red-primary.disabled.active,
+.red-primary[disabled].active,
+fieldset[disabled] .red-primary.active {
+  background-color: #428bca;
+  border-color: #357ebd;
+}
+
+.red-primary .badge {
+  color: #428bca;
+  background-color: #fff;
+}

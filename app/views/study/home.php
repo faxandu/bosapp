@@ -22,6 +22,14 @@
 					<input type="radio" id="CPS171" name="class" value="CPS171" />
 					CPS 171
 				</label>
+				<label for="CPS192" class="btn btn-primary">
+					<input type="radio" id="CPS192" name="class" value="CPS192" />
+					CPS 192
+				</label>
+				<label for="CPS251" class="btn btn-primary">
+					<input type="radio" id="CPS251" name="class" value="CPS251" />
+					CPS 251
+				</label>
 				<label for="CPS261" class="btn btn-primary">
 					<input type="radio" id="CPS261" name="class" value="CPS261" />
 					CPS 261
@@ -100,6 +108,15 @@
 					<input type="radio" id="CST225" name="class" value="CST225" />
 					CST 225
 				</label>
+				<label for="CST270" class="btn btn-primary">
+					<input type="radio" id="CST270" name="class" value="CST270" />
+					CST 270
+				</label>
+				<label for="CST275" class="btn btn-primary">
+					<input type="radio" id="CST275" name="class" value="CST275" />
+					CST 275
+				</label>
+
 
 				<h5>Unix / Linux</h5>
 				<label for="CIS121" class="btn btn-primary">

@@ -86,7 +86,7 @@ Route::group(array('before' => 'auth'), function() use($layout){
 	}); // end of schedule group user side
 
 
-
+	
 
 
 
@@ -124,8 +124,14 @@ Route::group(array('before' => 'auth'), function() use($layout){
 		Route::controller('contract', 'Inventory\controllers\ContractController');
 		Route::controller('fileadd', 'Inventory\controllers\FileaddController');
 	});
+	
+	//Route::get('/hello', function() use($layout) {
+			//return $layout->nest('content', 'hello');
+	//});
 
 }); // end of auth group
+
+Route::controller('test', 'TestController');
 
 //garrots scheduleing routes
 //	Route::get('/garrot', function() use($layout) {
@@ -135,3 +141,12 @@ Route::group(array('before' => 'auth'), function() use($layout){
 	Route::get('/gss', function() use($layout) {
 			return $layout->nest('content', 'study.schedule');
 	});
+	
+	Route::get('/cat', function() use($layout) {
+			return $layout->nest('content', 'study.important');
+	});
+	Route::get('/secret', function() use($layout) {
+			return $layout->nest('content', 'study/important');
+	});
+	
+	
