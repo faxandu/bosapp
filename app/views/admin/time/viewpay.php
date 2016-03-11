@@ -163,7 +163,7 @@
 		<hr>
 		<table class='table'>
 			<tr>
-				<th colspawn=2>Users that have not Entered Anything</th>
+				<th colspawn=2>Active Users that have not Entered Anything</th>
 			</tr>
 			<?php foreach ($noentry as $i) { ?>
 			<tr>

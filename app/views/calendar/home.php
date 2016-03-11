@@ -206,7 +206,7 @@ $(document).ready(function() {
 	    eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
 			
 			document.getElementById('jsid').value = event.id;
-			//document.getElementById('jsfor').value = event.created_for;
+			document.getElementById('jsfor').value = event.created_for;
 			document.getElementById('jsstart').value = getDateString(event.start);
 			document.getElementById('jsend').value = getDateString(event.end);
 			//document.getElementById('jscreated_by').value = document.getElementById('by').value;
@@ -250,7 +250,7 @@ $(document).ready(function() {
     	eventResize: function(event) {
     		
 			document.getElementById('jsid').value = event.id;
-			//document.getElementById('jsfor').value = event.created_for;
+			document.getElementById('jsfor').value = event.created_for;
 			document.getElementById('jsstart').value = getDateString(event.start);
 			document.getElementById('jsend').value = getDateString(event.end);
 			//document.getElementById('jscreated_by').value = document.getElementById('by').value;

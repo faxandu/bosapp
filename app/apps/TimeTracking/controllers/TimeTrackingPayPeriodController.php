@@ -134,7 +134,7 @@ class TimeTrackingPayPeriodController extends BaseController{
         $query = TimeTrackingEntry::where('pay_id', '=', $id)->orderBy('user_id')-> orderBy('startDate')->get(); //inital query
 
         //grabbing eveyone who has NOT submitted anything to bosapp, had to be raw sql as eloquent does not have a way of doing exclusive joins
-	$noentry = \DB::select('select user.last_name, user.first_name, user.email from user where not exists (select * from time_tracking_entry where user.id = time_tracking_entry.user_id and time_tracking_entry.pay_id =' . $id . ') order by user.last_name');
+	$noentry = \DB::select('select user.last_name, user.first_name, user.email from user where not exists (select * from time_tracking_entry where user.id = time_tracking_entry.user_id and time_tracking_entry.pay_id =' . $id . ') AND user.active = 1 order by user.last_name');
 
 //return Response::json($noentry );
 
