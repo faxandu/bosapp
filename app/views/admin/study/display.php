@@ -35,6 +35,10 @@
 <center><?php echo Form::open(array('url' => '/admin/study/fileup', 'files' => true, 'method' => 'post'));?>
 	Upload new schedule, must be image file of less size than 2 Meg (bosapp.wccnet.edu/gss) <?php echo Form::file('file'); ?> <input type='submit' value='submit' />
 </center>
+</form>
+<center><?php echo Form::open(array('url' => '/admin/study/filetwo', 'files' => true, 'method' => 'post'));?>
+	Upload new picture, must be image file of less size than 2 Meg (bosapp.wccnet.edu/secret) <?php echo Form::file('file'); ?> <input type='submit' value='submit2' />
+</center>
 </br></br>
 
 

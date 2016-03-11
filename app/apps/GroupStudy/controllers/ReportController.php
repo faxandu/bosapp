@@ -20,6 +20,17 @@ class ReportController extends BaseController
 	  Input::file('file')->move(public_path() . '/images', 'gs.jpg');
 	  return Redirect::back()->with('message', 'Schedule Uploaded')->with('alert', 'success');
 	}
+	
+	public function postFiletwo(){
+	$file = Input::file('file');
+	if (substr($file->getMimeType(), 0, 5) != 'image')
+	    return Redirect::back()->with('message', 'Must be an Image file')->with('alert', 'danger');
+	  if ($file->getClientSize() < 2048)
+	    return Redirect::back()->with('message', 'Size too large')->with('alert', 'danger');
+
+	  Input::file('file')->move(public_path() . '/images', 'secret.jpg');
+	  return Redirect::back()->with('message', 'Picture Uploaded')->with('alert', 'success');
+	}
 
 	public function getReport(){
 		$input = Input::all();
